@@ -1,0 +1,62 @@
+C:\Users\svet_\Desktop\1901261064\1901261064\trunk\CGProject\bin\Debug\Draw.exe
+C:\Users\svet_\Desktop\1901261064\1901261064\trunk\CGProject\bin\Debug\Draw.pdb
+C:\Users\svet_\Desktop\1901261064\1901261064\trunk\CGProject\obj\Debug\Draw.csproj.AssemblyReference.cache
+C:\Users\svet_\Desktop\1901261064\1901261064\trunk\CGProject\obj\Debug\Draw.Properties.Resources.resources
+C:\Users\svet_\Desktop\1901261064\1901261064\trunk\CGProject\obj\Debug\Draw.DoubleBufferedPanel.resources
+C:\Users\svet_\Desktop\1901261064\1901261064\trunk\CGProject\obj\Debug\Draw.MainForm.resources
+C:\Users\svet_\Desktop\1901261064\1901261064\trunk\CGProject\obj\Debug\Draw.csproj.GenerateResource.cache
+C:\Users\svet_\Desktop\1901261064\1901261064\trunk\CGProject\obj\Debug\Draw.csproj.CoreCompileInputs.cache
+C:\Users\svet_\Desktop\1901261064\1901261064\trunk\CGProject\obj\Debug\Draw.exe
+C:\Users\svet_\Desktop\1901261064\1901261064\trunk\CGProject\obj\Debug\Draw.pdb
+C:\Users\Svetli\Desktop\Alberto & Svet's CG Project\trunk\CGProject\bin\Debug\Draw.exe
+C:\Users\Svetli\Desktop\Alberto & Svet's CG Project\trunk\CGProject\bin\Debug\Draw.pdb
+C:\Users\Svetli\Desktop\Alberto & Svet's CG Project\trunk\CGProject\obj\Debug\Draw.csproj.AssemblyReference.cache
+C:\Users\Svetli\Desktop\Alberto & Svet's CG Project\trunk\CGProject\obj\Debug\Draw.Properties.Resources.resources
+C:\Users\Svetli\Desktop\Alberto & Svet's CG Project\trunk\CGProject\obj\Debug\Draw.DoubleBufferedPanel.resources
+C:\Users\Svetli\Desktop\Alberto & Svet's CG Project\trunk\CGProject\obj\Debug\Draw.MainForm.resources
+C:\Users\Svetli\Desktop\Alberto & Svet's CG Project\trunk\CGProject\obj\Debug\Draw.csproj.GenerateResource.cache
+C:\Users\Svetli\Desktop\Alberto & Svet's CG Project\trunk\CGProject\obj\Debug\Draw.csproj.CoreCompileInputs.cache
+C:\Users\Svetli\Desktop\Alberto & Svet's CG Project\trunk\CGProject\obj\Debug\Draw.exe
+C:\Users\Svetli\Desktop\Alberto & Svet's CG Project\trunk\CGProject\obj\Debug\Draw.pdb
+C:\Users\svet_\Desktop\Програмиране\3та Година, 2ри Семестър\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\bin\Debug\Draw.exe
+C:\Users\svet_\Desktop\Програмиране\3та Година, 2ри Семестър\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\bin\Debug\Draw.pdb
+C:\Users\svet_\Desktop\Програмиране\3та Година, 2ри Семестър\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\obj\Debug\Draw.csproj.AssemblyReference.cache
+C:\Users\svet_\Desktop\Програмиране\3та Година, 2ри Семестър\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\obj\Debug\Draw.Properties.Resources.resources
+C:\Users\svet_\Desktop\Програмиране\3та Година, 2ри Семестър\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\obj\Debug\Draw.DoubleBufferedPanel.resources
+C:\Users\svet_\Desktop\Програмиране\3та Година, 2ри Семестър\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\obj\Debug\Draw.MainForm.resources
+C:\Users\svet_\Desktop\Програмиране\3та Година, 2ри Семестър\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\obj\Debug\Draw.csproj.GenerateResource.cache
+C:\Users\svet_\Desktop\Програмиране\3та Година, 2ри Семестър\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\obj\Debug\Draw.csproj.CoreCompileInputs.cache
+C:\Users\svet_\Desktop\Програмиране\3та Година, 2ри Семестър\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\obj\Debug\Draw.exe
+C:\Users\svet_\Desktop\Програмиране\3та Година, 2ри Семестър\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\obj\Debug\Draw.pdb
+D:\Uni_Projects\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\bin\Debug\Draw.exe
+D:\Uni_Projects\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\bin\Debug\Draw.pdb
+D:\Uni_Projects\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\obj\Debug\Draw.csproj.AssemblyReference.cache
+D:\Uni_Projects\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\obj\Debug\Draw.Properties.Resources.resources
+D:\Uni_Projects\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\obj\Debug\Draw.DoubleBufferedPanel.resources
+D:\Uni_Projects\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\obj\Debug\Draw.MainForm.resources
+D:\Uni_Projects\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\obj\Debug\Draw.csproj.GenerateResource.cache
+D:\Uni_Projects\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\obj\Debug\Draw.csproj.CoreCompileInputs.cache
+D:\Uni_Projects\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\obj\Debug\Draw.exe
+D:\Uni_Projects\Компютърна графика\Курсов проект по КГ на Алберто Петров и Светослав Славов\trunk\CGProject\obj\Debug\Draw.pdb
+D:\Uni_Projects\CGProject\bin\Debug\Draw.exe
+D:\Uni_Projects\CGProject\bin\Debug\Draw.pdb
+D:\Uni_Projects\CGProject\obj\Debug\Draw.csproj.AssemblyReference.cache
+D:\Uni_Projects\CGProject\obj\Debug\Draw.Properties.Resources.resources
+D:\Uni_Projects\CGProject\obj\Debug\Draw.DoubleBufferedPanel.resources
+D:\Uni_Projects\CGProject\obj\Debug\Draw.MainForm.resources
+D:\Uni_Projects\CGProject\obj\Debug\Draw.csproj.GenerateResource.cache
+D:\Uni_Projects\CGProject\obj\Debug\Draw.csproj.CoreCompileInputs.cache
+D:\Uni_Projects\CGProject\obj\Debug\Draw.exe
+D:\Uni_Projects\CGProject\obj\Debug\Draw.pdb
+d:\users\fmi\Desktop\Computer-Graphics-Project-main\Computer-Graphics-Project-main\bin\Debug\Draw.exe.config
+d:\users\fmi\Desktop\Computer-Graphics-Project-main\Computer-Graphics-Project-main\bin\Debug\Draw.exe
+d:\users\fmi\Desktop\Computer-Graphics-Project-main\Computer-Graphics-Project-main\bin\Debug\Draw.pdb
+d:\users\fmi\Desktop\Computer-Graphics-Project-main\Computer-Graphics-Project-main\obj\Debug\Draw.csproj.AssemblyReference.cache
+d:\users\fmi\Desktop\Computer-Graphics-Project-main\Computer-Graphics-Project-main\obj\Debug\Draw.csproj.SuggestedBindingRedirects.cache
+d:\users\fmi\Desktop\Computer-Graphics-Project-main\Computer-Graphics-Project-main\obj\Debug\Draw.Properties.Resources.resources
+d:\users\fmi\Desktop\Computer-Graphics-Project-main\Computer-Graphics-Project-main\obj\Debug\Draw.DoubleBufferedPanel.resources
+d:\users\fmi\Desktop\Computer-Graphics-Project-main\Computer-Graphics-Project-main\obj\Debug\Draw.MainForm.resources
+d:\users\fmi\Desktop\Computer-Graphics-Project-main\Computer-Graphics-Project-main\obj\Debug\Draw.csproj.GenerateResource.cache
+d:\users\fmi\Desktop\Computer-Graphics-Project-main\Computer-Graphics-Project-main\obj\Debug\Draw.csproj.CoreCompileInputs.cache
+d:\users\fmi\Desktop\Computer-Graphics-Project-main\Computer-Graphics-Project-main\obj\Debug\Draw.exe
+d:\users\fmi\Desktop\Computer-Graphics-Project-main\Computer-Graphics-Project-main\obj\Debug\Draw.pdb
