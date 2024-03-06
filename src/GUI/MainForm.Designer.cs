@@ -71,6 +71,7 @@
             this.намалиToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.изтрийToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewPort = new Draw.DoubleBufferedPanel();
+            this.drawPolygon = new System.Windows.Forms.ToolStripButton();
             this.mainMenu.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.speedMenu.SuspendLayout();
@@ -289,7 +290,8 @@
             this.drawEllipseButton,
             this.drawSquare,
             this.drawCircle,
-            this.DrawTriangleButton});
+            this.DrawTriangleButton,
+            this.drawPolygon});
             this.speedMenu.Location = new System.Drawing.Point(0, 24);
             this.speedMenu.Name = "speedMenu";
             this.speedMenu.Size = new System.Drawing.Size(693, 27);
@@ -417,6 +419,16 @@
             this.viewPort.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseMove);
             this.viewPort.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseUp);
             // 
+            // drawPolygon
+            // 
+            this.drawPolygon.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.drawPolygon.Image = ((System.Drawing.Image)(resources.GetObject("drawPolygon.Image")));
+            this.drawPolygon.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.drawPolygon.Name = "drawPolygon";
+            this.drawPolygon.Size = new System.Drawing.Size(24, 24);
+            this.drawPolygon.Text = "drawPolygon";
+            this.drawPolygon.Click += new System.EventHandler(this.drawPolygon_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -485,5 +497,6 @@
         private System.Windows.Forms.ToolStripButton drawCircle;
         private System.Windows.Forms.ToolStripStatusLabel coordinatesBox;
         private System.Windows.Forms.ToolStripButton DrawTriangleButton;
+        private System.Windows.Forms.ToolStripButton drawPolygon;
     }
 }

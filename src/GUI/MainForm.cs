@@ -123,5 +123,12 @@ namespace Draw
             statusBar.Items[0].Text = "Последно действие: Рисуване на триъгълник";
             viewPort.Invalidate();
         }
+
+        private void drawPolygon_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.AddRandomPolygon();
+            statusBar.Items[0].Text = "Последно действие: Рисуване на полигон";
+            viewPort.Invalidate();
+        }
     }
 }

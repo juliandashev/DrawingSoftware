@@ -78,6 +78,23 @@ namespace Draw
             ShapeList.Add(rect);
         }
 
+        public void AddRandomPolygon()
+        {
+            List<PointF> vertices = new List<PointF>()
+            {
+               new PointF(100, 100),
+               new PointF(100, 150),
+               new PointF(150, 180),
+               new PointF(180, 100)
+            };
+
+            PolygonShape polygon = new PolygonShape(vertices);
+            polygon.FillColor = Color.White;
+            polygon.StrokeColor = Color.Black;
+
+            ShapeList.Add(polygon);
+        }
+
         public void AddRandomTriangle()
         {
             List<PointF> points = new List<PointF>();
