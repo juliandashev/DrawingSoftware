@@ -11,7 +11,7 @@ namespace Draw.src.Model
     {
         #region Constructor
 
-        public PolygonShape(List<PointF> vertices)
+        public PolygonShape(RectangleF rect, List<PointF> vertices) : base(rect)
         {
             Vertices = vertices;
         }
@@ -32,12 +32,13 @@ namespace Draw.src.Model
 
 
             }
+
+            return false;
         }
 
         public override bool Contains(PointF point)
         {
             bool inside = false;
-            int intersections = 0;
 
             float ray = float.MaxValue;
             float eps = 0.0001f;
@@ -70,7 +71,6 @@ namespace Draw.src.Model
                 if (point.X < Math.Min(A.X, B.X))
                 {
                     inside = true;
-                    // intersections++;
                     continue;
                 }
 

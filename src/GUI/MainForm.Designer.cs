@@ -61,6 +61,7 @@
             this.drawSquare = new System.Windows.Forms.ToolStripButton();
             this.drawCircle = new System.Windows.Forms.ToolStripButton();
             this.DrawTriangleButton = new System.Windows.Forms.ToolStripButton();
+            this.drawPolygon = new System.Windows.Forms.ToolStripButton();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -71,7 +72,6 @@
             this.намалиToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.изтрийToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewPort = new Draw.DoubleBufferedPanel();
-            this.drawPolygon = new System.Windows.Forms.ToolStripButton();
             this.mainMenu.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.speedMenu.SuspendLayout();
@@ -358,6 +358,15 @@
             this.DrawTriangleButton.Text = "DrawTriangleButton";
             this.DrawTriangleButton.Click += new System.EventHandler(this.DrawTriangleButton_Click);
             // 
+            // drawPolygon
+            // 
+            this.drawPolygon.CheckOnClick = true;
+            this.drawPolygon.Image = ((System.Drawing.Image)(resources.GetObject("drawPolygon.Image")));
+            this.drawPolygon.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.drawPolygon.Name = "drawPolygon";
+            this.drawPolygon.Size = new System.Drawing.Size(101, 24);
+            this.drawPolygon.Text = "drawPolygon";
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
@@ -418,16 +427,6 @@
             this.viewPort.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseDown);
             this.viewPort.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseMove);
             this.viewPort.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseUp);
-            // 
-            // drawPolygon
-            // 
-            this.drawPolygon.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.drawPolygon.Image = ((System.Drawing.Image)(resources.GetObject("drawPolygon.Image")));
-            this.drawPolygon.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.drawPolygon.Name = "drawPolygon";
-            this.drawPolygon.Size = new System.Drawing.Size(24, 24);
-            this.drawPolygon.Text = "drawPolygon";
-            this.drawPolygon.Click += new System.EventHandler(this.drawPolygon_Click);
             // 
             // MainForm
             // 

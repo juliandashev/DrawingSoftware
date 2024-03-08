@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Draw
@@ -37,6 +38,16 @@ namespace Draw
         {
             get { return isDragging; }
             set { isDragging = value; }
+        }
+
+        /// <summary>
+        /// Дали в момента диалога е в състояние на "рисуване" на избрания елемент.
+        /// </summary>
+        private bool isDrawing;
+        public bool IsDrawing
+        {
+            get { return isDrawing; }
+            set { isDrawing = value; }
         }
 
         /// <summary>
@@ -78,17 +89,16 @@ namespace Draw
             ShapeList.Add(rect);
         }
 
-        public void AddRandomPolygon()
+        public void AddRandomPolygon(int x, int y)
         {
-            List<PointF> vertices = new List<PointF>()
-            {
-               new PointF(100, 100),
-               new PointF(100, 150),
-               new PointF(150, 180),
-               new PointF(180, 100)
-            };
+            int verticesCount = Selection.Vertices.Count;
+            int firstPointX = (int)Selection.Vertices[0].X;
+            int lastPointY = (int)Selection.Vertices[verticesCount].Y;
 
-            PolygonShape polygon = new PolygonShape(vertices);
+            PolygonShape polygon = new PolygonShape(
+                new Rectangle(x , y, firstPointX, lastPointY),
+                Selection.Vertices);
+
             polygon.FillColor = Color.White;
             polygon.StrokeColor = Color.Black;
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace Draw
@@ -39,6 +41,16 @@ namespace Draw
 
                     viewPort.Invalidate();
                 }
+
+            }
+
+            if (drawPolygon.Checked)
+            {
+                // TODO : check if it selected!
+
+                dialogProcessor.IsDrawing = true;
+                viewPort.Invalidate();
+
             }
         }
 
@@ -53,12 +65,34 @@ namespace Draw
                 viewPort.Invalidate();
             }
 
+            if (dialogProcessor.IsDrawing)
+            {
+                statusBar.Items[0].Text = "Последно действие: Поставяне на точка от полигон";
+
+                if (dialogProcessor.Selection != null)
+                {
+
+                    dialogProcessor.Selection.Vertices.Add(new PointF(e.X, e.Y));
+
+                    if (dialogProcessor.Selection.Vertices.Count > 2)
+                    {
+                        if (dialogProcessor.Selection.Vertices.First().Equals(dialogProcessor.Selection.Vertices.Last()))
+                            drawPolygon_Click(e.X, e.Y);
+                    }
+
+                    viewPort.Invalidate();
+                }
+            }
+
             coordinatesBox.Text = $"{e.Location.X}:{e.Location.Y}";
         }
 
         void ViewPortMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             dialogProcessor.IsDragging = false;
+
+            if (!drawPolygon.Checked)
+                dialogProcessor.IsDrawing = false;
         }
 
         void DrawRectangleButtonClick(object sender, EventArgs e)
@@ -124,9 +158,9 @@ namespace Draw
             viewPort.Invalidate();
         }
 
-        private void drawPolygon_Click(object sender, EventArgs e)
+        private void drawPolygon_Click(int x, int y)
         {
-            dialogProcessor.AddRandomPolygon();
+            dialogProcessor.AddRandomPolygon(x, y);
             statusBar.Items[0].Text = "Последно действие: Рисуване на полигон";
             viewPort.Invalidate();
         }
