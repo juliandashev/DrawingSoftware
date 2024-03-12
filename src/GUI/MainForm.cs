@@ -11,6 +11,8 @@ namespace Draw
     {
         private DialogProcessor dialogProcessor = new DialogProcessor();
 
+        private bool isLeftMouseButtonDown = false;
+
         public MainForm()
         {
             InitializeComponent();
@@ -46,12 +48,18 @@ namespace Draw
 
             if (drawPolygon.Checked)
             {
-                // TODO : check if it selected!
-
+                // TODO : check if it is selected!
                 dialogProcessor.IsDrawing = true;
-                viewPort.Invalidate();
-
             }
+
+            if (e.Button == MouseButtons.Left)
+            {
+                dialogProcessor.ClickedPoint = e.Location;
+
+                isLeftMouseButtonDown = true;
+            }
+
+            viewPort.Invalidate();
         }
 
         void ViewPortMouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -64,24 +72,24 @@ namespace Draw
                 dialogProcessor.TranslateTo(e.Location);
                 viewPort.Invalidate();
             }
-
-            if (dialogProcessor.IsDrawing)
+            else if (dialogProcessor.IsDrawing)
             {
                 statusBar.Items[0].Text = "Последно действие: Поставяне на точка от полигон";
 
-                if (dialogProcessor.Selection != null)
+                if (isLeftMouseButtonDown)
                 {
-
-                    dialogProcessor.Selection.Vertices.Add(new PointF(e.X, e.Y));
-
-                    if (dialogProcessor.Selection.Vertices.Count > 2)
-                    {
-                        if (dialogProcessor.Selection.Vertices.First().Equals(dialogProcessor.Selection.Vertices.Last()))
-                            drawPolygon_Click(e.X, e.Y);
-                    }
-
+                    dialogProcessor.AddPoint();
+                    toolStripStatusLabel1.Text = dialogProcessor.Selection.Vertices.Count.ToString();
                     viewPort.Invalidate();
                 }
+
+                //dialogProcessor.Selection.Vertices.Add(e.Location);
+
+                //if (dialogProcessor.Selection.Vertices.Count > 2)
+                //{
+                //    if (dialogProcessor.Selection.Vertices.First().Equals(dialogProcessor.Selection.Vertices.Last()))
+                //        drawPolygon_Click(e.X, e.Y);
+                //}
             }
 
             coordinatesBox.Text = $"{e.Location.X}:{e.Location.Y}";
@@ -93,6 +101,9 @@ namespace Draw
 
             if (!drawPolygon.Checked)
                 dialogProcessor.IsDrawing = false;
+
+            if (e.Button == MouseButtons.Left)
+                isLeftMouseButtonDown = false;
         }
 
         void DrawRectangleButtonClick(object sender, EventArgs e)

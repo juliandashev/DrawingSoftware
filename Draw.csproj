@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="src\GUI\Program.cs" />
     <Compile Include="src\Model\EllipseShape.cs" />
+    <Compile Include="src\Model\PointShape.cs" />
     <Compile Include="src\Model\PolygonShape.cs" />
     <Compile Include="src\Model\RectangleShape.cs" />
     <Compile Include="src\Model\Shape.cs" />

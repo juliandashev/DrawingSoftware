@@ -61,6 +61,13 @@ namespace Draw
             set { lastLocation = value; }
         }
 
+        private PointF clickedPoint;
+        public PointF ClickedPoint
+        {
+            get { return clickedPoint; }
+            set { clickedPoint = value; }
+        }
+
         #endregion
 
         public void AddRandomRectangle()
@@ -87,6 +94,15 @@ namespace Draw
             rect.StrokeColor = Color.Black;
 
             ShapeList.Add(rect);
+        }
+
+        public void AddPoint()
+        {
+            PointShape point = new PointShape(new Rectangle((int)ClickedPoint.X, (int)(int)ClickedPoint.Y, 10, 10));
+            point.FillColor = Color.Red;
+            point.StrokeColor = Color.Red;
+
+            ShapeList.Add(point);
         }
 
         public void AddRandomPolygon(int x, int y)

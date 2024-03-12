@@ -72,3 +72,14 @@ d:\users\fmi\Desktop\cgp\obj\Debug\Draw.csproj.GenerateResource.cache
 d:\users\fmi\Desktop\cgp\obj\Debug\Draw.csproj.CoreCompileInputs.cache
 d:\users\fmi\Desktop\cgp\obj\Debug\Draw.exe
 d:\users\fmi\Desktop\cgp\obj\Debug\Draw.pdb
+D:\Uni_Projects\CGProj\bin\Debug\Draw.exe.config
+D:\Uni_Projects\CGProj\bin\Debug\Draw.exe
+D:\Uni_Projects\CGProj\bin\Debug\Draw.pdb
+D:\Uni_Projects\CGProj\obj\Debug\Draw.csproj.AssemblyReference.cache
+D:\Uni_Projects\CGProj\obj\Debug\Draw.Properties.Resources.resources
+D:\Uni_Projects\CGProj\obj\Debug\Draw.DoubleBufferedPanel.resources
+D:\Uni_Projects\CGProj\obj\Debug\Draw.MainForm.resources
+D:\Uni_Projects\CGProj\obj\Debug\Draw.csproj.GenerateResource.cache
+D:\Uni_Projects\CGProj\obj\Debug\Draw.csproj.CoreCompileInputs.cache
+D:\Uni_Projects\CGProj\obj\Debug\Draw.exe
+D:\Uni_Projects\CGProj\obj\Debug\Draw.pdb
