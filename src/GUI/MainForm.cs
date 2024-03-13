@@ -50,26 +50,26 @@ namespace Draw
             {
                 // TODO : check if it is selected!
                 dialogProcessor.IsDrawing = true;
-            }
 
-            if (e.Button == MouseButtons.Left)
-            {
-                isLeftMouseButtonDown = true;
-            }
-
-            if (dialogProcessor.IsDrawing)
-            {
-                statusBar.Items[0].Text = "Последно действие: Поставяне на точка от полигон";
-
-                if (isLeftMouseButtonDown)
+                if (e.Button == MouseButtons.Left)
                 {
-                    dialogProcessor.ClickedPoint = e.Location;
-                    dialogProcessor.AddPoint();
+                    isLeftMouseButtonDown = true;
+                }
 
-                    dialogProcessor.Selection.Vertices.Add(e.Location);
-                    
-                    isLeftMouseButtonDown = false;
-                    viewPort.Invalidate();
+                if (dialogProcessor.IsDrawing)
+                {
+                    statusBar.Items[0].Text = "Последно действие: Поставяне на точка от полигон";
+
+                    if (isLeftMouseButtonDown)
+                    {
+                        dialogProcessor.ClickedPoint = e.Location;
+                        dialogProcessor.AddPoint();
+
+                        toolStripStatusLabel1.Text = dialogProcessor.Selection.Vertices.Count.ToString();
+
+                        isLeftMouseButtonDown = false;
+                        viewPort.Invalidate();
+                    }
                 }
             }
         }
@@ -165,6 +165,13 @@ namespace Draw
         {
             dialogProcessor.AddRandomPolygon(x, y);
             statusBar.Items[0].Text = "Последно действие: Рисуване на полигон";
+            viewPort.Invalidate();
+        }
+
+        private void rotateButton_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.RotateShape(int.Parse(rotateAtTextBox.Text));
+            statusBar.Items[0].Text = "Последно действие: Завъртане на фигура";
             viewPort.Invalidate();
         }
     }

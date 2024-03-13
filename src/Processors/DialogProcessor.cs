@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -70,6 +71,18 @@ namespace Draw
 
         #endregion
 
+        public void RotateShape(double angle)
+        {
+            if (selection != null)
+            {
+                foreach (var shape in ShapeList)
+                {
+                    shape.TransformationMatrix = new Matrix((float)Math.Cos(angle), -(float)Math.Sin(angle), (float)Math.Sin(angle), (float)Math.Cos(angle), 0, 0);
+                    shape.TransformationMatrix.RotateAt((float)angle, new PointF(selection.Rectangle.X / 2, selection.Rectangle.Y / 2));
+                }
+            }
+        }
+
         public void AddRandomRectangle()
         {
             Random rnd = new Random();
@@ -98,6 +111,9 @@ namespace Draw
 
         public void AddPoint()
         {
+            PointF currentPoint = new PointF(ClickedPoint.X, ClickedPoint.Y);
+            Selection.Vertices.Add(currentPoint);
+
             PointShape point = new PointShape(new Rectangle((int)ClickedPoint.X, (int)(int)ClickedPoint.Y, 10, 10));
             point.FillColor = Color.Red;
             point.StrokeColor = Color.Red;
@@ -112,7 +128,7 @@ namespace Draw
             int lastPointY = (int)Selection.Vertices[verticesCount].Y;
 
             PolygonShape polygon = new PolygonShape(
-                new Rectangle(x , y, firstPointX, lastPointY),
+                new Rectangle(x, y, firstPointX, lastPointY),
                 Selection.Vertices);
 
             polygon.FillColor = Color.White;

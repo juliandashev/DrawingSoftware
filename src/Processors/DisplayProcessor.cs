@@ -51,17 +51,17 @@ namespace Draw
 				DrawShape(grfx, item);
 			}
 		}
-		
-		/// <summary>
-		/// Визуализира даден елемент от изображението.
-		/// </summary>
-		/// <param name="grfx">Къде да се извърши визуализацията.</param>
-		/// <param name="item">Елемент за визуализиране.</param>
-		public virtual void DrawShape(Graphics grfx, Shape item)
+
+        /// <summary>
+        /// Визуализира даден елемент от изображението.
+        /// </summary>
+        /// <param name="grfx">Къде да се извърши визуализацията.</param>
+        /// <param name="item">Елемент за визуализиране.</param>
+        public virtual void DrawShape(Graphics grfx, Shape item)
 		{
 			item.DrawSelf(grfx);
 		}
-		
-		#endregion
-	}
+
+        #endregion
+    }
 }

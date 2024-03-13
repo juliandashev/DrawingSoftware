@@ -47,20 +47,13 @@ namespace Draw
             base.DrawSelf(grfx);
 
             var state = grfx.Save();
-            
-            Matrix m = new Matrix();
-            m.Rotate(20);
-            
-            Matrix n = new Matrix();
-            n.Translate(20, 20);
-            
-            n.Multiply(m);
 
-            grfx.Transform = n;
+            if (TransformationMatrix != null)
+                grfx.Transform = TransformationMatrix;
 
             grfx.FillRectangle(new SolidBrush(FillColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
             grfx.DrawRectangle(new Pen(StrokeColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
-            
+
             grfx.Restore(state);
         }
     }

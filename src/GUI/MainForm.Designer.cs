@@ -54,6 +54,7 @@
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.currentStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.coordinatesBox = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.speedMenu = new System.Windows.Forms.ToolStrip();
             this.pickUpSpeedButton = new System.Windows.Forms.ToolStripButton();
             this.drawRectangleSpeedButton = new System.Windows.Forms.ToolStripButton();
@@ -72,7 +73,8 @@
             this.намалиToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.изтрийToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewPort = new Draw.DoubleBufferedPanel();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.rotateAtTextBox = new System.Windows.Forms.TextBox();
+            this.rotateButton = new System.Windows.Forms.Button();
             this.mainMenu.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.speedMenu.SuspendLayout();
@@ -282,6 +284,12 @@
             this.coordinatesBox.Size = new System.Drawing.Size(46, 17);
             this.coordinatesBox.Text = "cordTxt";
             // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            // 
             // speedMenu
             // 
             this.speedMenu.BackColor = System.Drawing.Color.IndianRed;
@@ -420,6 +428,7 @@
             this.viewPort.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.viewPort.ContextMenuStrip = this.contextMenuStrip1;
             this.viewPort.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.viewPort.ForeColor = System.Drawing.SystemColors.ControlText;
             this.viewPort.Location = new System.Drawing.Point(0, 51);
             this.viewPort.Margin = new System.Windows.Forms.Padding(4);
             this.viewPort.Name = "viewPort";
@@ -430,11 +439,26 @@
             this.viewPort.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseMove);
             this.viewPort.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseUp);
             // 
-            // toolStripStatusLabel1
+            // rotateAtTextBox
             // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
-            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            this.rotateAtTextBox.AcceptsReturn = true;
+            this.rotateAtTextBox.AcceptsTab = true;
+            this.rotateAtTextBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.rotateAtTextBox.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.rotateAtTextBox.Location = new System.Drawing.Point(0, 51);
+            this.rotateAtTextBox.Name = "rotateAtTextBox";
+            this.rotateAtTextBox.Size = new System.Drawing.Size(63, 20);
+            this.rotateAtTextBox.TabIndex = 5;
+            // 
+            // rotateButton
+            // 
+            this.rotateButton.Location = new System.Drawing.Point(0, 77);
+            this.rotateButton.Name = "rotateButton";
+            this.rotateButton.Size = new System.Drawing.Size(63, 27);
+            this.rotateButton.TabIndex = 6;
+            this.rotateButton.Text = "Rotate";
+            this.rotateButton.UseVisualStyleBackColor = true;
+            this.rotateButton.Click += new System.EventHandler(this.rotateButton_Click);
             // 
             // MainForm
             // 
@@ -442,6 +466,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(693, 423);
+            this.Controls.Add(this.rotateButton);
+            this.Controls.Add(this.rotateAtTextBox);
             this.Controls.Add(this.statusBar);
             this.Controls.Add(this.viewPort);
             this.Controls.Add(this.speedMenu);
@@ -506,5 +532,7 @@
         private System.Windows.Forms.ToolStripButton DrawTriangleButton;
         private System.Windows.Forms.ToolStripButton drawPolygon;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.TextBox rotateAtTextBox;
+        private System.Windows.Forms.Button rotateButton;
     }
 }
