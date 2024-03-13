@@ -54,12 +54,24 @@ namespace Draw
 
             if (e.Button == MouseButtons.Left)
             {
-                dialogProcessor.ClickedPoint = e.Location;
-
                 isLeftMouseButtonDown = true;
             }
 
-            viewPort.Invalidate();
+            if (dialogProcessor.IsDrawing)
+            {
+                statusBar.Items[0].Text = "Последно действие: Поставяне на точка от полигон";
+
+                if (isLeftMouseButtonDown)
+                {
+                    dialogProcessor.ClickedPoint = e.Location;
+                    dialogProcessor.AddPoint();
+
+                    dialogProcessor.Selection.Vertices.Add(e.Location);
+                    
+                    isLeftMouseButtonDown = false;
+                    viewPort.Invalidate();
+                }
+            }
         }
 
         void ViewPortMouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -72,25 +84,6 @@ namespace Draw
                 dialogProcessor.TranslateTo(e.Location);
                 viewPort.Invalidate();
             }
-            else if (dialogProcessor.IsDrawing)
-            {
-                statusBar.Items[0].Text = "Последно действие: Поставяне на точка от полигон";
-
-                if (isLeftMouseButtonDown)
-                {
-                    dialogProcessor.AddPoint();
-                    toolStripStatusLabel1.Text = dialogProcessor.Selection.Vertices.Count.ToString();
-                    viewPort.Invalidate();
-                }
-
-                //dialogProcessor.Selection.Vertices.Add(e.Location);
-
-                //if (dialogProcessor.Selection.Vertices.Count > 2)
-                //{
-                //    if (dialogProcessor.Selection.Vertices.First().Equals(dialogProcessor.Selection.Vertices.Last()))
-                //        drawPolygon_Click(e.X, e.Y);
-                //}
-            }
 
             coordinatesBox.Text = $"{e.Location.X}:{e.Location.Y}";
         }
@@ -102,8 +95,7 @@ namespace Draw
             if (!drawPolygon.Checked)
                 dialogProcessor.IsDrawing = false;
 
-            if (e.Button == MouseButtons.Left)
-                isLeftMouseButtonDown = false;
+            isLeftMouseButtonDown = false;
         }
 
         void DrawRectangleButtonClick(object sender, EventArgs e)

@@ -26,6 +26,7 @@ namespace Draw
 			this.rectangle = shape.rectangle;
 			
 			this.FillColor =  shape.FillColor;
+			this.Vertices = shape.Vertices;
 		}
 		#endregion
 		#region Properties
