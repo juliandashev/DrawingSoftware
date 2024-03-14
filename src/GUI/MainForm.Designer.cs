@@ -75,6 +75,10 @@
             this.viewPort = new Draw.DoubleBufferedPanel();
             this.rotateAtTextBox = new System.Windows.Forms.TextBox();
             this.rotateButton = new System.Windows.Forms.Button();
+            this.завъртиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.speedMenu.SuspendLayout();
@@ -208,7 +212,8 @@
             this.безцветенToolStripMenuItem,
             this.уголемиToolStripMenuItem,
             this.намалиToolStripMenuItem,
-            this.изтрийToolStripMenuItem1});
+            this.изтрийToolStripMenuItem1,
+            this.завъртиToolStripMenuItem});
             this.манипулацииToolStripMenuItem.Name = "манипулацииToolStripMenuItem";
             this.манипулацииToolStripMenuItem.Size = new System.Drawing.Size(97, 20);
             this.манипулацииToolStripMenuItem.Text = "Манипулации";
@@ -460,6 +465,34 @@
             this.rotateButton.UseVisualStyleBackColor = true;
             this.rotateButton.Click += new System.EventHandler(this.rotateButton_Click);
             // 
+            // завъртиToolStripMenuItem
+            // 
+            this.завъртиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2,
+            this.toolStripMenuItem3,
+            this.toolStripMenuItem4});
+            this.завъртиToolStripMenuItem.Name = "завъртиToolStripMenuItem";
+            this.завъртиToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.завъртиToolStripMenuItem.Text = "Завърти";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem2.Text = "90°";
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem3.Text = "180°";
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem4.Text = "270°";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -534,5 +567,9 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.TextBox rotateAtTextBox;
         private System.Windows.Forms.Button rotateButton;
+        private System.Windows.Forms.ToolStripMenuItem завъртиToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
     }
 }

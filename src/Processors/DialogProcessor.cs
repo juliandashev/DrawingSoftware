@@ -71,14 +71,16 @@ namespace Draw
 
         #endregion
 
-        public void RotateShape(double angle)
+        public void RotateShape(float rotationAngle)
         {
             if (selection != null)
             {
                 foreach (var shape in ShapeList)
                 {
-                    shape.TransformationMatrix = new Matrix((float)Math.Cos(angle), -(float)Math.Sin(angle), (float)Math.Sin(angle), (float)Math.Cos(angle), 0, 0);
-                    shape.TransformationMatrix.RotateAt((float)angle, new PointF(selection.Rectangle.X / 2, selection.Rectangle.Y / 2));
+                    float m = shape.Rectangle.X / 2;
+                    float n = shape.Rectangle.Y / 2;
+
+                    //shape.TransformationMatrix.RotateAt(rotationAngle, new PointF(m, n));
                 }
             }
         }
@@ -112,7 +114,7 @@ namespace Draw
         public void AddPoint()
         {
             PointF currentPoint = new PointF(ClickedPoint.X, ClickedPoint.Y);
-            Selection.Vertices.Add(currentPoint);
+            //Selection.Vertices.Add(currentPoint);
 
             PointShape point = new PointShape(new Rectangle((int)ClickedPoint.X, (int)(int)ClickedPoint.Y, 10, 10));
             point.FillColor = Color.Red;
@@ -193,7 +195,6 @@ namespace Draw
             {
                 if (ShapeList[i].Contains(point))
                 {
-
                     return ShapeList[i];
                 }
             }

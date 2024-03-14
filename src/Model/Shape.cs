@@ -87,6 +87,14 @@ namespace Draw
             set { transformationMatrix = value; }
         }
 
+        private float rotationAngle;
+
+        public float RotationAngle
+        {
+            get { return rotationAngle; }
+            set { rotationAngle = value; }
+        }
+
         #endregion
 
         public virtual bool Contains(PointF point)
@@ -97,6 +105,10 @@ namespace Draw
         public virtual void DrawSelf(Graphics grfx)
         {
             // shape.Rectangle.Inflate(shape.BorderWidth, shape.BorderWidth);
+        }
+        public virtual void DrawSelf(Graphics grfx, float rotationAngle)
+        {
+            
         }
     }
 }

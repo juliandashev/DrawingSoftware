@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Draw.src.Model;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Threading;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Draw
 {
@@ -48,8 +51,27 @@ namespace Draw
 
             var state = grfx.Save();
 
-            if (TransformationMatrix != null)
-                grfx.Transform = TransformationMatrix;
+            float sin = (float)Math.Sin(90);
+            float cos = (float)Math.Cos(90);
+
+            Matrix rotation = new Matrix(cos, sin, sin * -1, cos, 0, 0);
+            Matrix toOrigin = new Matrix(1, 0, 0, 1, -(Rectangle.X / 2), -(Rectangle.Y / 2));
+            Matrix back = new Matrix(1, 0, 0, 1, Rectangle.X / 2, Rectangle.Y / 2);
+
+            PointF[] points = new PointF[3] {
+                new PointF(Rectangle.Left, Rectangle.Top),
+                new PointF(Rectangle.Right, Rectangle.Top),
+                new PointF(Rectangle.Left, Rectangle.Bottom)
+            };
+
+            TransformationMatrix = new Matrix(Rectangle, points);
+
+            TransformationMatrix.Multiply(toOrigin);
+
+            toOrigin.Multiply(rotation);
+            toOrigin.Multiply(back);
+
+            grfx.Transform = TransformationMatrix;
 
             grfx.FillRectangle(new SolidBrush(FillColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
             grfx.DrawRectangle(new Pen(StrokeColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);

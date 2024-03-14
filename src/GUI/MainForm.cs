@@ -170,7 +170,9 @@ namespace Draw
 
         private void rotateButton_Click(object sender, EventArgs e)
         {
-            dialogProcessor.RotateShape(int.Parse(rotateAtTextBox.Text));
+            float angle = float.Parse(rotateAtTextBox.Text);
+
+            dialogProcessor.RotateShape(angle);
             statusBar.Items[0].Text = "Последно действие: Завъртане на фигура";
             viewPort.Invalidate();
         }
