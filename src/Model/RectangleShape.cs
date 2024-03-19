@@ -49,32 +49,19 @@ namespace Draw
         {
             base.DrawSelf(grfx);
 
-            var state = grfx.Save();
-
-            float sin = (float)Math.Sin(90);
-            float cos = (float)Math.Cos(90);
-
-            Matrix rotation = new Matrix(cos, sin, sin * -1, cos, 0, 0);
-            Matrix toOrigin = new Matrix(1, 0, 0, 1, -(Rectangle.X / 2), -(Rectangle.Y / 2));
-            Matrix back = new Matrix(1, 0, 0, 1, Rectangle.X / 2, Rectangle.Y / 2);
-
-            PointF[] points = new PointF[3] {
-                new PointF(Rectangle.Left, Rectangle.Top),
-                new PointF(Rectangle.Right, Rectangle.Top),
-                new PointF(Rectangle.Left, Rectangle.Bottom)
-            };
-
-            TransformationMatrix = new Matrix(Rectangle, points);
-
-            TransformationMatrix.Multiply(toOrigin);
-
-            toOrigin.Multiply(rotation);
-            toOrigin.Multiply(back);
-
-            grfx.Transform = TransformationMatrix;
-
             grfx.FillRectangle(new SolidBrush(FillColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
             grfx.DrawRectangle(new Pen(StrokeColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
+        }
+        public override void DrawSelf(Graphics grfx, float rotationAngle)
+        {
+            base.DrawSelf(grfx, rotationAngle);
+          
+            var state = grfx.Save();
+            
+            grfx.FillRectangle(new SolidBrush(FillColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
+            grfx.DrawRectangle(new Pen(StrokeColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
+
+            base.TrnasformPoints(grfx);
 
             grfx.Restore(state);
         }

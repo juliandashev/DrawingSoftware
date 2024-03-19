@@ -50,5 +50,17 @@ namespace Draw.src.Model
             grfx.FillEllipse(new SolidBrush(FillColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
             grfx.DrawEllipse(new Pen(StrokeColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
         }
+
+        public override void DrawSelf(Graphics grfx, float rotationAngle)
+        {
+            var state = grfx.Save();
+
+            base.DrawSelf(grfx, rotationAngle);
+
+            grfx.FillEllipse(new SolidBrush(FillColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
+            grfx.DrawEllipse(new Pen(StrokeColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
+            
+            grfx.Restore(state);
+        }
     }
 }

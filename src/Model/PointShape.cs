@@ -12,7 +12,7 @@ namespace Draw.src.Model
         #region Constructors
         public PointShape(RectangleF rect) : base(rect)
         {
-            Vertices.Add(new PointF(rect.X / 2, rect.Y / 2));
+
         }
 
         public PointShape(PointShape point) : base(point)
@@ -32,7 +32,11 @@ namespace Draw.src.Model
             grfx.FillEllipse(new SolidBrush(FillColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
             grfx.DrawEllipse(new Pen(StrokeColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
 
-            // grfx.Dispose();
+            //PointF center = new PointF(
+            //    (Rectangle.Width / 2) + Rectangle.X,
+            //    (Rectangle.Height / 2) + Rectangle.Y);
+
+            //Vertices.Add(center);
         }
     }
 }

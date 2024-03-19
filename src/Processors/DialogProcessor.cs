@@ -31,6 +31,13 @@ namespace Draw
             set { selection = value; }
         }
 
+        private Polygon polySelection;
+        public Polygon PolySelection
+        {
+            get { return polySelection; }
+            set { polySelection = value; }
+        }
+
         /// <summary>
         /// Дали в момента диалога е в състояние на "влачене" на избрания елемент.
         /// </summary>
@@ -69,19 +76,21 @@ namespace Draw
             set { clickedPoint = value; }
         }
 
+        private List<PointF> pointsList = new List<PointF>();
+        public List<PointF> PointsList
+        {
+            get { return pointsList; }
+            set { pointsList = value; }
+        }
+
         #endregion
 
         public void RotateShape(float rotationAngle)
         {
-            if (selection != null)
+            if (Selection != null)
             {
-                foreach (var shape in ShapeList)
-                {
-                    float m = shape.Rectangle.X / 2;
-                    float n = shape.Rectangle.Y / 2;
-
-                    //shape.TransformationMatrix.RotateAt(rotationAngle, new PointF(m, n));
-                }
+                Selection.RotationMatrix = new Matrix();
+                Selection.RotationAngle = rotationAngle;
             }
         }
 
@@ -113,55 +122,67 @@ namespace Draw
 
         public void AddPoint()
         {
-            PointF currentPoint = new PointF(ClickedPoint.X, ClickedPoint.Y);
-            //Selection.Vertices.Add(currentPoint);
+            PointShape point = new PointShape(new Rectangle(
+                (int)ClickedPoint.X,
+                (int)ClickedPoint.Y,
+                    10, 10));
 
-            PointShape point = new PointShape(new Rectangle((int)ClickedPoint.X, (int)(int)ClickedPoint.Y, 10, 10));
             point.FillColor = Color.Red;
-            point.StrokeColor = Color.Red;
+            point.StrokeColor = Color.Black;
 
+            pointsList.Add(ClickedPoint);
             ShapeList.Add(point);
         }
 
-        public void AddRandomPolygon(int x, int y)
+        public void AddPolygon(PointF location)
         {
-            int verticesCount = Selection.Vertices.Count;
-            int firstPointX = (int)Selection.Vertices[0].X;
-            int lastPointY = (int)Selection.Vertices[verticesCount].Y;
+            float minX = pointsList.Min(p => p.X);
+            float maxX = pointsList.Max(p => p.X);
 
-            PolygonShape polygon = new PolygonShape(
-                new Rectangle(x, y, firstPointX, lastPointY),
-                Selection.Vertices);
+            float minY = pointsList.Min(p => p.Y);
+            float maxY = pointsList.Max(p => p.Y);
+
+            float width = maxX - minX;
+            float height = maxY - minY;
+
+            PolygonShape polygon = new PolygonShape(new Rectangle(
+                    (int)location.X,
+                    (int)location.Y,
+                    (int)width,
+                    (int)height),
+                    pointsList);
 
             polygon.FillColor = Color.White;
             polygon.StrokeColor = Color.Black;
 
-            ShapeList.Add(polygon);
+            PolygonList.Add(polygon);
         }
 
-        public void AddRandomTriangle()
-        {
-            List<PointF> points = new List<PointF>();
+        // Curently in maintanance :D
 
-            Random rnd = new Random();
+        //public void AddRandomTriangle()
+        //{
+        //    List<PointF> points = new List<PointF>();
 
-            int x = rnd.Next(100, 1000);
-            int y = rnd.Next(100, 600);
+        //    Random rnd = new Random();
 
-            points.Add(new PointF(x, y));
+        //    int x = rnd.Next(100, 1000);
+        //    int y = rnd.Next(100, 600);
 
-            points.Add(new PointF(x + 50, y - 50));
+        //    points.Add(new PointF(x, y));
 
-            points.Add(new PointF(
-                x + rnd.Next(0, 50),
-                y + rnd.Next(50, 100)));
+        //    points.Add(new PointF(x + 50, y - 50));
 
-            TriangleShape triag = new TriangleShape(points);
-            triag.FillColor = Color.White;
-            triag.StrokeColor = Color.Black;
+        //    points.Add(new PointF(
+        //        x + rnd.Next(0, 50),
+        //        y + rnd.Next(50, 100)));
 
-            ShapeList.Add(triag);
-        }
+        //    TriangleShape triag = new TriangleShape(points);
+        //    triag.FillColor = Color.White;
+        //    triag.StrokeColor = Color.Black;
+
+        //    PolygonList.Add(triag);
+        //}
 
         public void AddRandomEllipse()
         {
@@ -201,11 +222,28 @@ namespace Draw
             return null;
         }
 
+        public Polygon ContainsPointPolygon(PointF point)
+        {
+            for (int i = PolygonList.Count - 1; i >= 0; i--)
+            {
+                if (PolygonList[i].Contains(point))
+                {
+                    return PolygonList[i];
+                }
+            }
+            return null;
+        }
+
         public void TranslateTo(PointF p)
         {
             if (selection != null)
             {
                 selection.Location = new PointF(selection.Location.X + p.X - lastLocation.X, selection.Location.Y + p.Y - lastLocation.Y);
+                lastLocation = p;
+            }
+            else if (polySelection != null)
+            {
+                polySelection.Location = new PointF(polySelection.Location.X + p.X - lastLocation.X, polySelection.Location.Y + p.Y - lastLocation.Y);
                 lastLocation = p;
             }
         }
@@ -215,6 +253,7 @@ namespace Draw
             base.Draw(grfx);
 
             if (Selection != null)
+            {
                 grfx.DrawRectangle(
                     new Pen(Color.LightBlue, 2),
                     Selection.Location.X - 5,
@@ -222,6 +261,7 @@ namespace Draw
                     Selection.Width + 7,
                     Selection.Height + 7
                     );
+            }
         }
     }
 }

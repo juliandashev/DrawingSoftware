@@ -33,8 +33,9 @@ namespace Draw
             if (pickUpSpeedButton.Checked)
             {
                 dialogProcessor.Selection = dialogProcessor.ContainsPoint(e.Location);
+                dialogProcessor.PolySelection = dialogProcessor.ContainsPointPolygon(e.Location);
 
-                if (dialogProcessor.Selection != null)
+                if (dialogProcessor.Selection != null || dialogProcessor.PolySelection != null)
                 {
                     statusBar.Items[0].Text = "Последно действие: Селекция на примитив";
 
@@ -43,33 +44,38 @@ namespace Draw
 
                     viewPort.Invalidate();
                 }
-
             }
 
             if (drawPolygon.Checked)
             {
                 // TODO : check if it is selected!
-                dialogProcessor.IsDrawing = true;
-
                 if (e.Button == MouseButtons.Left)
                 {
                     isLeftMouseButtonDown = true;
                 }
 
-                if (dialogProcessor.IsDrawing)
+                if (isLeftMouseButtonDown)
                 {
                     statusBar.Items[0].Text = "Последно действие: Поставяне на точка от полигон";
+                    dialogProcessor.IsDrawing = true;
 
-                    if (isLeftMouseButtonDown)
+                    dialogProcessor.ClickedPoint = e.Location;
+
+                    if (dialogProcessor.PointsList.Count >= 3
+                            && dialogProcessor.ContainsPoint(dialogProcessor.ClickedPoint) != null)
+                    // Important: It's Contains point because PointShape is inherited by Shape and not Polygon
+                    // ContainsPoingPolygon is used to check if a point is inside a Polygon
                     {
-                        dialogProcessor.ClickedPoint = e.Location;
-                        dialogProcessor.AddPoint();
-
-                        toolStripStatusLabel1.Text = dialogProcessor.Selection.Vertices.Count.ToString();
-
-                        isLeftMouseButtonDown = false;
-                        viewPort.Invalidate();
+                        drawPolygon_Click(dialogProcessor.ClickedPoint);
+                        //drawPolygon.CheckState = CheckState.Unchecked;
+                        drawPolygon.Checked = false;
                     }
+                    else
+                        dialogProcessor.AddPoint();
+                    // link that points to the vertices of the polygon!!
+
+                    isLeftMouseButtonDown = false;
+                    viewPort.Invalidate();
                 }
             }
         }
@@ -98,6 +104,7 @@ namespace Draw
             isLeftMouseButtonDown = false;
         }
 
+        #region Drawing Shapes
         void DrawRectangleButtonClick(object sender, EventArgs e)
         {
             dialogProcessor.AddRandomRectangle();
@@ -144,6 +151,25 @@ namespace Draw
             viewPort.Invalidate();
         }
 
+        private void DrawTriangleButton_Click(object sender, EventArgs e)
+        {
+            //dialogProcessor.AddRandomTriangle();
+            statusBar.Items[0].Text = "Последно действие: Рисуване на триъгълник";
+            viewPort.Invalidate();
+        }
+
+        private void drawPolygon_Click(PointF point)
+        {
+            dialogProcessor.AddPolygon(point);
+
+            statusBar.Items[0].Text = "Последно действие: Рисуване на полигон";
+
+            viewPort.Invalidate();
+        }
+
+        #endregion
+
+        #region DropDown menu items
         private void кръгToolStripMenuItem_Click(object sender, EventArgs e)
         {
             drawCircle_Click(sender, e);
@@ -154,27 +180,22 @@ namespace Draw
             drawSquare_Click(sender, e);
         }
 
-        private void DrawTriangleButton_Click(object sender, EventArgs e)
+        private void rotate90_Click(object sender, EventArgs e)
         {
-            dialogProcessor.AddRandomTriangle();
-            statusBar.Items[0].Text = "Последно действие: Рисуване на триъгълник";
-            viewPort.Invalidate();
+            RotateShape(90);
         }
 
-        private void drawPolygon_Click(int x, int y)
-        {
-            dialogProcessor.AddRandomPolygon(x, y);
-            statusBar.Items[0].Text = "Последно действие: Рисуване на полигон";
-            viewPort.Invalidate();
-        }
+        #endregion
 
-        private void rotateButton_Click(object sender, EventArgs e)
-        {
-            float angle = float.Parse(rotateAtTextBox.Text);
+        #region Helper Methods
 
-            dialogProcessor.RotateShape(angle);
+        private void RotateShape(float rotation)
+        {
+            dialogProcessor.RotateShape(rotation);
             statusBar.Items[0].Text = "Последно действие: Завъртане на фигура";
             viewPort.Invalidate();
         }
+
+        #endregion
     }
 }

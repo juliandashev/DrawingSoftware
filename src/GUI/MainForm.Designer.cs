@@ -51,6 +51,10 @@
             this.уголемиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.намалиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.изтрийToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.завъртиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rotate90 = new System.Windows.Forms.ToolStripMenuItem();
+            this.rotate180 = new System.Windows.Forms.ToolStripMenuItem();
+            this.rotate270 = new System.Windows.Forms.ToolStripMenuItem();
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.currentStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.coordinatesBox = new System.Windows.Forms.ToolStripStatusLabel();
@@ -62,7 +66,6 @@
             this.drawSquare = new System.Windows.Forms.ToolStripButton();
             this.drawCircle = new System.Windows.Forms.ToolStripButton();
             this.DrawTriangleButton = new System.Windows.Forms.ToolStripButton();
-            this.drawPolygon = new System.Windows.Forms.ToolStripButton();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -73,12 +76,7 @@
             this.намалиToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.изтрийToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewPort = new Draw.DoubleBufferedPanel();
-            this.rotateAtTextBox = new System.Windows.Forms.TextBox();
-            this.rotateButton = new System.Windows.Forms.Button();
-            this.завъртиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.drawPolygon = new System.Windows.Forms.ToolStripButton();
             this.mainMenu.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.speedMenu.SuspendLayout();
@@ -260,6 +258,35 @@
             this.изтрийToolStripMenuItem1.Size = new System.Drawing.Size(222, 22);
             this.изтрийToolStripMenuItem1.Text = "Изтрий";
             // 
+            // завъртиToolStripMenuItem
+            // 
+            this.завъртиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rotate90,
+            this.rotate180,
+            this.rotate270});
+            this.завъртиToolStripMenuItem.Name = "завъртиToolStripMenuItem";
+            this.завъртиToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.завъртиToolStripMenuItem.Text = "Завърти";
+            // 
+            // rotate90
+            // 
+            this.rotate90.Name = "rotate90";
+            this.rotate90.Size = new System.Drawing.Size(97, 22);
+            this.rotate90.Text = "90°";
+            this.rotate90.Click += new System.EventHandler(this.rotate90_Click);
+            // 
+            // rotate180
+            // 
+            this.rotate180.Name = "rotate180";
+            this.rotate180.Size = new System.Drawing.Size(97, 22);
+            this.rotate180.Text = "180°";
+            // 
+            // rotate270
+            // 
+            this.rotate270.Name = "rotate270";
+            this.rotate270.Size = new System.Drawing.Size(97, 22);
+            this.rotate270.Text = "270°";
+            // 
             // statusBar
             // 
             this.statusBar.BackColor = System.Drawing.Color.LightCoral;
@@ -373,15 +400,6 @@
             this.DrawTriangleButton.Text = "DrawTriangleButton";
             this.DrawTriangleButton.Click += new System.EventHandler(this.DrawTriangleButton_Click);
             // 
-            // drawPolygon
-            // 
-            this.drawPolygon.CheckOnClick = true;
-            this.drawPolygon.Image = ((System.Drawing.Image)(resources.GetObject("drawPolygon.Image")));
-            this.drawPolygon.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.drawPolygon.Name = "drawPolygon";
-            this.drawPolygon.Size = new System.Drawing.Size(101, 24);
-            this.drawPolygon.Text = "drawPolygon";
-            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
@@ -444,54 +462,15 @@
             this.viewPort.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseMove);
             this.viewPort.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseUp);
             // 
-            // rotateAtTextBox
+            // drawPolygon
             // 
-            this.rotateAtTextBox.AcceptsReturn = true;
-            this.rotateAtTextBox.AcceptsTab = true;
-            this.rotateAtTextBox.Dock = System.Windows.Forms.DockStyle.Left;
-            this.rotateAtTextBox.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.rotateAtTextBox.Location = new System.Drawing.Point(0, 51);
-            this.rotateAtTextBox.Name = "rotateAtTextBox";
-            this.rotateAtTextBox.Size = new System.Drawing.Size(63, 20);
-            this.rotateAtTextBox.TabIndex = 5;
-            // 
-            // rotateButton
-            // 
-            this.rotateButton.Location = new System.Drawing.Point(0, 77);
-            this.rotateButton.Name = "rotateButton";
-            this.rotateButton.Size = new System.Drawing.Size(63, 27);
-            this.rotateButton.TabIndex = 6;
-            this.rotateButton.Text = "Rotate";
-            this.rotateButton.UseVisualStyleBackColor = true;
-            this.rotateButton.Click += new System.EventHandler(this.rotateButton_Click);
-            // 
-            // завъртиToolStripMenuItem
-            // 
-            this.завъртиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2,
-            this.toolStripMenuItem3,
-            this.toolStripMenuItem4});
-            this.завъртиToolStripMenuItem.Name = "завъртиToolStripMenuItem";
-            this.завъртиToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
-            this.завъртиToolStripMenuItem.Text = "Завърти";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem2.Text = "90°";
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem3.Text = "180°";
-            // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem4.Text = "270°";
+            this.drawPolygon.CheckOnClick = true;
+            this.drawPolygon.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.drawPolygon.Image = ((System.Drawing.Image)(resources.GetObject("drawPolygon.Image")));
+            this.drawPolygon.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.drawPolygon.Name = "drawPolygon";
+            this.drawPolygon.Size = new System.Drawing.Size(81, 24);
+            this.drawPolygon.Text = "drawPolygon";
             // 
             // MainForm
             // 
@@ -499,8 +478,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(693, 423);
-            this.Controls.Add(this.rotateButton);
-            this.Controls.Add(this.rotateAtTextBox);
             this.Controls.Add(this.statusBar);
             this.Controls.Add(this.viewPort);
             this.Controls.Add(this.speedMenu);
@@ -563,13 +540,11 @@
         private System.Windows.Forms.ToolStripButton drawCircle;
         private System.Windows.Forms.ToolStripStatusLabel coordinatesBox;
         private System.Windows.Forms.ToolStripButton DrawTriangleButton;
-        private System.Windows.Forms.ToolStripButton drawPolygon;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.TextBox rotateAtTextBox;
-        private System.Windows.Forms.Button rotateButton;
         private System.Windows.Forms.ToolStripMenuItem завъртиToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem rotate90;
+        private System.Windows.Forms.ToolStripMenuItem rotate180;
+        private System.Windows.Forms.ToolStripMenuItem rotate270;
+        private System.Windows.Forms.ToolStripButton drawPolygon;
     }
 }

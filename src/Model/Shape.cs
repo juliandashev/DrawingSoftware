@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
@@ -27,7 +28,6 @@ namespace Draw
             this.rectangle = shape.rectangle;
 
             this.FillColor = shape.FillColor;
-            this.vertices = shape.Vertices;
         }
         #endregion
         #region Properties
@@ -71,20 +71,12 @@ namespace Draw
             set { strokeColor = value; }
         }
 
-        private List<PointF> vertices;
+        private Matrix rotationMatrix;
 
-        public List<PointF> Vertices
+        public Matrix RotationMatrix
         {
-            get { return vertices; }
-            set { vertices = value; }
-        }
-
-        private Matrix transformationMatrix;
-
-        public Matrix TransformationMatrix
-        {
-            get { return transformationMatrix; }
-            set { transformationMatrix = value; }
+            get { return rotationMatrix; }
+            set { rotationMatrix = value; }
         }
 
         private float rotationAngle;
@@ -106,9 +98,32 @@ namespace Draw
         {
             // shape.Rectangle.Inflate(shape.BorderWidth, shape.BorderWidth);
         }
+
+        /// <summary>
+        /// Ротация в градуси спрямо центъра на фигурата
+        /// </summary>
+        /// <param name="grfx"></param>
+        /// <param name="rotationAngle"> Ъгъл на ротация в градуси, може да приема и отрицателни стойности</param>
         public virtual void DrawSelf(Graphics grfx, float rotationAngle)
         {
-            
+            PointF center = new PointF((Rectangle.Width / 2) + Rectangle.X, (Rectangle.Height / 2) + Rectangle.Y);
+
+            RotationMatrix.RotateAt(rotationAngle, center);
+
+            grfx.Transform = RotationMatrix;
+        }
+
+        public virtual void TrnasformPoints(Graphics grfx)
+        {
+            PointF[] transformationPoints = new PointF[4]
+            {
+                new PointF(Rectangle.Left, Rectangle.Top),
+                new PointF(Rectangle.Right, Rectangle.Top),
+                new PointF(Rectangle.Left, Rectangle.Bottom),
+                new PointF(Rectangle.Right, Rectangle.Bottom)
+            };
+
+            grfx.TransformPoints(CoordinateSpace.Page, CoordinateSpace.World, transformationPoints);
         }
     }
 }
