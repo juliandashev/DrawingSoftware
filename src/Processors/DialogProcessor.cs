@@ -86,10 +86,10 @@ namespace Draw
 
         public void RotateShape(float rotationAngle)
         {
-            if (Selection != null)
+            if (Selection.Count >= 1)
             {
-                // Selection.RotationMatrix = new Matrix();
-                //Selection.RotationAngle = rotationAngle;
+                Selection[0].RotationMatrix = new Matrix();
+                Selection[0].RotationAngle = rotationAngle;
             }
         }
 
@@ -172,7 +172,7 @@ namespace Draw
                 SubShapes group = new SubShapes(new RectangleF(minX, minY, maxX - minX, maxY - minY));
 
                 group.GroupShapes = Selection;
-                
+
                 Selection = new List<Shape>();
 
                 ShapeList.Add(group);

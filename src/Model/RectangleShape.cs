@@ -57,7 +57,11 @@ namespace Draw
             base.DrawSelf(grfx, rotationAngle);
           
             var state = grfx.Save();
-            
+
+            PointF center = new PointF((Rectangle.Width / 2) + Rectangle.X, (Rectangle.Height / 2) + Rectangle.Y);
+            RotationMatrix.RotateAt(rotationAngle, center);
+            grfx.Transform = RotationMatrix;
+
             grfx.FillRectangle(new SolidBrush(FillColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
             grfx.DrawRectangle(new Pen(StrokeColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
 

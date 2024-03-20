@@ -87,6 +87,8 @@ namespace Draw
             set { rotationAngle = value; }
         }
 
+        public GraphicsState state { get; set; }
+
         #endregion
 
         public virtual bool Contains(PointF point)
@@ -106,11 +108,6 @@ namespace Draw
         /// <param name="rotationAngle"> Ъгъл на ротация в градуси, може да приема и отрицателни стойности</param>
         public virtual void DrawSelf(Graphics grfx, float rotationAngle)
         {
-            PointF center = new PointF((Rectangle.Width / 2) + Rectangle.X, (Rectangle.Height / 2) + Rectangle.Y);
-
-            RotationMatrix.RotateAt(rotationAngle, center);
-
-            grfx.Transform = RotationMatrix;
         }
 
         public virtual void TrnasformPoints(Graphics grfx)
