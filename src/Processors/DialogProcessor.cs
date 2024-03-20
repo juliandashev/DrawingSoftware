@@ -20,12 +20,11 @@ namespace Draw
         #endregion
 
         #region Properties
-
         /// <summary>
         /// Избран елемент.
         /// </summary>
-        private Shape selection;
-        public Shape Selection
+        private List<Shape> selection = new List<Shape>();
+        public List<Shape> Selection
         {
             get { return selection; }
             set { selection = value; }
@@ -89,8 +88,8 @@ namespace Draw
         {
             if (Selection != null)
             {
-                Selection.RotationMatrix = new Matrix();
-                Selection.RotationAngle = rotationAngle;
+                // Selection.RotationMatrix = new Matrix();
+                //Selection.RotationAngle = rotationAngle;
             }
         }
 
@@ -156,6 +155,33 @@ namespace Draw
             polygon.StrokeColor = Color.Black;
 
             PolygonList.Add(polygon);
+        }
+
+        public void GroupElements()
+        {
+            List<Shape> temp = ShapeList;
+
+            if (ShapeList.Count >= 1)
+            {
+                float minX = temp.Min(x => x.Rectangle.Left);
+                float minY = temp.Min(y => y.Rectangle.Top);
+
+                float maxX = temp.Max(x => x.Rectangle.Right);
+                float maxY = temp.Max(y => y.Rectangle.Bottom);
+
+                SubShapes group = new SubShapes(new RectangleF(minX, minY, maxX - minX, maxY - minY));
+
+                group.GroupShapes = Selection;
+                
+                Selection = new List<Shape>();
+
+                ShapeList.Add(group);
+
+                foreach (var item in group.GroupShapes)
+                {
+                    ShapeList.Remove(item);
+                }
+            }
         }
 
         // Curently in maintanance :D
@@ -236,12 +262,18 @@ namespace Draw
 
         public void TranslateTo(PointF p)
         {
-            if (selection != null)
+            if (selection.Count >= 1)
             {
-                selection.Location = new PointF(selection.Location.X + p.X - lastLocation.X, selection.Location.Y + p.Y - lastLocation.Y);
+                foreach (var item in selection)
+                {
+                    item.Location = new PointF(
+                        item.Location.X + p.X - lastLocation.X,
+                        item.Location.Y + p.Y - lastLocation.Y
+                        );
+                }
                 lastLocation = p;
             }
-            else if (polySelection != null)
+            if (polySelection != null)
             {
                 polySelection.Location = new PointF(polySelection.Location.X + p.X - lastLocation.X, polySelection.Location.Y + p.Y - lastLocation.Y);
                 lastLocation = p;
@@ -252,15 +284,18 @@ namespace Draw
         {
             base.Draw(grfx);
 
-            if (Selection != null)
+            if (Selection.Count >= 1)
             {
-                grfx.DrawRectangle(
-                    new Pen(Color.LightBlue, 2),
-                    Selection.Location.X - 5,
-                    Selection.Location.Y - 5,
-                    Selection.Width + 7,
-                    Selection.Height + 7
-                    );
+                foreach (Shape item in Selection)
+                {
+                    grfx.DrawRectangle(
+                        new Pen(Color.LightBlue, 2),
+                        item.Location.X - 5,
+                        item.Location.Y - 5,
+                        item.Width + 7,
+                        item.Height + 7
+                        );
+                }
             }
         }
     }

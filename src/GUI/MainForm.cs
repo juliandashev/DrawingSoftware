@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Draw.src.Model;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -32,12 +33,29 @@ namespace Draw
         {
             if (pickUpSpeedButton.Checked)
             {
-                dialogProcessor.Selection = dialogProcessor.ContainsPoint(e.Location);
+                Shape temp = dialogProcessor.ContainsPoint(e.Location);
+
+                if (temp != null)
+                {
+                    if (dialogProcessor.Selection.Contains(temp))
+                    {
+                        statusBar.Items[0].Text = "Последно действие: Деселекция на примитив";
+                        dialogProcessor.Selection.Remove(temp);
+                    }
+                    else
+                    {
+                        statusBar.Items[0].Text = "Последно действие: Селекция на примитив";
+                        dialogProcessor.Selection.Add(temp);
+                    }
+
+                    viewPort.Invalidate();
+                }
+
                 dialogProcessor.PolySelection = dialogProcessor.ContainsPointPolygon(e.Location);
 
-                if (dialogProcessor.Selection != null || dialogProcessor.PolySelection != null)
+                if (dialogProcessor.Selection.Count >= 1 || dialogProcessor.PolySelection != null)
                 {
-                    statusBar.Items[0].Text = "Последно действие: Селекция на примитив";
+                    //statusBar.Items[0].Text = "Последно действие: Селекция на примитив";
 
                     dialogProcessor.IsDragging = true;
                     dialogProcessor.LastLocation = e.Location;
@@ -197,5 +215,12 @@ namespace Draw
         }
 
         #endregion
+
+        private void GroupBtn_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.GroupElements();
+            statusBar.Items[0].Text = "Последно действие: Групиране на примитиви";
+            viewPort.Invalidate();
+        }
     }
 }
