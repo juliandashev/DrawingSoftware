@@ -13,14 +13,12 @@ namespace Draw.src.Model
 
         public PolygonShape(RectangleF rect, List<PointF> vertices) : base(rect)
         {
-            this.Vertices = vertices;
+            Vertices = vertices;
         }
 
         #endregion
 
         #region Properties
-        private List<PointF> Vertices { get; set; }
-        public int Id = 0;
 
         #endregion
       
@@ -124,8 +122,8 @@ namespace Draw.src.Model
         {
             base.DrawSelf(grfx);
 
-            grfx.FillPolygon(new SolidBrush(FillColor), this.Vertices.ToArray());
-            grfx.DrawPolygon(new Pen(StrokeColor), this.Vertices.ToArray());
+            grfx.FillPolygon(new SolidBrush(FillColor), Vertices.ToArray());
+            grfx.DrawPolygon(new Pen(StrokeColor), Vertices.ToArray());
         }
     }
 }

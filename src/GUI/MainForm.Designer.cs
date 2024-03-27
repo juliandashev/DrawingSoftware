@@ -66,6 +66,7 @@
             this.drawSquare = new System.Windows.Forms.ToolStripButton();
             this.drawCircle = new System.Windows.Forms.ToolStripButton();
             this.DrawTriangleButton = new System.Windows.Forms.ToolStripButton();
+            this.drawPolygon = new System.Windows.Forms.ToolStripButton();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -76,7 +77,7 @@
             this.намалиToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.изтрийToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewPort = new Draw.DoubleBufferedPanel();
-            this.drawPolygon = new System.Windows.Forms.ToolStripButton();
+            this.GroupBtn = new System.Windows.Forms.ToolStripButton();
             this.mainMenu.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.speedMenu.SuspendLayout();
@@ -333,7 +334,8 @@
             this.drawSquare,
             this.drawCircle,
             this.DrawTriangleButton,
-            this.drawPolygon});
+            this.drawPolygon,
+            this.GroupBtn});
             this.speedMenu.Location = new System.Drawing.Point(0, 24);
             this.speedMenu.Name = "speedMenu";
             this.speedMenu.Size = new System.Drawing.Size(693, 27);
@@ -400,6 +402,16 @@
             this.DrawTriangleButton.Text = "DrawTriangleButton";
             this.DrawTriangleButton.Click += new System.EventHandler(this.DrawTriangleButton_Click);
             // 
+            // drawPolygon
+            // 
+            this.drawPolygon.CheckOnClick = true;
+            this.drawPolygon.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.drawPolygon.Image = ((System.Drawing.Image)(resources.GetObject("drawPolygon.Image")));
+            this.drawPolygon.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.drawPolygon.Name = "drawPolygon";
+            this.drawPolygon.Size = new System.Drawing.Size(81, 24);
+            this.drawPolygon.Text = "drawPolygon";
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
@@ -462,15 +474,15 @@
             this.viewPort.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseMove);
             this.viewPort.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseUp);
             // 
-            // drawPolygon
+            // GroupBtn
             // 
-            this.drawPolygon.CheckOnClick = true;
-            this.drawPolygon.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.drawPolygon.Image = ((System.Drawing.Image)(resources.GetObject("drawPolygon.Image")));
-            this.drawPolygon.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.drawPolygon.Name = "drawPolygon";
-            this.drawPolygon.Size = new System.Drawing.Size(81, 24);
-            this.drawPolygon.Text = "drawPolygon";
+            this.GroupBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.GroupBtn.Image = ((System.Drawing.Image)(resources.GetObject("GroupBtn.Image")));
+            this.GroupBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.GroupBtn.Name = "GroupBtn";
+            this.GroupBtn.Size = new System.Drawing.Size(62, 24);
+            this.GroupBtn.Text = "GroupBtn";
+            this.GroupBtn.Click += new System.EventHandler(this.GroupBtn_Click);
             // 
             // MainForm
             // 
@@ -546,5 +558,6 @@
         private System.Windows.Forms.ToolStripMenuItem rotate180;
         private System.Windows.Forms.ToolStripMenuItem rotate270;
         private System.Windows.Forms.ToolStripButton drawPolygon;
+        private System.Windows.Forms.ToolStripButton GroupBtn;
     }
 }

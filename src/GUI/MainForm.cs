@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Draw.src.Model;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -32,12 +33,32 @@ namespace Draw
         {
             if (pickUpSpeedButton.Checked)
             {
-                dialogProcessor.Selection = dialogProcessor.ContainsPoint(e.Location);
-                dialogProcessor.PolySelection = dialogProcessor.ContainsPointPolygon(e.Location);
+                Shape temp = dialogProcessor.ContainsPoint(e.Location);
 
-                if (dialogProcessor.Selection != null || dialogProcessor.PolySelection != null)
+                if (temp != null)
                 {
-                    statusBar.Items[0].Text = "Последно действие: Селекция на примитив";
+                    if (dialogProcessor.Selection.Contains(temp))
+                    {
+                        statusBar.Items[0].Text = "Последно действие: Деселекция на примитив";
+                        dialogProcessor.Selection.Remove(temp);
+                    }
+                    else
+                    {
+                        statusBar.Items[0].Text = "Последно действие: Селекция на примитив";
+                        dialogProcessor.Selection.Add(temp);
+                    }
+
+                    viewPort.Invalidate();
+                }
+                else
+                {
+                    dialogProcessor.Selection.Clear();
+                    viewPort.Invalidate();
+                }
+
+                if (dialogProcessor.Selection.Count >= 1)
+                {
+                    //statusBar.Items[0].Text = "Последно действие: Селекция на примитив";
 
                     dialogProcessor.IsDragging = true;
                     dialogProcessor.LastLocation = e.Location;
@@ -63,16 +84,12 @@ namespace Draw
 
                     if (dialogProcessor.PointsList.Count >= 3
                             && dialogProcessor.ContainsPoint(dialogProcessor.ClickedPoint) != null)
-                    // Important: It's Contains point because PointShape is inherited by Shape and not Polygon
-                    // ContainsPoingPolygon is used to check if a point is inside a Polygon
                     {
                         drawPolygon_Click(dialogProcessor.ClickedPoint);
-                        //drawPolygon.CheckState = CheckState.Unchecked;
                         drawPolygon.Checked = false;
                     }
                     else
                         dialogProcessor.AddPoint();
-                    // link that points to the vertices of the polygon!!
 
                     isLeftMouseButtonDown = false;
                     viewPort.Invalidate();
@@ -102,6 +119,13 @@ namespace Draw
                 dialogProcessor.IsDrawing = false;
 
             isLeftMouseButtonDown = false;
+        }
+
+        private void GroupBtn_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.GroupElements();
+            statusBar.Items[0].Text = "Последно действие: Групиране на примитиви";
+            viewPort.Invalidate();
         }
 
         #region Drawing Shapes

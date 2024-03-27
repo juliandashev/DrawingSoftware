@@ -29,13 +29,6 @@ namespace Draw
             set { shapeList = value; }
         }
 
-        private List<Polygon> polygonList = new List<Polygon>();
-        public List<Polygon> PolygonList
-        {
-            get { return polygonList; }
-            set { polygonList = value; }
-        }
-
         #endregion
 
         #region Drawing
@@ -60,11 +53,6 @@ namespace Draw
             {
                 DrawShape(grfx, item);
             }
-
-            foreach (Polygon item in PolygonList)
-            {
-                DrawShape(grfx, item);
-            }
         }
 
         /// <summary>
@@ -78,11 +66,6 @@ namespace Draw
                 item.DrawSelf(grfx, item.RotationAngle);
             else
                 item.DrawSelf(grfx);
-        }
-
-        public virtual void DrawShape(Graphics grfx, Polygon item)
-        {
-            item.DrawSelf(grfx);
         }
 
         #endregion

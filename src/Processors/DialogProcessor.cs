@@ -1,6 +1,7 @@
 ﻿using Draw.src.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -20,22 +21,14 @@ namespace Draw
         #endregion
 
         #region Properties
-
         /// <summary>
         /// Избран елемент.
         /// </summary>
-        private Shape selection;
-        public Shape Selection
+        private List<Shape> selection = new List<Shape>();
+        public List<Shape> Selection
         {
             get { return selection; }
             set { selection = value; }
-        }
-
-        private Polygon polySelection;
-        public Polygon PolySelection
-        {
-            get { return polySelection; }
-            set { polySelection = value; }
         }
 
         /// <summary>
@@ -87,10 +80,10 @@ namespace Draw
 
         public void RotateShape(float rotationAngle)
         {
-            if (Selection != null)
+            if (Selection.Count >= 1)
             {
-                Selection.RotationMatrix = new Matrix();
-                Selection.RotationAngle = rotationAngle;
+                Selection[0].RotationMatrix = new Matrix();
+                Selection[0].RotationAngle = rotationAngle;
             }
         }
 
@@ -145,17 +138,47 @@ namespace Draw
             float width = maxX - minX;
             float height = maxY - minY;
 
+            PointF center = new PointF((maxX + minX) / 2, (maxY + minY) / 2);
+
             PolygonShape polygon = new PolygonShape(new Rectangle(
-                    (int)location.X,
-                    (int)location.Y,
+                    (int)center.X,
+                    (int)center.Y,
                     (int)width,
                     (int)height),
-                    pointsList);
+                    pointsList)
+            {
+                FillColor = Color.White,
+                StrokeColor = Color.Black
+            };
 
-            polygon.FillColor = Color.White;
-            polygon.StrokeColor = Color.Black;
+            ShapeList.Add(polygon);
+        }
 
-            PolygonList.Add(polygon);
+        public void GroupElements()
+        {
+            List<Shape> temp = ShapeList;
+
+            if (ShapeList.Count >= 1)
+            {
+                float minX = temp.Min(x => x.Rectangle.Left);
+                float minY = temp.Min(y => y.Rectangle.Top);
+
+                float maxX = temp.Max(x => x.Rectangle.Right);
+                float maxY = temp.Max(y => y.Rectangle.Bottom);
+
+                SubShapes group = new SubShapes(new RectangleF(minX, minY, maxX - minX, maxY - minY));
+
+                group.GroupShapes = Selection;
+
+                Selection = new List<Shape>();
+
+                ShapeList.Add(group);
+
+                foreach (var item in group.GroupShapes)
+                {
+                    ShapeList.Remove(item);
+                }
+            }
         }
 
         // Curently in maintanance :D
@@ -222,28 +245,17 @@ namespace Draw
             return null;
         }
 
-        public Polygon ContainsPointPolygon(PointF point)
-        {
-            for (int i = PolygonList.Count - 1; i >= 0; i--)
-            {
-                if (PolygonList[i].Contains(point))
-                {
-                    return PolygonList[i];
-                }
-            }
-            return null;
-        }
-
         public void TranslateTo(PointF p)
         {
-            if (selection != null)
+            if (selection.Count >= 1)
             {
-                selection.Location = new PointF(selection.Location.X + p.X - lastLocation.X, selection.Location.Y + p.Y - lastLocation.Y);
-                lastLocation = p;
-            }
-            else if (polySelection != null)
-            {
-                polySelection.Location = new PointF(polySelection.Location.X + p.X - lastLocation.X, polySelection.Location.Y + p.Y - lastLocation.Y);
+                foreach (var item in selection)
+                {
+                    item.Location = new PointF(
+                        item.Location.X + p.X - lastLocation.X,
+                        item.Location.Y + p.Y - lastLocation.Y
+                        );
+                }
                 lastLocation = p;
             }
         }
@@ -252,15 +264,18 @@ namespace Draw
         {
             base.Draw(grfx);
 
-            if (Selection != null)
+            if (Selection.Count >= 1)
             {
-                grfx.DrawRectangle(
-                    new Pen(Color.LightBlue, 2),
-                    Selection.Location.X - 5,
-                    Selection.Location.Y - 5,
-                    Selection.Width + 7,
-                    Selection.Height + 7
-                    );
+                foreach (Shape item in Selection)
+                {
+                    grfx.DrawRectangle(
+                        new Pen(Color.LightBlue, 2),
+                        item.Location.X - 5,
+                        item.Location.Y - 5,
+                        item.Width + 7,
+                        item.Height + 7
+                        );
+                }
             }
         }
     }
