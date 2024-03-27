@@ -121,12 +121,14 @@ namespace Draw
             isLeftMouseButtonDown = false;
         }
 
+        #region Grouping
         private void GroupBtn_Click(object sender, EventArgs e)
         {
             dialogProcessor.GroupElements();
             statusBar.Items[0].Text = "Последно действие: Групиране на примитиви";
             viewPort.Invalidate();
         }
+        #endregion
 
         #region Drawing Shapes
         void DrawRectangleButtonClick(object sender, EventArgs e)
@@ -184,7 +186,7 @@ namespace Draw
 
         private void drawPolygon_Click(PointF point)
         {
-            dialogProcessor.AddPolygon(point);
+            dialogProcessor.AddPolygon();
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на полигон";
 
@@ -206,7 +208,7 @@ namespace Draw
 
         private void rotate90_Click(object sender, EventArgs e)
         {
-            RotateShape(90);
+            RotateGroup(90);
         }
 
         #endregion
@@ -217,6 +219,13 @@ namespace Draw
         {
             dialogProcessor.RotateShape(rotation);
             statusBar.Items[0].Text = "Последно действие: Завъртане на фигура";
+            viewPort.Invalidate();
+        }
+
+        private void RotateGroup(float rotation)
+        {
+            dialogProcessor.RotateGroup(rotation);
+            statusBar.Items[0].Text = "Последно действие: Завъртане на група";
             viewPort.Invalidate();
         }
 

@@ -62,10 +62,7 @@ namespace Draw
         /// <param name="item">Елемент за визуализиране.</param>
         public virtual void DrawShape(Graphics grfx, Shape item)
         {
-            if (item.RotationAngle != 0)
-                item.DrawSelf(grfx, item.RotationAngle);
-            else
-                item.DrawSelf(grfx);
+            item.DrawSelf(grfx);
         }
 
         #endregion

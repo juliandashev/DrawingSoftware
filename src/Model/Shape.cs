@@ -71,9 +71,9 @@ namespace Draw
             set { strokeColor = value; }
         }
 
-        private Matrix rotationMatrix;
+        private Matrix rotationMatrix = new Matrix();
 
-        public Matrix RotationMatrix
+        public virtual Matrix RotationMatrix
         {
             get { return rotationMatrix; }
             set { rotationMatrix = value; }
@@ -81,7 +81,7 @@ namespace Draw
 
         private float rotationAngle;
 
-        public float RotationAngle
+        public virtual float RotationAngle
         {
             get { return rotationAngle; }
             set { rotationAngle = value; }

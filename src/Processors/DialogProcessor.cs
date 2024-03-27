@@ -31,6 +31,8 @@ namespace Draw
             set { selection = value; }
         }
 
+        private SubShapes SubShapes { get; set; }
+
         /// <summary>
         /// Дали в момента диалога е в състояние на "влачене" на избрания елемент.
         /// </summary>
@@ -87,6 +89,17 @@ namespace Draw
             }
         }
 
+        public void RotateGroup(float rotationAngle)
+        {
+            SubShapes.RotationAngle = rotationAngle;
+
+            foreach(var item in SubShapes.GroupShapes)
+            {
+                // TODO: !!
+                item.RotationMatrix.Rotate(rotationAngle);
+            }
+        }
+
         public void AddRandomRectangle()
         {
             Random rnd = new Random();
@@ -127,7 +140,7 @@ namespace Draw
             ShapeList.Add(point);
         }
 
-        public void AddPolygon(PointF location)
+        public void AddPolygon()
         {
             float minX = pointsList.Min(p => p.X);
             float maxX = pointsList.Max(p => p.X);
@@ -166,15 +179,15 @@ namespace Draw
                 float maxX = temp.Max(x => x.Rectangle.Right);
                 float maxY = temp.Max(y => y.Rectangle.Bottom);
 
-                SubShapes group = new SubShapes(new RectangleF(minX, minY, maxX - minX, maxY - minY));
+                SubShapes = new SubShapes(new RectangleF(minX, minY, maxX - minX, maxY - minY));
 
-                group.GroupShapes = Selection;
+                SubShapes.GroupShapes = Selection;
 
                 Selection = new List<Shape>();
 
-                ShapeList.Add(group);
+                ShapeList.Add(SubShapes);
 
-                foreach (var item in group.GroupShapes)
+                foreach (var item in SubShapes.GroupShapes)
                 {
                     ShapeList.Remove(item);
                 }
