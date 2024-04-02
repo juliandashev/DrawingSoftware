@@ -57,9 +57,6 @@ namespace Draw
 
             base.DrawSelf(grfx);
 
-            if (RotationAngle != 0)
-                grfx.Transform = TransformationMatrix;
-
             grfx.FillRectangle(new SolidBrush(FillColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
             grfx.DrawRectangle(new Pen(StrokeColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
 

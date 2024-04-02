@@ -108,6 +108,7 @@ namespace Draw
         /// <param name="rotationAngle"> Ъгъл на ротация в градуси, може да приема и отрицателни стойности</param>
         public virtual void DrawSelf(Graphics grfx, float rotationAngle)
         {
+            State = grfx.Save();
         }
 
         public virtual void TrnasformPoints(Graphics grfx)

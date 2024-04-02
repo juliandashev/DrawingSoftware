@@ -115,14 +115,7 @@ namespace Draw
                 // Second way of finding the center
                 // PointF center = new PointF((SubShapes.Rectangle.Width / 2) + SubShapes.Rectangle.X, (SubShapes.Rectangle.Height / 2) + SubShapes.Rectangle.Y);
 
-                Matrix toOrigin = new Matrix(1, 0, 0, 1, -center.X, -center.Y);
-                Matrix rM = new Matrix(0, -1, 0, 1, 0, 0);
-                Matrix fromOrigin = new Matrix(1, 0, 0, 1, center.X, center.Y);
-
-                toOrigin.Multiply(rM);
-                toOrigin.Multiply(fromOrigin);
-
-                SubShapes.TransformationMatrix.Multiply(toOrigin);
+                // SubShapes.TransformationMatrix.Multiply(toOrigin);
             }
         }
 
@@ -166,7 +159,7 @@ namespace Draw
             ShapeList.Add(point);
         }
 
-        public void AddPolygon(PointF location)
+        public void AddPolygon()
         {
             float minX = pointsList.Min(p => p.X);
             float maxX = pointsList.Max(p => p.X);

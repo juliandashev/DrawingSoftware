@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Draw.src.Model
 {
@@ -102,9 +103,14 @@ namespace Draw.src.Model
             get => base.TransformationMatrix;
             set
             {
-                base.TransformationMatrix = value;
+                foreach (Shape item in SubShapesList)
+                {
+                    item.TransformationMatrix.Multiply(value);
+                }
             }
         }
+
+        public override float RotationAngle { get => base.RotationAngle; set => base.RotationAngle = value; }
 
         #endregion
 
@@ -124,11 +130,40 @@ namespace Draw.src.Model
 
         public override void DrawSelf(Graphics grfx)
         {
-            base.DrawSelf(grfx);
-
-            foreach (Shape shape in SubShapesList)
+            if (RotationAngle == 0)
             {
-                shape.DrawSelf(grfx);
+                base.DrawSelf(grfx);
+
+                foreach (Shape shape in SubShapesList)
+                {
+                    shape.DrawSelf(grfx);
+                }
+            }
+            else // TODO: Fix this mess
+            {
+                //base.DrawSelf(grfx, RotationAngle);
+                State = grfx.Save();
+
+                PointF center = new PointF((this.Width / 2) + this.Rectangle.X, (this.Height / 2) + this.Rectangle.Y);
+
+                Matrix toOrigin = new Matrix(1, 0, 0, 1, -center.X, -center.Y);
+                Matrix rM = new Matrix(0, -1, 1, 0, 0, 0);
+                Matrix fromOrigin = new Matrix(1, 0, 0, 1, center.X, center.Y);
+
+                toOrigin.Multiply(rM);
+                toOrigin.Multiply(fromOrigin);
+
+                // TransformationMatrix.Multiply(toOrigin);
+
+                foreach (Shape shape in SubShapesList)
+                {
+                    shape.TransformationMatrix.Multiply(toOrigin);
+                    grfx.Transform = shape.TransformationMatrix;
+                }
+
+                //base.TrnasformPoints(grfx);
+
+                grfx.Restore(State);
             }
         }
     }
