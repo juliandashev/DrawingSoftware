@@ -53,24 +53,15 @@ namespace Draw
         /// </summary>
         public override void DrawSelf(Graphics grfx)
         {
+            State = grfx.Save();
+
             base.DrawSelf(grfx);
 
-            grfx.FillRectangle(new SolidBrush(FillColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
-            grfx.DrawRectangle(new Pen(StrokeColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
-        }
-        public override void DrawSelf(Graphics grfx, float rotationAngle)
-        {
-            base.DrawSelf(grfx, rotationAngle);
-
-            PointF center = new PointF((Rectangle.Width / 2) + Rectangle.X, (Rectangle.Height / 2) + Rectangle.Y);
-
-            RotationMatrix.RotateAt(rotationAngle, center);
-            grfx.Transform = RotationMatrix;
+            if (RotationAngle != 0)
+                grfx.Transform = TransformationMatrix;
 
             grfx.FillRectangle(new SolidBrush(FillColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
             grfx.DrawRectangle(new Pen(StrokeColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
-
-            base.TrnasformPoints(grfx);
 
             grfx.Restore(State);
         }

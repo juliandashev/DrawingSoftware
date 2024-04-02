@@ -25,7 +25,7 @@ namespace Draw
 
         #region Properties
 
-        private List<PointF> vertices;
+        private List<PointF> vertices = new List<PointF>();
         public List<PointF> Vertices
         {
             get { return vertices; }

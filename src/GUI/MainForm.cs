@@ -215,7 +215,7 @@ namespace Draw
 
         private void RotateShape(float rotation)
         {
-            dialogProcessor.RotateShape(rotation);
+            dialogProcessor.RotateGroup(rotation);
             statusBar.Items[0].Text = "Последно действие: Завъртане на фигура";
             viewPort.Invalidate();
         }

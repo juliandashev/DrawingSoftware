@@ -71,17 +71,17 @@ namespace Draw
             set { strokeColor = value; }
         }
 
-        private Matrix rotationMatrix;
+        private Matrix rotationMatrix = new Matrix();
 
-        public Matrix RotationMatrix
+        public virtual Matrix TransformationMatrix
         {
             get { return rotationMatrix; }
             set { rotationMatrix = value; }
         }
 
-        private float rotationAngle;
+        private float rotationAngle = 0f;
 
-        public float RotationAngle
+        public virtual float RotationAngle
         {
             get { return rotationAngle; }
             set { rotationAngle = value; }
@@ -108,7 +108,6 @@ namespace Draw
         /// <param name="rotationAngle"> Ъгъл на ротация в градуси, може да приема и отрицателни стойности</param>
         public virtual void DrawSelf(Graphics grfx, float rotationAngle)
         {
-            State = grfx.Save();
         }
 
         public virtual void TrnasformPoints(Graphics grfx)

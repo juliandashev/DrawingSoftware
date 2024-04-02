@@ -31,6 +31,8 @@ namespace Draw
             set { selection = value; }
         }
 
+        private SubShapes SubShapes = new SubShapes();
+
         /// <summary>
         /// Дали в момента диалога е в състояние на "влачене" на избрания елемент.
         /// </summary>
@@ -82,8 +84,45 @@ namespace Draw
         {
             if (Selection.Count >= 1)
             {
-                Selection[0].RotationMatrix = new Matrix();
+                Selection[0].TransformationMatrix = new Matrix();
                 Selection[0].RotationAngle = rotationAngle;
+            }
+        }
+
+        public void RotateGroup(float rotationAngle)
+        {
+            if (Selection.Count >= 1)
+            {
+                SubShapes.RotationAngle = rotationAngle;
+
+                PointF topLeft = new PointF(SubShapes.Rectangle.Left, SubShapes.Rectangle.Top); // imagine it as point A (p1, p2)
+                PointF bottomRight = new PointF(SubShapes.Rectangle.Right, SubShapes.Rectangle.Bottom); // and this as point B (q1, q2)
+
+                // the formula for the center is defined as
+
+                // (p1 + q1) / 2 thats the x coordinate
+                // and
+                // (p2 + q2) / 2 thats the y coordinate
+                // of the center
+
+                // It is outside the foreach because we want to calculate it once not for each shape that is in the group
+
+                PointF center = new PointF(
+                         (topLeft.X + bottomRight.X) / 2,
+                         (topLeft.Y + bottomRight.Y) / 2
+                    );
+
+                // Second way of finding the center
+                // PointF center = new PointF((SubShapes.Rectangle.Width / 2) + SubShapes.Rectangle.X, (SubShapes.Rectangle.Height / 2) + SubShapes.Rectangle.Y);
+
+                Matrix toOrigin = new Matrix(1, 0, 0, 1, -center.X, -center.Y);
+                Matrix rM = new Matrix(0, -1, 0, 1, 0, 0);
+                Matrix fromOrigin = new Matrix(1, 0, 0, 1, center.X, center.Y);
+
+                toOrigin.Multiply(rM);
+                toOrigin.Multiply(fromOrigin);
+
+                SubShapes.TransformationMatrix.Multiply(toOrigin);
             }
         }
 
@@ -156,7 +195,7 @@ namespace Draw
 
         public void GroupElements()
         {
-            List<Shape> temp = ShapeList;
+            List<Shape> temp = Selection;
 
             if (ShapeList.Count >= 1)
             {
@@ -166,15 +205,15 @@ namespace Draw
                 float maxX = temp.Max(x => x.Rectangle.Right);
                 float maxY = temp.Max(y => y.Rectangle.Bottom);
 
-                SubShapes group = new SubShapes(new RectangleF(minX, minY, maxX - minX, maxY - minY));
-
-                group.GroupShapes = Selection;
+                SubShapes = new SubShapes(new RectangleF(minX, minY, maxX - minX, maxY - minY))
+                {
+                    SubShapesList = Selection
+                };
 
                 Selection = new List<Shape>();
 
-                ShapeList.Add(group);
-
-                foreach (var item in group.GroupShapes)
+                ShapeList.Add(SubShapes);
+                foreach (var item in SubShapes.SubShapesList)
                 {
                     ShapeList.Remove(item);
                 }
