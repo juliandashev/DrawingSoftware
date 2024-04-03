@@ -84,8 +84,19 @@ namespace Draw
         {
             if (Selection.Count >= 1)
             {
-                Selection[0].TransformationMatrix = new Matrix();
-                Selection[0].RotationAngle = rotationAngle;
+                foreach (Shape shape in Selection)
+                {
+                    PointF center = new PointF((shape.Rectangle.Width / 2) + shape.Rectangle.X, (shape.Rectangle.Height / 2) + shape.Rectangle.Y);
+
+                    //Matrix toOrigin = new Matrix(1, 0, 0, 1, -center.X, -center.Y);
+                    //Matrix rM = new Matrix(0, -1, 1, 0, 0, 0);
+                    //Matrix fromOrigin = new Matrix(1, 0, 0, 1, center.X, center.Y);
+
+                    //toOrigin.Multiply(rM);
+                    //toOrigin.Multiply(fromOrigin);
+
+                    shape.TransformationMatrix.RotateAt(rotationAngle, center);
+                }
             }
         }
 
@@ -281,14 +292,22 @@ namespace Draw
         {
             if (selection.Count >= 1)
             {
+                PointF[] transformPointsArray = new PointF[] { p };
+
                 foreach (var item in selection)
                 {
+                    Matrix temp = item.TransformationMatrix.Clone();
+
+                    temp.Invert();
+
+                    temp.TransformPoints(transformPointsArray);
+
                     item.Location = new PointF(
-                        item.Location.X + p.X - lastLocation.X,
-                        item.Location.Y + p.Y - lastLocation.Y
+                        item.Location.X + transformPointsArray[0].X - lastLocation.X,
+                        item.Location.Y + transformPointsArray[0].Y - lastLocation.Y
                         );
                 }
-                lastLocation = p;
+                lastLocation = transformPointsArray[0];
             }
         }
 
@@ -300,6 +319,8 @@ namespace Draw
             {
                 foreach (Shape item in Selection)
                 {
+                    grfx.Transform = item.TransformationMatrix;
+
                     grfx.DrawRectangle(
                         new Pen(Color.LightBlue, 2),
                         item.Location.X - 5,

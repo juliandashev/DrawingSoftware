@@ -93,7 +93,15 @@ namespace Draw
 
         public virtual bool Contains(PointF point)
         {
-            return Rectangle.Contains(point.X, point.Y);
+            PointF[] transformPointsArray = new PointF[] { point };
+
+            Matrix temp = TransformationMatrix.Clone();
+
+            temp.Invert();
+
+            temp.TransformPoints(transformPointsArray);
+
+            return Rectangle.Contains(transformPointsArray[0].X, transformPointsArray[0].Y);
         }
 
         public virtual void DrawSelf(Graphics grfx)
@@ -109,19 +117,6 @@ namespace Draw
         public virtual void DrawSelf(Graphics grfx, float rotationAngle)
         {
             State = grfx.Save();
-        }
-
-        public virtual void TrnasformPoints(Graphics grfx)
-        {
-            PointF[] transformationPoints = new PointF[4]
-            {
-                new PointF(Rectangle.Left, Rectangle.Top),
-                new PointF(Rectangle.Right, Rectangle.Top),
-                new PointF(Rectangle.Left, Rectangle.Bottom),
-                new PointF(Rectangle.Right, Rectangle.Bottom)
-            };
-
-            grfx.TransformPoints(CoordinateSpace.Page, CoordinateSpace.World, transformationPoints);
         }
     }
 }

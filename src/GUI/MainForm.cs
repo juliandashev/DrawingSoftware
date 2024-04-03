@@ -29,6 +29,7 @@ namespace Draw
             dialogProcessor.ReDraw(sender, e);
         }
 
+        #region Mouse Movement
         void ViewPortMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (pickUpSpeedButton.Checked)
@@ -121,6 +122,8 @@ namespace Draw
             isLeftMouseButtonDown = false;
         }
 
+        #endregion
+
         #region Grouping
         private void GroupBtn_Click(object sender, EventArgs e)
         {
@@ -208,7 +211,7 @@ namespace Draw
 
         private void rotate90_Click(object sender, EventArgs e)
         {
-            RotateGroup(90);
+            RotateShape(90);
         }
 
         #endregion
@@ -217,7 +220,7 @@ namespace Draw
 
         private void RotateShape(float rotation)
         {
-            dialogProcessor.RotateGroup(rotation);
+            dialogProcessor.RotateShape(rotation);
             statusBar.Items[0].Text = "Последно действие: Завъртане на фигура";
             viewPort.Invalidate();
         }
@@ -230,5 +233,48 @@ namespace Draw
         }
 
         #endregion
+
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.Alt && e.KeyCode == Keys.D9)
+            {
+                RotateShape(90);
+            }
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            contextMenuStrip1.Items.Clear();
+
+            if (dialogProcessor.Selection.Count >= 1)
+            {
+                contextMenuStrip1.Items.Add("Rotate 90", null, rotate90_Click);
+                contextMenuStrip1.Items.Add("Delete", null, DeleteToolStripMenuItem_Click);
+            }
+            else // for editing selected shape or group
+                contextMenuStrip1.Items.Add("Edit Primitive", null, DrawRectangleButtonClick);
+        }
+
+        private void ColorBtn_Click(object sender, EventArgs e)
+        {
+            // TODO: Color stuff
+        }
+
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(dialogProcessor.Selection.Count >= 1)
+            {
+                statusBar.Items[0].Text = "Последно действие: Изтриване на примитив";
+
+                foreach (var item in dialogProcessor.Selection)
+                {
+                    dialogProcessor.ShapeList.Remove(item);
+                }
+
+                dialogProcessor.Selection.Clear();
+
+                viewPort.Invalidate();
+            }
+        }
     }
 }

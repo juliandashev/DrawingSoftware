@@ -39,12 +39,19 @@ namespace Draw
         /// </summary>
         public override bool Contains(PointF point)
         {
-            if (base.Contains(point))
+            PointF[] transformPointsArray = new PointF[] { point };
+
+            Matrix temp = TransformationMatrix.Clone();
+
+            temp.Invert();
+            temp.TransformPoints(transformPointsArray);
+
+            if (base.Contains(transformPointsArray[0]))
                 // Проверка дали е в обекта само, ако точката е в обхващащия правоъгълник.
                 // В случая на правоъгълник - директно връщаме true
                 return true;
             else
-                // Ако не е в обхващащия правоъгълник, то неможе да е в обекта и => false
+                // Ако не е в обхващащия правоъгълник, то не може да е в обекта и => false
                 return false;
         }
 
@@ -56,6 +63,8 @@ namespace Draw
             State = grfx.Save();
 
             base.DrawSelf(grfx);
+
+            grfx.Transform = TransformationMatrix;
 
             grfx.FillRectangle(new SolidBrush(FillColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
             grfx.DrawRectangle(new Pen(StrokeColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
