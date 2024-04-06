@@ -124,15 +124,6 @@ namespace Draw
 
         #endregion
 
-        #region Grouping
-        private void GroupBtn_Click(object sender, EventArgs e)
-        {
-            dialogProcessor.GroupElements();
-            statusBar.Items[0].Text = "Последно действие: Групиране на примитиви";
-            viewPort.Invalidate();
-        }
-        #endregion
-
         #region Drawing Shapes
         void DrawRectangleButtonClick(object sender, EventArgs e)
         {
@@ -209,9 +200,48 @@ namespace Draw
             drawSquare_Click(sender, e);
         }
 
-        private void rotate90_Click(object sender, EventArgs e)
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Delete();
+        }
+
+        private void изтрийToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Delete();
+        }
+
+        private void Rotate90Primitive_Click(object sender, EventArgs e)
         {
             RotateShape(90);
+        }
+
+        private void Rotate180Primitive_Click(object sender, EventArgs e)
+        {
+            RotateShape(180);
+        }
+
+        private void Rotate270Primitive_Click(object sender, EventArgs e)
+        {
+            RotateShape(270);
+        }
+
+        private void Rotate90Group_Click(object sender, EventArgs e)
+        {
+            RotateGroup(90);
+        }
+
+        private void Rotate180Group_Click(object sender, EventArgs e)
+        {
+            RotateGroup(180);
+        }
+
+        private void Rotate270Group_Click(object sender, EventArgs e)
+        {
+            RotateGroup(270);
+        }
+        private void групиранеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GroupShapes();
         }
 
         #endregion
@@ -232,37 +262,16 @@ namespace Draw
             viewPort.Invalidate();
         }
 
-        #endregion
-
-        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        private void GroupShapes()
         {
-            if (e.Control && e.Alt && e.KeyCode == Keys.D9)
-            {
-                RotateShape(90);
-            }
+            dialogProcessor.GroupElements();
+            statusBar.Items[0].Text = "Последно действие: Групиране на примитиви";
+            viewPort.Invalidate();
         }
 
-        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Delete()
         {
-            contextMenuStrip1.Items.Clear();
-
             if (dialogProcessor.Selection.Count >= 1)
-            {
-                contextMenuStrip1.Items.Add("Rotate 90", null, rotate90_Click);
-                contextMenuStrip1.Items.Add("Delete", null, DeleteToolStripMenuItem_Click);
-            }
-            else // for editing selected shape or group
-                contextMenuStrip1.Items.Add("Edit Primitive", null, DrawRectangleButtonClick);
-        }
-
-        private void ColorBtn_Click(object sender, EventArgs e)
-        {
-            // TODO: Color stuff
-        }
-
-        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if(dialogProcessor.Selection.Count >= 1)
             {
                 statusBar.Items[0].Text = "Последно действие: Изтриване на примитив";
 
@@ -275,6 +284,34 @@ namespace Draw
 
                 viewPort.Invalidate();
             }
+        }
+
+        #endregion
+
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                Delete();
+            }
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            contextMenuStrip1.Items.Clear();
+
+            if (dialogProcessor.Selection.Count >= 1)
+            {
+                contextMenuStrip1.Items.Add("Color", null, ColorBtn_Click);
+                contextMenuStrip1.Items.Add("Delete", null, DeleteToolStripMenuItem_Click);
+            }
+            else // for editing selected shape or group
+                contextMenuStrip1.Items.Add("Add Rectangle", null, DrawRectangleButtonClick);
+        }
+
+        private void ColorBtn_Click(object sender, EventArgs e)
+        {
+            // TODO: Color stuff
         }
     }
 }

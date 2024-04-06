@@ -26,7 +26,6 @@ namespace Draw
 
         #region Properties
 
-        public float Angle { get { return RotationAngle; } }
 
         #endregion
 
@@ -39,14 +38,7 @@ namespace Draw
         /// </summary>
         public override bool Contains(PointF point)
         {
-            PointF[] transformPointsArray = new PointF[] { point };
-
-            Matrix temp = TransformationMatrix.Clone();
-
-            temp.Invert();
-            temp.TransformPoints(transformPointsArray);
-
-            if (base.Contains(transformPointsArray[0]))
+            if (base.Contains(point))
                 // Проверка дали е в обекта само, ако точката е в обхващащия правоъгълник.
                 // В случая на правоъгълник - директно връщаме true
                 return true;

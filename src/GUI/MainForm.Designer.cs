@@ -53,9 +53,15 @@
             this.намалиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.изтрийToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.завъртиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.rotate90 = new System.Windows.Forms.ToolStripMenuItem();
-            this.rotate180 = new System.Windows.Forms.ToolStripMenuItem();
-            this.rotate270 = new System.Windows.Forms.ToolStripMenuItem();
+            this.наПримитивToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Rotate90Primitive = new System.Windows.Forms.ToolStripMenuItem();
+            this.Rotate180Primitive = new System.Windows.Forms.ToolStripMenuItem();
+            this.Rotate270Primitive = new System.Windows.Forms.ToolStripMenuItem();
+            this.наГрупаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Rotate90Group = new System.Windows.Forms.ToolStripMenuItem();
+            this.Rotate180Group = new System.Windows.Forms.ToolStripMenuItem();
+            this.Rotate270Group = new System.Windows.Forms.ToolStripMenuItem();
+            this.групиранеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.currentStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.coordinatesBox = new System.Windows.Forms.ToolStripStatusLabel();
@@ -68,7 +74,6 @@
             this.drawCircle = new System.Windows.Forms.ToolStripButton();
             this.DrawTriangleButton = new System.Windows.Forms.ToolStripButton();
             this.drawPolygon = new System.Windows.Forms.ToolStripButton();
-            this.GroupBtn = new System.Windows.Forms.ToolStripButton();
             this.ColorBtn = new System.Windows.Forms.ToolStripButton();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
@@ -79,8 +84,8 @@
             this.уголемиToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.намалиToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.DeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewPort = new Draw.DoubleBufferedPanel();
             this.colorDialog2 = new System.Windows.Forms.ColorDialog();
+            this.viewPort = new Draw.DoubleBufferedPanel();
             this.mainMenu.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.speedMenu.SuspendLayout();
@@ -226,7 +231,8 @@
             this.уголемиToolStripMenuItem,
             this.намалиToolStripMenuItem,
             this.изтрийToolStripMenuItem1,
-            this.завъртиToolStripMenuItem});
+            this.завъртиToolStripMenuItem,
+            this.групиранеToolStripMenuItem});
             this.манипулацииToolStripMenuItem.Name = "манипулацииToolStripMenuItem";
             this.манипулацииToolStripMenuItem.Size = new System.Drawing.Size(97, 20);
             this.манипулацииToolStripMenuItem.Text = "Манипулации";
@@ -269,42 +275,103 @@
             // изтрийToolStripMenuItem1
             // 
             this.изтрийToolStripMenuItem1.Name = "изтрийToolStripMenuItem1";
-            this.изтрийToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Delete)));
+            this.изтрийToolStripMenuItem1.ShortcutKeys = System.Windows.Forms.Keys.Delete;
             this.изтрийToolStripMenuItem1.Size = new System.Drawing.Size(222, 22);
             this.изтрийToolStripMenuItem1.Text = "Изтрий";
+            this.изтрийToolStripMenuItem1.Click += new System.EventHandler(this.изтрийToolStripMenuItem1_Click);
             // 
             // завъртиToolStripMenuItem
             // 
             this.завъртиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.rotate90,
-            this.rotate180,
-            this.rotate270});
+            this.наПримитивToolStripMenuItem,
+            this.наГрупаToolStripMenuItem});
             this.завъртиToolStripMenuItem.Name = "завъртиToolStripMenuItem";
             this.завъртиToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
             | System.Windows.Forms.Keys.R)));
             this.завъртиToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
-            this.завъртиToolStripMenuItem.Text = "Завърти";
+            this.завъртиToolStripMenuItem.Text = "Завъртане";
             // 
-            // rotate90
+            // наПримитивToolStripMenuItem
             // 
-            this.rotate90.Name = "rotate90";
-            this.rotate90.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
-            | System.Windows.Forms.Keys.D9)));
-            this.rotate90.Size = new System.Drawing.Size(154, 22);
-            this.rotate90.Text = "90°";
-            this.rotate90.Click += new System.EventHandler(this.rotate90_Click);
+            this.наПримитивToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Rotate90Primitive,
+            this.Rotate180Primitive,
+            this.Rotate270Primitive});
+            this.наПримитивToolStripMenuItem.Name = "наПримитивToolStripMenuItem";
+            this.наПримитивToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.наПримитивToolStripMenuItem.Text = "На Примитив";
             // 
-            // rotate180
+            // Rotate90Primitive
             // 
-            this.rotate180.Name = "rotate180";
-            this.rotate180.Size = new System.Drawing.Size(154, 22);
-            this.rotate180.Text = "180°";
+            this.Rotate90Primitive.Name = "Rotate90Primitive";
+            this.Rotate90Primitive.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.NumPad1)));
+            this.Rotate90Primitive.Size = new System.Drawing.Size(207, 22);
+            this.Rotate90Primitive.Text = "90°";
+            this.Rotate90Primitive.Click += new System.EventHandler(this.Rotate90Primitive_Click);
             // 
-            // rotate270
+            // Rotate180Primitive
             // 
-            this.rotate270.Name = "rotate270";
-            this.rotate270.Size = new System.Drawing.Size(154, 22);
-            this.rotate270.Text = "270°";
+            this.Rotate180Primitive.Name = "Rotate180Primitive";
+            this.Rotate180Primitive.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.NumPad2)));
+            this.Rotate180Primitive.Size = new System.Drawing.Size(207, 22);
+            this.Rotate180Primitive.Text = "180°";
+            this.Rotate180Primitive.Click += new System.EventHandler(this.Rotate180Primitive_Click);
+            // 
+            // Rotate270Primitive
+            // 
+            this.Rotate270Primitive.Name = "Rotate270Primitive";
+            this.Rotate270Primitive.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.NumPad3)));
+            this.Rotate270Primitive.Size = new System.Drawing.Size(207, 22);
+            this.Rotate270Primitive.Text = "270°";
+            this.Rotate270Primitive.Click += new System.EventHandler(this.Rotate270Primitive_Click);
+            // 
+            // наГрупаToolStripMenuItem
+            // 
+            this.наГрупаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Rotate90Group,
+            this.Rotate180Group,
+            this.Rotate270Group});
+            this.наГрупаToolStripMenuItem.Name = "наГрупаToolStripMenuItem";
+            this.наГрупаToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.наГрупаToolStripMenuItem.Text = "На Група";
+            // 
+            // Rotate90Group
+            // 
+            this.Rotate90Group.Name = "Rotate90Group";
+            this.Rotate90Group.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.NumPad1)));
+            this.Rotate90Group.Size = new System.Drawing.Size(216, 22);
+            this.Rotate90Group.Text = "90°";
+            this.Rotate90Group.Click += new System.EventHandler(this.Rotate90Group_Click);
+            // 
+            // Rotate180Group
+            // 
+            this.Rotate180Group.Name = "Rotate180Group";
+            this.Rotate180Group.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.NumPad2)));
+            this.Rotate180Group.Size = new System.Drawing.Size(216, 22);
+            this.Rotate180Group.Text = "180°";
+            this.Rotate180Group.Click += new System.EventHandler(this.Rotate180Group_Click);
+            // 
+            // Rotate270Group
+            // 
+            this.Rotate270Group.Name = "Rotate270Group";
+            this.Rotate270Group.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.NumPad3)));
+            this.Rotate270Group.Size = new System.Drawing.Size(216, 22);
+            this.Rotate270Group.Text = "270°";
+            this.Rotate270Group.Click += new System.EventHandler(this.Rotate270Group_Click);
+            // 
+            // групиранеToolStripMenuItem
+            // 
+            this.групиранеToolStripMenuItem.Name = "групиранеToolStripMenuItem";
+            this.групиранеToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
+            this.групиранеToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.групиранеToolStripMenuItem.Text = "Групиране";
+            this.групиранеToolStripMenuItem.Click += new System.EventHandler(this.групиранеToolStripMenuItem_Click);
             // 
             // statusBar
             // 
@@ -353,7 +420,6 @@
             this.drawCircle,
             this.DrawTriangleButton,
             this.drawPolygon,
-            this.GroupBtn,
             this.ColorBtn});
             this.speedMenu.Location = new System.Drawing.Point(0, 24);
             this.speedMenu.Name = "speedMenu";
@@ -430,16 +496,6 @@
             this.drawPolygon.Name = "drawPolygon";
             this.drawPolygon.Size = new System.Drawing.Size(81, 24);
             this.drawPolygon.Text = "drawPolygon";
-            // 
-            // GroupBtn
-            // 
-            this.GroupBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.GroupBtn.Image = ((System.Drawing.Image)(resources.GetObject("GroupBtn.Image")));
-            this.GroupBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.GroupBtn.Name = "GroupBtn";
-            this.GroupBtn.Size = new System.Drawing.Size(62, 24);
-            this.GroupBtn.Text = "GroupBtn";
-            this.GroupBtn.Click += new System.EventHandler(this.GroupBtn_Click);
             // 
             // ColorBtn
             // 
@@ -588,13 +644,18 @@
         private System.Windows.Forms.ToolStripButton DrawTriangleButton;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripMenuItem завъртиToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem rotate90;
-        private System.Windows.Forms.ToolStripMenuItem rotate180;
-        private System.Windows.Forms.ToolStripMenuItem rotate270;
         private System.Windows.Forms.ToolStripButton drawPolygon;
-        private System.Windows.Forms.ToolStripButton GroupBtn;
         private System.Windows.Forms.ToolStripButton ColorBtn;
         private System.Windows.Forms.ToolStripMenuItem полигонToolStripMenuItem;
         private System.Windows.Forms.ColorDialog colorDialog2;
+        private System.Windows.Forms.ToolStripMenuItem наПримитивToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Rotate90Primitive;
+        private System.Windows.Forms.ToolStripMenuItem Rotate180Primitive;
+        private System.Windows.Forms.ToolStripMenuItem Rotate270Primitive;
+        private System.Windows.Forms.ToolStripMenuItem наГрупаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Rotate90Group;
+        private System.Windows.Forms.ToolStripMenuItem Rotate180Group;
+        private System.Windows.Forms.ToolStripMenuItem Rotate270Group;
+        private System.Windows.Forms.ToolStripMenuItem групиранеToolStripMenuItem;
     }
 }

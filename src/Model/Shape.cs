@@ -79,14 +79,6 @@ namespace Draw
             set { rotationMatrix = value; }
         }
 
-        private float rotationAngle = 0f;
-
-        public virtual float RotationAngle
-        {
-            get { return rotationAngle; }
-            set { rotationAngle = value; }
-        }
-
         public GraphicsState State { get; set; }
 
         #endregion

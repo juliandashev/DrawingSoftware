@@ -88,13 +88,6 @@ namespace Draw
                 {
                     PointF center = new PointF((shape.Rectangle.Width / 2) + shape.Rectangle.X, (shape.Rectangle.Height / 2) + shape.Rectangle.Y);
 
-                    //Matrix toOrigin = new Matrix(1, 0, 0, 1, -center.X, -center.Y);
-                    //Matrix rM = new Matrix(0, -1, 1, 0, 0, 0);
-                    //Matrix fromOrigin = new Matrix(1, 0, 0, 1, center.X, center.Y);
-
-                    //toOrigin.Multiply(rM);
-                    //toOrigin.Multiply(fromOrigin);
-
                     shape.TransformationMatrix.RotateAt(rotationAngle, center);
                 }
             }
@@ -104,29 +97,37 @@ namespace Draw
         {
             if (Selection.Count >= 1)
             {
-                SubShapes.RotationAngle = rotationAngle;
+                #region Other formula for finding the center
+                {
+                    // the formula for the center is defined as
 
-                PointF topLeft = new PointF(SubShapes.Rectangle.Left, SubShapes.Rectangle.Top); // imagine it as point A (p1, p2)
-                PointF bottomRight = new PointF(SubShapes.Rectangle.Right, SubShapes.Rectangle.Bottom); // and this as point B (q1, q2)
+                    // (p1 + q1) / 2 thats the x coordinate
+                    // and
+                    // (p2 + q2) / 2 thats the y coordinate
+                    // of the center
 
-                // the formula for the center is defined as
+                    // It is outside the foreach because we want to calculate it once not for each shape that is in the group
 
-                // (p1 + q1) / 2 thats the x coordinate
-                // and
-                // (p2 + q2) / 2 thats the y coordinate
-                // of the center
+                    //PointF topLeft = new PointF(SubShapes.Rectangle.Left, SubShapes.Rectangle.Top); // imagine it as point A (p1, p2)
+                    //PointF bottomRight = new PointF(SubShapes.Rectangle.Right, SubShapes.Rectangle.Bottom); // and this as point B (q1, q2)
 
-                // It is outside the foreach because we want to calculate it once not for each shape that is in the group
-
-                PointF center = new PointF(
-                         (topLeft.X + bottomRight.X) / 2,
-                         (topLeft.Y + bottomRight.Y) / 2
-                    );
+                    //PointF center = new PointF(
+                    //         (topLeft.X + bottomRight.X) / 2,
+                    //         (topLeft.Y + bottomRight.Y) / 2
+                    //    );
+                }
+                #endregion
 
                 // Second way of finding the center
-                // PointF center = new PointF((SubShapes.Rectangle.Width / 2) + SubShapes.Rectangle.X, (SubShapes.Rectangle.Height / 2) + SubShapes.Rectangle.Y);
+                PointF center = new PointF((SubShapes.Rectangle.Width / 2) + SubShapes.Rectangle.X, (SubShapes.Rectangle.Height / 2) + SubShapes.Rectangle.Y);
 
-                // SubShapes.TransformationMatrix.Multiply(toOrigin);
+                foreach (var shape in SubShapes.SubShapesList)
+                {
+                    // rotate all the points around the center of the group rectangle
+                    shape.TransformationMatrix.RotateAt(rotationAngle, center);
+                }
+
+                SubShapes.TransformationMatrix.RotateAt(rotationAngle, center);
             }
         }
 
@@ -158,10 +159,12 @@ namespace Draw
 
         public void AddPoint()
         {
-            PointShape point = new PointShape(new Rectangle(
-                (int)ClickedPoint.X,
-                (int)ClickedPoint.Y,
-                    10, 10));
+            PointShape point = new PointShape(new RectangleF(
+                    ClickedPoint.X,
+                    ClickedPoint.Y,
+                    10,
+                    10)
+                );
 
             point.FillColor = Color.Red;
             point.StrokeColor = Color.Black;
@@ -183,11 +186,11 @@ namespace Draw
 
             PointF center = new PointF((maxX + minX) / 2, (maxY + minY) / 2);
 
-            PolygonShape polygon = new PolygonShape(new Rectangle(
-                    (int)center.X,
-                    (int)center.Y,
-                    (int)width,
-                    (int)height),
+            PolygonShape polygon = new PolygonShape(new RectangleF(
+                    center.X,
+                    center.Y,
+                    width,
+                    height),
                     pointsList)
             {
                 FillColor = Color.White,
