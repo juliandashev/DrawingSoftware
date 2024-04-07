@@ -83,7 +83,7 @@ namespace Draw
 
                     dialogProcessor.ClickedPoint = e.Location;
 
-                    if (dialogProcessor.PointsList.Count >= 3
+                    if (DialogProcessor.PointsList.Count >= 3
                             && dialogProcessor.ContainsPoint(dialogProcessor.ClickedPoint) != null)
                     {
                         drawPolygon_Click(dialogProcessor.ClickedPoint);

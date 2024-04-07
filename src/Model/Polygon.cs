@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,7 +30,10 @@ namespace Draw
         public List<PointF> Vertices
         {
             get { return vertices; }
-            set { vertices = value; }
+            set 
+            {
+                vertices = value; 
+            }
         }
 
         #endregion

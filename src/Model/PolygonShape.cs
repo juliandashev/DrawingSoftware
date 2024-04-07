@@ -21,7 +21,7 @@ namespace Draw.src.Model
         #region Properties
 
         #endregion
-      
+
         //private bool IsPointInsideConvexPolygon(PointF point)
         //{
         //    int n = Vertices.Count;
@@ -117,7 +117,7 @@ namespace Draw.src.Model
 
         //    return inside;
         //}
-    
+
         public override void DrawSelf(Graphics grfx)
         {
             base.DrawSelf(grfx);

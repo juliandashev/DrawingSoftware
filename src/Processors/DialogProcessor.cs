@@ -7,6 +7,8 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace Draw
 {
@@ -71,8 +73,8 @@ namespace Draw
             set { clickedPoint = value; }
         }
 
-        private List<PointF> pointsList = new List<PointF>();
-        public List<PointF> PointsList
+        private static List<PointF> pointsList = new List<PointF>();
+        public static List<PointF> PointsList
         {
             get { return pointsList; }
             set { pointsList = value; }
@@ -160,11 +162,7 @@ namespace Draw
         public void AddPoint()
         {
             PointShape point = new PointShape(new RectangleF(
-                    ClickedPoint.X,
-                    ClickedPoint.Y,
-                    10,
-                    10)
-                );
+                    ClickedPoint.X - 3, ClickedPoint.Y - 3, 8, 8));
 
             point.FillColor = Color.Red;
             point.StrokeColor = Color.Black;
@@ -173,13 +171,17 @@ namespace Draw
             ShapeList.Add(point);
         }
 
+        private static List<PointF> polygonPointsList = new List<PointF>();
         public void AddPolygon()
         {
-            float minX = pointsList.Min(p => p.X);
-            float maxX = pointsList.Max(p => p.X);
+            if (pointsList.Count >= 1)
+                polygonPointsList = new List<PointF>(pointsList);
 
-            float minY = pointsList.Min(p => p.Y);
-            float maxY = pointsList.Max(p => p.Y);
+            float minX = polygonPointsList.Min(p => p.X);
+            float maxX = polygonPointsList.Max(p => p.X);
+
+            float minY = polygonPointsList.Min(p => p.Y);
+            float maxY = polygonPointsList.Max(p => p.Y);
 
             float width = maxX - minX;
             float height = maxY - minY;
@@ -191,13 +193,14 @@ namespace Draw
                     center.Y,
                     width,
                     height),
-                    pointsList)
+                    polygonPointsList)
             {
                 FillColor = Color.White,
                 StrokeColor = Color.Black
             };
 
             ShapeList.Add(polygon);
+            pointsList.Clear();
         }
 
         public void GroupElements()
