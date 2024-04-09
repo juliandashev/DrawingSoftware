@@ -210,7 +210,7 @@ namespace Draw
         private static List<PointF> controlPoints = new List<PointF>();
         public void AddBezier()
         {
-            if(pointsList.Count >= 1)
+            if (pointsList.Count >= 1)
                 controlPoints = new List<PointF>(pointsList);
 
             float minX = controlPoints.Min(p => p.X);
@@ -230,6 +230,31 @@ namespace Draw
             };
 
             ShapeList.Add(bezier);
+            pointsList.Clear();
+        }
+
+        public void AddBSpline()
+        {
+            if (pointsList.Count >= 1)
+                controlPoints = new List<PointF>(pointsList);
+
+            float minX = controlPoints.Min(p => p.X);
+            float maxX = controlPoints.Max(p => p.X);
+
+            float minY = controlPoints.Min(p => p.Y);
+            float maxY = controlPoints.Max(p => p.Y);
+
+            SplineShape splineShape = new SplineShape(new RectangleF(
+                minX,
+                minY,
+                maxX - minX,
+                maxY - minY),
+                controlPoints)
+            {
+                StrokeColor = Color.Red
+            };
+
+            ShapeList.Add(splineShape);
             pointsList.Clear();
         }
 

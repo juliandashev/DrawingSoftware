@@ -43,23 +43,45 @@ namespace Draw.src.Model
         {
             base.DrawSelf(grfx);
 
-            for (float u = 0; u <= 1; u += 0.001f)
+            // grfx.DrawBeziers(new Pen(StrokeColor, 2), controlPoints.ToArray());
+
+            if (controlPoints.Count >= 2)
             {
-                PointF curvePoint = ComputeCasteljauPoint(controlPoints.Count - 1, 0, u);
-                grfx.DrawLine(new Pen(StrokeColor), curvePoint, curvePoint);
+                PointF[] curvePoints = CalculateBezierCurve(controlPoints, 100);
+                grfx.DrawLines(new Pen(StrokeColor, 2), curvePoints);
             }
         }
 
-        // Try with Bernstein polynomial!!!
-
-        private PointF ComputeCasteljauPoint(int r, int i, float u)
+        private PointF[] CalculateBezierCurve(List<PointF> controlPoints, int numberOfPoints)
         {
-            if (r == 0) return controlPoints[i];
+            PointF[] curvePoints = new PointF[numberOfPoints];
 
-            PointF p1 = ComputeCasteljauPoint(r - 1, i, u);
-            PointF p2 = ComputeCasteljauPoint(r - 1, i + 1, u);
+            for (int i = 0; i < numberOfPoints; i++)
+            {
+                float t = (float)i / (numberOfPoints - 1);
+                curvePoints[i] = CalculateBezierPoint(controlPoints, t);
+            }
 
-            return new PointF((1 - u) * p1.X + u * p2.X, (1 - u) * p1.Y + u * p2.Y);
+            return curvePoints;
+        }
+
+        private PointF CalculateBezierPoint(List<PointF> controlPoints, float t)
+        {
+            if (controlPoints.Count == 1)
+            {
+                return controlPoints[0];
+            }
+
+            List<PointF> newControlPoints = new List<PointF>();
+
+            for (int i = 0; i < controlPoints.Count - 1; i++)
+            {
+                float x = (1 - t) * controlPoints[i].X + t * controlPoints[i + 1].X;
+                float y = (1 - t) * controlPoints[i].Y + t * controlPoints[i + 1].Y;
+                newControlPoints.Add(new PointF(x, y));
+            }
+
+            return CalculateBezierPoint(newControlPoints, t);
         }
     }
 }

@@ -189,7 +189,7 @@ namespace Draw
 
         private void DrawBezier_Click()
         {
-            dialogProcessor.AddBezier();
+            dialogProcessor.AddBSpline();
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на Безие крива";
 
