@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -11,20 +12,25 @@ namespace Draw.src.Model
     {
         #region Constructors
 
-        public BezierCurveShape(RectangleF rect) : base(rect)
-        {
-        }
-
-        public BezierCurveShape(BezierCurveShape shape, List<PointF> controlPoints) : base(shape)
+        public BezierCurveShape(RectangleF rect, List<PointF> controlPoints) : base(rect)
         {
             this.ControlPoints = controlPoints;
+        }
+
+        public BezierCurveShape(BezierCurveShape shape) : base(shape)
+        {
         }
 
         #endregion
 
         #region Properties
 
-        private List<PointF> ControlPoints { get; set; }
+        private List<PointF> controlPoints = new List<PointF>();
+        private List<PointF> ControlPoints
+        {
+            get => controlPoints;
+            set => controlPoints = value;
+        }
 
         #endregion
 
@@ -37,8 +43,23 @@ namespace Draw.src.Model
         {
             base.DrawSelf(grfx);
 
-            grfx.DrawBezier(new Pen(StrokeColor, 2),
-                ControlPoints[0], ControlPoints[1], ControlPoints[2], ControlPoints[3]);
+            for (float u = 0; u <= 1; u += 0.001f)
+            {
+                PointF curvePoint = ComputeCasteljauPoint(controlPoints.Count - 1, 0, u);
+                grfx.DrawLine(new Pen(StrokeColor), curvePoint, curvePoint);
+            }
+        }
+
+        // Try with Bernstein polynomial!!!
+
+        private PointF ComputeCasteljauPoint(int r, int i, float u)
+        {
+            if (r == 0) return controlPoints[i];
+
+            PointF p1 = ComputeCasteljauPoint(r - 1, i, u);
+            PointF p2 = ComputeCasteljauPoint(r - 1, i + 1, u);
+
+            return new PointF((1 - u) * p1.X + u * p2.X, (1 - u) * p1.Y + u * p2.Y);
         }
     }
 }

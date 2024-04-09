@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
@@ -30,6 +31,7 @@ namespace Draw
             this.FillColor = shape.FillColor;
             this.StrokeColor = shape.StrokeColor;
         }
+
         #endregion
         #region Properties
 
@@ -100,16 +102,6 @@ namespace Draw
         public virtual void DrawSelf(Graphics grfx)
         {
             // shape.Rectangle.Inflate(shape.BorderWidth, shape.BorderWidth);
-        }
-
-        /// <summary>
-        /// Ротация в градуси спрямо центъра на фигурата
-        /// </summary>
-        /// <param name="grfx"></param>
-        /// <param name="rotationAngle"> Ъгъл на ротация в градуси, може да приема и отрицателни стойности</param>
-        public virtual void DrawSelf(Graphics grfx, float rotationAngle)
-        {
-            State = grfx.Save();
         }
     }
 }

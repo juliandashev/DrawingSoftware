@@ -17,13 +17,21 @@ namespace Draw
         {
 
         }
+
         public Polygon(RectangleF rect) : base(rect)
         {
-
+            rectangle = rect;
         }
 
-        public Polygon(Shape shape) : base(shape)
+        public Polygon(Polygon polygon) : base(polygon)
         {
+            this.Height = polygon.Height;
+            this.Width = polygon.Width;
+            this.Location = polygon.Location;
+            this.rectangle = polygon.rectangle;
+
+            this.FillColor = polygon.FillColor;
+            this.StrokeColor = polygon.StrokeColor;
         }
 
         #endregion
@@ -34,10 +42,32 @@ namespace Draw
         public List<PointF> Vertices
         {
             get { return vertices; }
-            set 
-            {
-                vertices = value; 
-            }
+            set { vertices = value; }
+        }
+
+        private RectangleF rectangle;
+        public override RectangleF Rectangle
+        {
+            get => rectangle;
+            set => rectangle = value;
+        }
+
+        public override PointF Location
+        {
+            get => Rectangle.Location;
+            set => rectangle.Location = value;
+        }
+
+        public override float Width
+        {
+            get => Rectangle.Width;
+            set => rectangle.Width = value;
+        }
+
+        public override float Height
+        {
+            get => Rectangle.Height;
+            set => rectangle.Height = value;
         }
 
         #endregion

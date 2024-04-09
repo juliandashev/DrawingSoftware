@@ -162,9 +162,9 @@ namespace Draw
         public void AddPoint()
         {
             PointShape point = new PointShape(new RectangleF(
-                    ClickedPoint.X - 3, ClickedPoint.Y - 3, 8, 8))
+                    ClickedPoint.X - 3, ClickedPoint.Y - 3, 6, 8))
             {
-                FillColor = Color.Red,
+                FillColor = Color.Gray,
                 StrokeColor = Color.Black
             };
 
@@ -184,25 +184,52 @@ namespace Draw
             float minY = polygonPointsList.Min(p => p.Y);
             float maxY = polygonPointsList.Max(p => p.Y);
 
-            //PolygonShape polygon = new PolygonShape(new RectangleF(
-            //        minX,
-            //        minY,
-            //        maxX - minX,
-            //        maxY - minY),
-            //        polygonPointsList)
-            //{
-            //    FillColor = Color.White,
-            //    StrokeColor = Color.Black
-            //};
-
             PolygonShape polygon = new PolygonShape(new RectangleF(
-                20, 20, 40, 20), new List<PointF>() { new PointF(20, 40), new PointF(40, 20), new PointF(60, 20), new PointF(60, 40) })
+                    minX,
+                    minY,
+                    maxX - minX,
+                    maxY - minY),
+                    polygonPointsList)
             {
-                FillColor = Color.Red,
-                StrokeColor = Color.Black,
+                FillColor = Color.White,
+                StrokeColor = Color.Black
             };
 
+            //PolygonShape polygon = new PolygonShape(new RectangleF(
+            //    20, 20, 40, 20), new List<PointF>() { new PointF(20, 40), new PointF(40, 20), new PointF(60, 20), new PointF(60, 40) })
+            //{
+            //    FillColor = Color.Red,
+            //    StrokeColor = Color.Black,
+            //};
+
             ShapeList.Add(polygon);
+
+            pointsList.Clear();
+        }
+
+        private static List<PointF> controlPoints = new List<PointF>();
+        public void AddBezier()
+        {
+            if(pointsList.Count >= 1)
+                controlPoints = new List<PointF>(pointsList);
+
+            float minX = controlPoints.Min(p => p.X);
+            float maxX = controlPoints.Max(p => p.X);
+
+            float minY = controlPoints.Min(p => p.Y);
+            float maxY = controlPoints.Max(p => p.Y);
+
+            BezierCurveShape bezier = new BezierCurveShape(new RectangleF(
+                minX,
+                minY,
+                maxX - minX,
+                maxY - minY),
+                controlPoints)
+            {
+                StrokeColor = Color.Coral
+            };
+
+            ShapeList.Add(bezier);
             pointsList.Clear();
         }
 

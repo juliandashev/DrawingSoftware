@@ -7,16 +7,27 @@ using System.Threading.Tasks;
 
 namespace Draw.src.Model
 {
-    public class PolygonShape : Polygon
+    public class PolygonShape : Shape
     {
         #region Constructor
 
         public PolygonShape(RectangleF rect, List<PointF> vertices) : base(rect)
         {
-            Vertices = vertices;
+            this.Vertices = vertices;
+        }
+
+        public PolygonShape(PolygonShape polygon) : base(polygon)
+        {
         }
 
         #endregion
+
+        public List<PointF> vertices = new List<PointF>();
+        public virtual List<PointF> Vertices
+        {
+            get { return vertices; }
+            set { vertices = value; }
+        }
 
         #region Properties
 
@@ -34,44 +45,62 @@ namespace Draw.src.Model
             // Variable for counting how many walls were intersected
             int count = 0;
 
-            // Lopping through every vertex
-            for (int i = 0; i < Vertices.Count - 1; i++)
-            {
-                // Definig the x and y of the first point
-                float x1 = Vertices[i].X;
-                float y1 = Vertices[i].Y;
+            float x1, y1, x2, y2;
 
-                // Then definig the x and y of the next point
-                float x2 = Vertices[i + 1].X;
-                float y2 = Vertices[i + 1].Y;
+            // Lopping through every vertex
+            for (int i = 0; i < Vertices.Count; i++)
+            {
+                if (i < Vertices.Count - 1)
+                {
+                    // Definig the x and y of the first point
+                    x1 = Vertices[i + 1].X;
+                    y1 = Vertices[i + 1].Y;
+
+                    // Then definig the x and y of the next point
+                    x2 = Vertices[i].X;
+                    y2 = Vertices[i].Y;
+                }
+                else
+                {
+                    // Finding the values of the last point
+                    x1 = Vertices[i].X;
+                    y1 = Vertices[i].Y;
+
+                    // Finding the values of the first point
+                    x2 = Vertices[0].X;
+                    y2 = Vertices[0].Y;
+                }
 
                 // Two conditions have to be met
 
                 // First condition ensures that the point is between the two points on the y coordinates of the lines of the polygon
-                bool firstCondition = (point.Y < y1) != (point.Y < y2);
+                bool firstCondition = (point.Y > y2) != (point.Y > y1);
+
+                // Everything is calculated with respect of this coordinate system (with inverted y axis)
+
                 // Second condition's formula is derived from trying to find first x0 = x1 + ?
                 // x0 is the intersection of the line of our edge
                 // We have to check if point's X coordinate is smaller than x0. This would mean that mouses X coordinate crosses
 
-                // First we know that the length from the origin to the edge we are at is = x1 also known as offset
+                // First we know that the length from the origin to the edge we are at is = x2 also known as offset
 
                 // x0 depends on the value of Yp, changeing it changes the value of x0
-                // we need to calculate the ratio between the height of our point (yp - y1) and the height of our edge (y2 - y1) this gives a value between [0;1]
-                // and then multiplying by the width of the edge (x2 - x1) to see how much x we add to x1
+                // we need to calculate the ratio between the height of our point (yp - y2) and the height of our edge (y1 - y2) this gives a value between [0;1]
+                // and then multiplying by the width of the edge (x1 - x2) to see how much x we add to x2
 
-                // and thats how we derived x0 = x1 + ((point.Y - y1) / (y2 - y1)) * (x2 - x1)
-                // lastly we take the > sign because we are aiming to be on the left side of the line
+                // and thats how we derived xp = x0 = x2 + ((point.Y - y2) / (y1 - y2)) * (x1 - x2)
+                // lastly we take the < sign because we are aiming to be on the left side of the line
 
-                bool secondCondition = point.X > x1 + ((point.Y - y1) / (y2 - y1)) * (x2 - x1);
+                bool secondCondition = point.X < x2 + ((point.Y - y2) / (y1 - y2)) * (x1 - x2);
 
-                if(firstCondition && secondCondition) 
+                if (firstCondition && secondCondition)
                     // Then the number of crossed edges increases
                     count++;
             }
 
             // Return true if its an odd number and false if its an even
             // odd meaning - inside the polygon
-            // even meaning - outsied the polygon
+            // even meaning - outside the polygon
             return count % 2 == 1;
         }
 

@@ -68,7 +68,7 @@ namespace Draw
                 }
             }
 
-            if (drawPolygon.Checked)
+            if (drawPolygon.Checked || DrawBezierButton.Checked)
             {
                 if (e.Button == MouseButtons.Left)
                 {
@@ -77,7 +77,7 @@ namespace Draw
 
                 if (isLeftMouseButtonDown)
                 {
-                    statusBar.Items[0].Text = "Последно действие: Поставяне на точка от полигон";
+                    statusBar.Items[0].Text = "Последно действие: Поставяне на точка";
                     dialogProcessor.IsDrawing = true;
 
                     dialogProcessor.ClickedPoint = e.Location;
@@ -85,14 +85,22 @@ namespace Draw
                     if (DialogProcessor.PointsList.Count >= 3
                             && dialogProcessor.ContainsPoint(dialogProcessor.ClickedPoint) != null)
                     {
-                        drawPolygon_Click(dialogProcessor.ClickedPoint);
-                        drawPolygon.Checked = false;
+                        if (drawPolygon.Checked)
+                        {
+                            drawPolygon_Click();
+                            drawPolygon.Checked = false;
+                        }
+                        if(DrawBezierButton.Checked)
+                        {
+                            DrawBezier_Click();
+                            DrawBezierButton.Checked = false;
+                        }
                     }
                     else
                         dialogProcessor.AddPoint();
 
-                    isLeftMouseButtonDown = false;
                     viewPort.Invalidate();
+                    isLeftMouseButtonDown = false;
                 }
             }
         }
@@ -170,14 +178,7 @@ namespace Draw
             viewPort.Invalidate();
         }
 
-        private void DrawTriangleButton_Click(object sender, EventArgs e)
-        {
-            //dialogProcessor.AddRandomTriangle();
-            statusBar.Items[0].Text = "Последно действие: Рисуване на триъгълник";
-            viewPort.Invalidate();
-        }
-
-        private void drawPolygon_Click(PointF point)
+        private void drawPolygon_Click()
         {
             dialogProcessor.AddPolygon();
 
@@ -186,9 +187,19 @@ namespace Draw
             viewPort.Invalidate();
         }
 
+        private void DrawBezier_Click()
+        {
+            dialogProcessor.AddBezier();
+
+            statusBar.Items[0].Text = "Последно действие: Рисуване на Безие крива";
+
+            viewPort.Invalidate();
+        }
+
         #endregion
 
         #region DropDown menu items
+
         private void кръгToolStripMenuItem_Click(object sender, EventArgs e)
         {
             drawCircle_Click(sender, e);
