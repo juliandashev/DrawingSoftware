@@ -22,108 +22,71 @@ namespace Draw.src.Model
 
         #endregion
 
-        //private bool IsPointInsideConvexPolygon(PointF point)
-        //{
-        //    int n = Vertices.Count;
-        //    byte sign = 0;
+        /// <summary>
+        /// Checks if a point is inside the polygon using Ray Casting 
+        /// Doesn't matter if it's convex or not
+        /// Works O(n) where n is the Vertices Count
+        /// </summary>
+        /// <param name="point">Mouse (x,y) coordinates</param>
+        /// <returns></returns>
+        public override bool Contains(PointF point)
+        {
+            // Variable for counting how many walls were intersected
+            int count = 0;
 
-        //    for (int i = 0; i < n - 1; i++)
-        //    {
-        //        float dx1 = Vertices[(i + 1) % n].X - Vertices[i].X;
-        //        float dy1 = Vertices[(i + 1) % n].Y - Vertices[i].Y;
+            // Lopping through every vertex
+            for (int i = 0; i < Vertices.Count - 1; i++)
+            {
+                // Definig the x and y of the first point
+                float x1 = Vertices[i].X;
+                float y1 = Vertices[i].Y;
 
-        //        float dx2 = point.X - Vertices[i].X;
-        //        float dy2 = point.Y - Vertices[i].Y;
+                // Then definig the x and y of the next point
+                float x2 = Vertices[i + 1].X;
+                float y2 = Vertices[i + 1].Y;
 
+                // Two conditions have to be met
 
-        //    }
+                // First condition ensures that the point is between the two points on the y coordinates of the lines of the polygon
+                bool firstCondition = (point.Y < y1) != (point.Y < y2);
+                // Second condition's formula is derived from trying to find first x0 = x1 + ?
+                // x0 is the intersection of the line of our edge
+                // We have to check if point's X coordinate is smaller than x0. This would mean that mouses X coordinate crosses
 
-        //    return false;
-        //}
+                // First we know that the length from the origin to the edge we are at is = x1 also known as offset
 
-        //public override bool Contains(PointF point)
-        //{
-        //    bool inside = false;
+                // x0 depends on the value of Yp, changeing it changes the value of x0
+                // we need to calculate the ratio between the height of our point (yp - y1) and the height of our edge (y2 - y1) this gives a value between [0;1]
+                // and then multiplying by the width of the edge (x2 - x1) to see how much x we add to x1
 
-        //    float ray = float.MaxValue;
-        //    float eps = 0.0001f;
+                // and thats how we derived x0 = x1 + ((point.Y - y1) / (y2 - y1)) * (x2 - x1)
+                // lastly we take the > sign because we are aiming to be on the left side of the line
 
-        //    Dictionary<PointF, PointF> edges = new Dictionary<PointF, PointF>();
+                bool secondCondition = point.X > x1 + ((point.Y - y1) / (y2 - y1)) * (x2 - x1);
 
-        //    for (int i = 0; i < Vertices.Count - 1; i++)
-        //    {
-        //        edges.Add(Vertices[i], Vertices[i + 1]);
-        //    }
+                if(firstCondition && secondCondition) 
+                    // Then the number of crossed edges increases
+                    count++;
+            }
 
-        //    foreach (var edge in edges)
-        //    {
-        //        PointF A = edge.Key;
-        //        PointF B = edge.Value;
-
-        //        if (A.Y > B.Y)
-        //        {
-        //            PointF temp = A;
-        //            A = B;
-        //            B = temp;
-        //        }
-
-        //        if (point.Y == A.Y || point.Y == B.Y)
-        //            point.Y += eps;
-
-        //        if (point.Y < B.Y || point.Y > A.Y || point.X > Math.Max(A.X, B.X))
-        //            continue;
-
-        //        if (point.X < Math.Min(A.X, B.X))
-        //        {
-        //            inside = true;
-        //            continue;
-        //        }
-
-        //        PointF AB = new PointF(B.X - A.X, B.Y - A.Y);
-        //        PointF PB = new PointF(B.X - point.X, B.Y - point.Y);
-
-        //        if (PB.X > AB.X || PB.Y > AB.Y)
-        //        {
-        //            inside = true;
-        //        }
-
-        //        float m_edge;
-        //        float m_point;
-
-        //        try
-        //        {
-        //            m_edge = (B.Y - A.Y) / (B.X - A.X);
-        //        }
-        //        catch (DivideByZeroException)
-        //        {
-        //            m_edge = ray;
-        //        }
-
-        //        try
-        //        {
-        //            m_point = (point.X - A.Y) / (point.X - A.X);
-        //        }
-        //        catch (DivideByZeroException)
-        //        {
-        //            m_point = ray;
-        //        }
-
-        //        if (m_point >= m_edge)
-        //        {
-        //            inside = true;
-        //            continue;
-        //        }
-        //    }
-
-        //    return inside;
-        //}
+            // Return true if its an odd number and false if its an even
+            // odd meaning - inside the polygon
+            // even meaning - outsied the polygon
+            return count % 2 == 1;
+        }
 
         public override void DrawSelf(Graphics grfx)
         {
+            State = grfx.Save();
+
             base.DrawSelf(grfx);
+
+            grfx.Transform = TransformationMatrix;
 
             grfx.FillPolygon(new SolidBrush(FillColor), Vertices.ToArray());
             grfx.DrawPolygon(new Pen(StrokeColor), Vertices.ToArray());
+
+            grfx.Restore(State);
         }
     }
 }

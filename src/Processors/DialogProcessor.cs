@@ -162,10 +162,11 @@ namespace Draw
         public void AddPoint()
         {
             PointShape point = new PointShape(new RectangleF(
-                    ClickedPoint.X - 3, ClickedPoint.Y - 3, 8, 8));
-
-            point.FillColor = Color.Red;
-            point.StrokeColor = Color.Black;
+                    ClickedPoint.X - 3, ClickedPoint.Y - 3, 8, 8))
+            {
+                FillColor = Color.Red,
+                StrokeColor = Color.Black
+            };
 
             pointsList.Add(ClickedPoint);
             ShapeList.Add(point);
@@ -183,20 +184,22 @@ namespace Draw
             float minY = polygonPointsList.Min(p => p.Y);
             float maxY = polygonPointsList.Max(p => p.Y);
 
-            float width = maxX - minX;
-            float height = maxY - minY;
-
-            PointF center = new PointF((maxX + minX) / 2, (maxY + minY) / 2);
+            //PolygonShape polygon = new PolygonShape(new RectangleF(
+            //        minX,
+            //        minY,
+            //        maxX - minX,
+            //        maxY - minY),
+            //        polygonPointsList)
+            //{
+            //    FillColor = Color.White,
+            //    StrokeColor = Color.Black
+            //};
 
             PolygonShape polygon = new PolygonShape(new RectangleF(
-                    center.X,
-                    center.Y,
-                    width,
-                    height),
-                    polygonPointsList)
+                20, 20, 40, 20), new List<PointF>() { new PointF(20, 40), new PointF(40, 20), new PointF(60, 20), new PointF(60, 40) })
             {
-                FillColor = Color.White,
-                StrokeColor = Color.Black
+                FillColor = Color.Red,
+                StrokeColor = Color.Black,
             };
 
             ShapeList.Add(polygon);

@@ -70,7 +70,6 @@ namespace Draw
 
             if (drawPolygon.Checked)
             {
-                // TODO : check if it is selected!
                 if (e.Button == MouseButtons.Left)
                 {
                     isLeftMouseButtonDown = true;

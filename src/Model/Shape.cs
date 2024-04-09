@@ -28,6 +28,7 @@ namespace Draw
             this.rectangle = shape.rectangle;
 
             this.FillColor = shape.FillColor;
+            this.StrokeColor = shape.StrokeColor;
         }
         #endregion
         #region Properties

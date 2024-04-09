@@ -22,6 +22,10 @@ namespace Draw
 
         }
 
+        public Polygon(Shape shape) : base(shape)
+        {
+        }
+
         #endregion
 
         #region Properties
