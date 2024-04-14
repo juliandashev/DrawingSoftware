@@ -36,7 +36,7 @@ namespace Draw.src.Model
         /// <summary>
         /// This is the degree of the spline, hardcoded to 3 because often this used everywhere
         /// </summary>
-        public const int p = 4;
+        public const int p = 2;
 
         #endregion
 
@@ -51,101 +51,97 @@ namespace Draw.src.Model
 
             if (controlPoints.Count >= p + 1)
             {
-                PointF[] curvePoints = CalculateBSplineCurve(controlPoints, p, 100, grfx);
+                PointF[] curvePoints = CalculateBSplineCurve(controlPoints, p);
+
+                foreach (var item in curvePoints)
+                {
+                    grfx.DrawEllipse(Pens.Coral, item.X - 2, item.Y - 2, 2, 2);
+                }
+
                 grfx.DrawLines(new Pen(StrokeColor, 2), curvePoints);
             }
         }
 
-        private PointF[] CalculateBSplineCurve(List<PointF> controlPoints, int p, int numberOfPoints, Graphics grfx)
+        private PointF[] CalculateBSplineCurve(List<PointF> controlPoints, int p)
         {
             List<PointF> curvePoints = new List<PointF>();
 
             float[] m = GenerateKnotVector(controlPoints.Count - 1, p);
 
-            for (int i = 0; i < numberOfPoints; i++)
-            {
-                float u = (float)i / (numberOfPoints - 1);
+            //int len = m.Length - 2 * p;
 
-                PointF point = CalculateBSplinePoint(controlPoints, p, m, u);
-                grfx.DrawEllipse(Pens.Blue, point.X - 2, point.Y - 2, 5, 5);
+            for (float u = 0; u <= 1; u += 0.1f)
+            {
+                PointF point = new PointF();
+
+                for (int i = 0; i < controlPoints.Count; i++)
+                {
+                    float baseFunction = N(i, p, m, u);
+
+                    point.X += baseFunction * controlPoints[i].X;
+                    point.Y += baseFunction * controlPoints[i].Y;
+                }
+
+                //grfx.DrawEllipse(Pens.Blue, point.X - 2, point.Y - 2, 5, 5);
                 curvePoints.Add(point);
             }
 
             return curvePoints.ToArray();
         }
 
-        private PointF CalculateBSplinePoint(List<PointF> controlPoints, int p, float[] m, float u)
-        {
-            PointF point = new PointF();
-
-            for (int i = 0; i < controlPoints.Count - 1; i++)
-            {
-                float baseSplineFunc = N(i, p, m, u);
-
-                point.X += baseSplineFunc * controlPoints[i].X;
-                point.Y += baseSplineFunc * controlPoints[i].Y;
-            }
-
-            return point;
-        }
-
-        // Memoization to fix the redundant recursive calls 
-        private Dictionary<string, float> memizationCache = new Dictionary<string, float>();
-
         // Cox-deBoor's formula for computing b spline functions
         private float N(int i, int p, float[] knotVector, float u)
         {
-            if (u == 1) 
-                return 1;
-
-            string cacheKey = $"{i}-{p}-{u}";
-
-            if (memizationCache.ContainsKey(cacheKey))
-            {
-                return memizationCache[cacheKey];
-            }
-
-            float result;
-
             // the base case for the recursive formula is
-
             // N(u)i,0 = 1 if u[i] <= u < u[i+1] and 0 otherwise
-
             if (p == 0) // base case
             {
-                if (knotVector[i] <= u && u < knotVector[i + 1]) // a special case where u0 = ... = un = 0 and u(n+1) = ... = u(2n + 1) = 1
+                if ((knotVector[i] <= u && u < knotVector[i + 1]))
                     // Base B Splain functions are N(0,n,u), N(1,n,u), ... , N(n,n,u)
                     return 1;
                 return 0;
             }
 
-            float leftSide = 0, rightSide = 0;
+            if (knotVector[i] <= u && u < knotVector[i + p + 1]) // thats a property of non-zero base function, also it speeds up the code
+            {
+                float leftSide = 0;
+                float rightSide = 0;
 
-            if (knotVector[i + p] - knotVector[i] != 0) // checks to make sure there is no zero division
-                leftSide = ((u - knotVector[i]) / (knotVector[i + p] - knotVector[i])) * N(i, p - 1, knotVector, u);
+                if ((knotVector[i + p] - knotVector[i]) != 0)
+                    leftSide = ((u - knotVector[i]) /
+                        (knotVector[i + p] - knotVector[i]))
+                            * N(i, p - 1, knotVector, u);
 
-            if (knotVector[i + p + 1] - knotVector[i + 1] != 0) // same thing as well
-                rightSide = ((knotVector[i + p + 1] - u) / (knotVector[i + p + 1] - knotVector[i + 1])) * N(i + 1, p - 1, knotVector, u);
+                if ((knotVector[i + p + 1] - knotVector[i + 1]) != 0)
+                    rightSide = ((knotVector[i + p + 1] - u) /
+                        (knotVector[i + p + 1] - knotVector[i + 1]))
+                            * N(i + 1, p - 1, knotVector, u);
 
-            // store the result in the cache
-            memizationCache[cacheKey] = result = leftSide + rightSide;
+                return leftSide + rightSide;
+            }
 
-            return result;
+            return 0;
         }
 
         private float[] GenerateKnotVector(int n, int p)
         {
             int m = n + p + 1; // number of knots is defined by this equation
-            float[] knotVector = new float[m];
+
+            int index = m - p; // this is needed to find the knot that should be equal to 1 to close the curve on the other side 
+
+            // if the knots are 13 their count is 14 because of the u at 0th index
+            float[] knotVector = new float[++m];
+
+            int divisor = m - (2 * p); // this is needed to divide evenly the free knots; +1 so that there is no n/n knot which would equal 1
 
             for (int i = 0; i < m; i++)
             {
                 if (i <= p) // closing the curve on the left side
                     knotVector[i] = 0;
-                else if (i >= n) // closing the curve on the right side
+                else if (i >= index) // closing the curve on the right side
                     knotVector[i] = 1;
                 else
-                    knotVector[i] = (float)(i - p) / (n - p);
+                    knotVector[i] = (float)(i - p + 1) / divisor; // (n-p)
             }
 
             return knotVector;
