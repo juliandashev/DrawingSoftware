@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -51,32 +53,33 @@ namespace Draw.src.Model
 
             if (controlPoints.Count >= p + 1)
             {
-                PointF[] curvePoints = CalculateBSplineCurve(controlPoints, p);
+                PointF[] curvePoints = CalculateBSplineCurve(controlPoints);
 
                 foreach (var item in curvePoints)
                 {
-                    grfx.DrawEllipse(Pens.Coral, item.X - 2, item.Y - 2, 2, 2);
+                    grfx.DrawEllipse(Pens.Black, item.X - 2, item.Y - 2, 2, 2);
                 }
 
                 grfx.DrawLines(new Pen(StrokeColor, 2), curvePoints);
             }
         }
 
-        private PointF[] CalculateBSplineCurve(List<PointF> controlPoints, int p)
+        private PointF[] CalculateBSplineCurve(List<PointF> controlPoints)
         {
             List<PointF> curvePoints = new List<PointF>();
 
-            float[] m = GenerateKnotVector(controlPoints.Count - 1, p);
+            float[] knotVector = GenerateKnotVector(controlPoints.Count - 1);
 
             //int len = m.Length - 2 * p;
 
-            for (float u = 0; u <= 1; u += 0.1f)
+            for (float u = 0; u <= 1; u += 0.01f)
             {
                 PointF point = new PointF();
 
+                // Calculate Point
                 for (int i = 0; i < controlPoints.Count; i++)
                 {
-                    float baseFunction = N(i, p, m, u);
+                    float baseFunction = N(i, p, knotVector, u);
 
                     point.X += baseFunction * controlPoints[i].X;
                     point.Y += baseFunction * controlPoints[i].Y;
@@ -92,6 +95,9 @@ namespace Draw.src.Model
         // Cox-deBoor's formula for computing b spline functions
         private float N(int i, int p, float[] knotVector, float u)
         {
+            if (knotVector[knotVector.Length - 1] == u) // to remove some special cases and to skip the recursive calls for u = 1
+                return 1;
+
             // the base case for the recursive formula is
             // N(u)i,0 = 1 if u[i] <= u < u[i+1] and 0 otherwise
             if (p == 0) // base case
@@ -123,7 +129,7 @@ namespace Draw.src.Model
             return 0;
         }
 
-        private float[] GenerateKnotVector(int n, int p)
+        private float[] GenerateKnotVector(int n)
         {
             int m = n + p + 1; // number of knots is defined by this equation
 
