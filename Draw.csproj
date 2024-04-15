@@ -84,7 +84,8 @@
     <Compile Include="src\Model\PolygonShape.cs" />
     <Compile Include="src\Model\RectangleShape.cs" />
     <Compile Include="src\Model\Shape.cs" />
-    <Compile Include="src\Model\SplineShape.cs" />
+    <Compile Include="src\Model\Spline.cs" />
+    <Compile Include="src\Model\BSplineShape.cs" />
     <Compile Include="src\Model\SubShapes.cs" />
     <Compile Include="src\Model\TriangleShape.cs" />
     <Compile Include="src\Processors\DialogProcessor.cs" />
@@ -137,6 +138,7 @@
     <Content Include="src\resources\cricleIcon.png" />
     <Content Include="src\resources\ellipseIcon.png" />
     <Content Include="src\resources\pickUpIcon.png" />
+    <None Include="src\resources\polygonIcon.png" />
     <Content Include="src\resources\rectangleIcon.png" />
     <Content Include="src\resources\squareIcon.png" />
   </ItemGroup>

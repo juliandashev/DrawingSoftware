@@ -73,11 +73,13 @@ namespace Draw
             set { clickedPoint = value; }
         }
 
-        private static List<PointF> pointsList = new List<PointF>();
-        public static List<PointF> PointsList
+        public static List<PointShape> PointsList { get; set; } = new List<PointShape>();
+
+        public enum SplineType
         {
-            get { return pointsList; }
-            set { pointsList = value; }
+            Bezier,
+            Base,
+            None
         }
 
         #endregion
@@ -133,6 +135,31 @@ namespace Draw
             }
         }
 
+        public void ScaleShape(float scaleX, float scaleY)
+        {
+            if (Selection.Count >= 1)
+            {
+                foreach (Shape shape in Selection)
+                {
+                    shape.TransformationMatrix.Scale(scaleX, scaleY);
+                }
+            }
+        }
+
+        public void ScaleGroup(float scaleX, float scaleY)
+        {
+            if (Selection.Count >= 1)
+            {
+                foreach (var shape in SubShapes.SubShapesList)
+                {
+                    // rotate all the points around the center of the group rectangle
+                    shape.TransformationMatrix.Scale(scaleX, scaleY);
+                }
+
+                SubShapes.TransformationMatrix.Scale(scaleX, scaleY);
+            }
+        }
+
         public void AddRandomRectangle()
         {
             Random rnd = new Random();
@@ -162,27 +189,29 @@ namespace Draw
         public void AddPoint()
         {
             PointShape point = new PointShape(new RectangleF(
-                    ClickedPoint.X - 3, ClickedPoint.Y - 3, 6, 8))
+                    ClickedPoint.X - 3, ClickedPoint.Y - 3, 8, 10))
             {
-                FillColor = Color.Gray,
+                FillColor = Color.Purple,
                 StrokeColor = Color.Black
             };
 
-            pointsList.Add(ClickedPoint);
+            PointsList.Add(point);
             ShapeList.Add(point);
         }
 
-        private static List<PointF> polygonPointsList = new List<PointF>();
+        private static List<PointShape> polygonPointsList = new List<PointShape>();
         public void AddPolygon()
         {
-            if (pointsList.Count >= 1)
-                polygonPointsList = new List<PointF>(pointsList);
+            if (PointsList.Count >= 1)
+            {
+                polygonPointsList = new List<PointShape>(PointsList);
+            }
 
-            float minX = polygonPointsList.Min(p => p.X);
-            float maxX = polygonPointsList.Max(p => p.X);
+            float minX = polygonPointsList.Min(p => p.Location.X);
+            float maxX = polygonPointsList.Max(p => p.Location.X);
 
-            float minY = polygonPointsList.Min(p => p.Y);
-            float maxY = polygonPointsList.Max(p => p.Y);
+            float minY = polygonPointsList.Min(p => p.Location.Y);
+            float maxY = polygonPointsList.Max(p => p.Location.Y);
 
             PolygonShape polygon = new PolygonShape(new RectangleF(
                     minX,
@@ -202,22 +231,24 @@ namespace Draw
             //    StrokeColor = Color.Black,
             //};
 
-            ShapeList.Add(polygon);
-
-            pointsList.Clear();
+            ShapeList.Insert(ShapeList.IndexOf(PointsList[0]), polygon);
+            PointsList.Clear();
         }
 
-        private static List<PointF> controlPoints = new List<PointF>();
+        private static List<PointShape> controlPoints = new List<PointShape>();
         public void AddBezier()
         {
-            if (pointsList.Count >= 1)
-                controlPoints = new List<PointF>(pointsList);
+            if (PointsList.Count >= 1)
+            {
+                controlPoints = new List<PointShape>(PointsList);
+            }
 
-            float minX = controlPoints.Min(p => p.X);
-            float maxX = controlPoints.Max(p => p.X);
 
-            float minY = controlPoints.Min(p => p.Y);
-            float maxY = controlPoints.Max(p => p.Y);
+            float minX = controlPoints.Min(p => p.Location.X);
+            float maxX = controlPoints.Max(p => p.Location.X);
+
+            float minY = controlPoints.Min(p => p.Location.Y);
+            float maxY = controlPoints.Max(p => p.Location.Y);
 
             BezierCurveShape bezier = new BezierCurveShape(new RectangleF(
                 minX,
@@ -229,22 +260,24 @@ namespace Draw
                 StrokeColor = Color.Coral
             };
 
-            ShapeList.Add(bezier);
-            pointsList.Clear();
+            ShapeList.Insert(ShapeList.IndexOf(PointsList[0]), bezier);
+            PointsList.Clear();
         }
 
         public void AddBSpline()
         {
-            if (pointsList.Count >= 1)
-                controlPoints = new List<PointF>(pointsList);
+            if (PointsList.Count >= 1)
+            {
+                controlPoints = new List<PointShape>(PointsList);
+            }
 
-            float minX = controlPoints.Min(p => p.X);
-            float maxX = controlPoints.Max(p => p.X);
+            float minX = controlPoints.Min(p => p.Location.X);
+            float maxX = controlPoints.Max(p => p.Location.X);
 
-            float minY = controlPoints.Min(p => p.Y);
-            float maxY = controlPoints.Max(p => p.Y);
+            float minY = controlPoints.Min(p => p.Location.Y);
+            float maxY = controlPoints.Max(p => p.Location.Y);
 
-            SplineShape splineShape = new SplineShape(new RectangleF(
+            BSplineShape splineShape = new BSplineShape(new RectangleF(
                 minX,
                 minY,
                 maxX - minX,
@@ -254,8 +287,8 @@ namespace Draw
                 StrokeColor = Color.Red
             };
 
-            ShapeList.Add(splineShape);
-            pointsList.Clear();
+            ShapeList.Insert(ShapeList.IndexOf(PointsList[0]), splineShape);
+            PointsList.Clear();
         }
 
         public void GroupElements()

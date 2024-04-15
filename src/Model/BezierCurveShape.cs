@@ -8,29 +8,23 @@ using System.Threading.Tasks;
 
 namespace Draw.src.Model
 {
-    public class BezierCurveShape : Shape
+    public class BezierCurveShape : Spline
     {
         #region Constructors
 
-        public BezierCurveShape(RectangleF rect, List<PointF> controlPoints) : base(rect)
+        public BezierCurveShape(RectangleF rect, List<PointShape> controlPoints) : base(rect)
         {
-            this.ControlPoints = controlPoints;
+            ControlPoints = controlPoints;
         }
 
         public BezierCurveShape(BezierCurveShape shape) : base(shape)
         {
+
         }
 
         #endregion
 
         #region Properties
-
-        private List<PointF> controlPoints = new List<PointF>();
-        private List<PointF> ControlPoints
-        {
-            get => controlPoints;
-            set => controlPoints = value;
-        }
 
         #endregion
 
@@ -45,9 +39,13 @@ namespace Draw.src.Model
 
             // grfx.DrawBeziers(new Pen(StrokeColor, 2), controlPoints.ToArray());
 
-            if (controlPoints.Count >= 2)
+            if (ControlPoints.Count >= 2)
             {
-                PointF[] curvePoints = CalculateBezierCurve(controlPoints, 100);
+                List<PointF> convertPoints = new List<PointF>();
+
+                foreach (PointShape point in ControlPoints) convertPoints.Add(point.Location);
+
+                PointF[] curvePoints = CalculateBezierCurve(convertPoints, 100);
                 grfx.DrawLines(new Pen(StrokeColor, 2), curvePoints);
             }
         }

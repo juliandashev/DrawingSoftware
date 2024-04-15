@@ -1,30 +1,23 @@
-﻿using Draw.src.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Draw
+namespace Draw.src.Model
 {
     [Serializable]
-    public abstract class Polygon : Shape
+    public abstract class Spline : Shape
     {
         #region Constructors
-        public Polygon()
-        {
-            
-        }
 
-        public Polygon(RectangleF rect) : base(rect)
+        public Spline(RectangleF rect) : base(rect)
         {
 
         }
 
-        public Polygon(Polygon shape) : base(shape)
+        public Spline(Spline shape) : base(shape)
         {
         }
 
@@ -32,7 +25,7 @@ namespace Draw
 
         #region Properties
 
-        protected List<PointShape> Vertices { get; set; } = new List<PointShape>();
+        protected List<PointShape> ControlPoints { get; set; } = new List<PointShape>();
 
         #endregion
 
@@ -52,27 +45,27 @@ namespace Draw
             float x1, y1, x2, y2;
 
             // Lopping through every vertex
-            for (int i = 0; i < Vertices.Count; i++)
+            for (int i = 0; i < ControlPoints.Count; i++)
             {
-                if (i < Vertices.Count - 1)
+                if (i < ControlPoints.Count - 1)
                 {
                     // Definig the x and y of the first point
-                    x1 = Vertices[i + 1].Location.X;
-                    y1 = Vertices[i + 1].Location.Y;
+                    x1 = ControlPoints[i + 1].Location.X;
+                    y1 = ControlPoints[i + 1].Location.Y;
 
                     // Then definig the x and y of the next point
-                    x2 = Vertices[i].Location.X;
-                    y2 = Vertices[i].Location.Y;
+                    x2 = ControlPoints[i].Location.X;
+                    y2 = ControlPoints[i].Location.Y;
                 }
                 else
                 {
                     // Finding the values of the last point
-                    x1 = Vertices[i].Location.X;
-                    y1 = Vertices[i].Location.Y;
+                    x1 = ControlPoints[i].Location.X;
+                    y1 = ControlPoints[i].Location.Y;
 
                     // Finding the values of the first point
-                    x2 = Vertices[0].Location.X;
-                    y2 = Vertices[0].Location.Y;
+                    x2 = ControlPoints[0].Location.X;
+                    y2 = ControlPoints[0].Location.Y;
                 }
 
                 // Two conditions have to be met
@@ -106,6 +99,20 @@ namespace Draw
             // odd meaning - inside the polygon
             // even meaning - outside the polygon
             return count % 2 == 1;
+        }
+
+        public override void DrawSelf(Graphics grfx)
+        {
+            base.DrawSelf(grfx);
+
+            List<PointF> points = new List<PointF>();
+
+            foreach (var item in ControlPoints)
+            {
+                points.Add(item.Location);
+            }
+
+            grfx.DrawPolygon(Pens.Gray, points.ToArray());
         }
     }
 }

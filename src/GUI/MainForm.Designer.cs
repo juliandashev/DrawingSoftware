@@ -41,7 +41,9 @@
             this.правиъгълникToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.кръгToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.полигонToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.BezierCurveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.сплайнToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.безиеКриваToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.бСплайнКриваToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,7 +75,6 @@
             this.drawEllipseButton = new System.Windows.Forms.ToolStripButton();
             this.drawSquare = new System.Windows.Forms.ToolStripButton();
             this.drawCircle = new System.Windows.Forms.ToolStripButton();
-            this.DrawBezierButton = new System.Windows.Forms.ToolStripButton();
             this.drawPolygon = new System.Windows.Forms.ToolStripButton();
             this.ColorBtn = new System.Windows.Forms.ToolStripButton();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
@@ -151,7 +152,7 @@
             this.правиъгълникToolStripMenuItem,
             this.кръгToolStripMenuItem,
             this.полигонToolStripMenuItem,
-            this.BezierCurveToolStripMenuItem});
+            this.сплайнToolStripMenuItem});
             this.фигуриToolStripMenuItem.Name = "фигуриToolStripMenuItem";
             this.фигуриToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
             this.фигуриToolStripMenuItem.Text = "Фигури";
@@ -161,7 +162,7 @@
             this.квадратToolStripMenuItem.Name = "квадратToolStripMenuItem";
             this.квадратToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
-            this.квадратToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.квадратToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.квадратToolStripMenuItem.Text = "Квадрат";
             this.квадратToolStripMenuItem.Click += new System.EventHandler(this.квадратToolStripMenuItem_Click);
             // 
@@ -169,7 +170,7 @@
             // 
             this.елипсаToolStripMenuItem.Name = "елипсаToolStripMenuItem";
             this.елипсаToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.елипсаToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.елипсаToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.елипсаToolStripMenuItem.Text = "Елипса";
             this.елипсаToolStripMenuItem.Click += new System.EventHandler(this.елипсаToolStripMenuItem_Click);
             // 
@@ -177,7 +178,7 @@
             // 
             this.правиъгълникToolStripMenuItem.Name = "правиъгълникToolStripMenuItem";
             this.правиъгълникToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.правиъгълникToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.правиъгълникToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.правиъгълникToolStripMenuItem.Text = "Правоъгълник";
             this.правиъгълникToolStripMenuItem.Click += new System.EventHandler(this.правиъгълникToolStripMenuItem_Click);
             // 
@@ -186,7 +187,7 @@
             this.кръгToolStripMenuItem.Name = "кръгToolStripMenuItem";
             this.кръгToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.C)));
-            this.кръгToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.кръгToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.кръгToolStripMenuItem.Text = "Кръг";
             this.кръгToolStripMenuItem.Click += new System.EventHandler(this.кръгToolStripMenuItem_Click);
             // 
@@ -195,16 +196,31 @@
             this.полигонToolStripMenuItem.Name = "полигонToolStripMenuItem";
             this.полигонToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.P)));
-            this.полигонToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.полигонToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.полигонToolStripMenuItem.Text = "Полигон";
             // 
-            // BezierCurveToolStripMenuItem
+            // сплайнToolStripMenuItem
             // 
-            this.BezierCurveToolStripMenuItem.Name = "BezierCurveToolStripMenuItem";
-            this.BezierCurveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.B)));
-            this.BezierCurveToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
-            this.BezierCurveToolStripMenuItem.Text = "Безие крива";
+            this.сплайнToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.безиеКриваToolStripMenuItem,
+            this.бСплайнКриваToolStripMenuItem});
+            this.сплайнToolStripMenuItem.Name = "сплайнToolStripMenuItem";
+            this.сплайнToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.сплайнToolStripMenuItem.Text = "Сплайн";
+            // 
+            // безиеКриваToolStripMenuItem
+            // 
+            this.безиеКриваToolStripMenuItem.Name = "безиеКриваToolStripMenuItem";
+            this.безиеКриваToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.безиеКриваToolStripMenuItem.Text = "Безие Крива";
+            this.безиеКриваToolStripMenuItem.Click += new System.EventHandler(this.безиеКриваToolStripMenuItem_Click);
+            // 
+            // бСплайнКриваToolStripMenuItem
+            // 
+            this.бСплайнКриваToolStripMenuItem.Name = "бСплайнКриваToolStripMenuItem";
+            this.бСплайнКриваToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.бСплайнКриваToolStripMenuItem.Text = "Б-Сплайн Крива";
+            this.бСплайнКриваToolStripMenuItem.Click += new System.EventHandler(this.бСплайнКриваToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -428,7 +444,6 @@
             this.drawEllipseButton,
             this.drawSquare,
             this.drawCircle,
-            this.DrawBezierButton,
             this.drawPolygon,
             this.ColorBtn});
             this.speedMenu.Location = new System.Drawing.Point(0, 24);
@@ -487,25 +502,16 @@
             this.drawCircle.Text = "drawCircle";
             this.drawCircle.Click += new System.EventHandler(this.drawCircle_Click);
             // 
-            // DrawBezierButton
-            // 
-            this.DrawBezierButton.CheckOnClick = true;
-            this.DrawBezierButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.DrawBezierButton.Image = ((System.Drawing.Image)(resources.GetObject("DrawBezierButton.Image")));
-            this.DrawBezierButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.DrawBezierButton.Name = "DrawBezierButton";
-            this.DrawBezierButton.Size = new System.Drawing.Size(24, 24);
-            this.DrawBezierButton.Text = "DrawBezierButton";
-            // 
             // drawPolygon
             // 
             this.drawPolygon.CheckOnClick = true;
-            this.drawPolygon.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.drawPolygon.Image = ((System.Drawing.Image)(resources.GetObject("drawPolygon.Image")));
+            this.drawPolygon.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.drawPolygon.Image = global::Draw.Properties.Resources.polygonIcon;
             this.drawPolygon.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.drawPolygon.Name = "drawPolygon";
-            this.drawPolygon.Size = new System.Drawing.Size(81, 24);
+            this.drawPolygon.Size = new System.Drawing.Size(24, 24);
             this.drawPolygon.Text = "drawPolygon";
+            this.drawPolygon.Click += new System.EventHandler(this.drawPolygon_Click);
             // 
             // ColorBtn
             // 
@@ -651,7 +657,6 @@
         private System.Windows.Forms.ToolStripButton drawSquare;
         private System.Windows.Forms.ToolStripButton drawCircle;
         private System.Windows.Forms.ToolStripStatusLabel coordinatesBox;
-        private System.Windows.Forms.ToolStripButton DrawBezierButton;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripMenuItem завъртиToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton drawPolygon;
@@ -667,6 +672,8 @@
         private System.Windows.Forms.ToolStripMenuItem Rotate180Group;
         private System.Windows.Forms.ToolStripMenuItem Rotate270Group;
         private System.Windows.Forms.ToolStripMenuItem групиранеToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem BezierCurveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem сплайнToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem безиеКриваToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem бСплайнКриваToolStripMenuItem;
     }
 }

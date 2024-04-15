@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using static Draw.DialogProcessor;
 
 namespace Draw
 {
@@ -13,6 +14,8 @@ namespace Draw
         private DialogProcessor dialogProcessor = new DialogProcessor();
 
         private bool isLeftMouseButtonDown = false;
+
+        private SplineType splineType = SplineType.None;
 
         public MainForm()
         {
@@ -68,7 +71,7 @@ namespace Draw
                 }
             }
 
-            if (drawPolygon.Checked || DrawBezierButton.Checked)
+            if (dialogProcessor.IsDrawing)
             {
                 if (e.Button == MouseButtons.Left)
                 {
@@ -78,7 +81,6 @@ namespace Draw
                 if (isLeftMouseButtonDown)
                 {
                     statusBar.Items[0].Text = "Последно действие: Поставяне на точка";
-                    dialogProcessor.IsDrawing = true;
 
                     dialogProcessor.ClickedPoint = e.Location;
 
@@ -90,11 +92,18 @@ namespace Draw
                             drawPolygon_Click();
                             drawPolygon.Checked = false;
                         }
-                        if(DrawBezierButton.Checked)
+                        if(splineType == SplineType.Bezier)
                         {
                             DrawBezier_Click();
-                            DrawBezierButton.Checked = false;
+                            splineType = SplineType.None;
                         }
+                        if(splineType == SplineType.Base)
+                        {
+                            DrawSpline_Click();
+                            splineType = SplineType.None;
+                        }
+
+                        dialogProcessor.IsDrawing = false;
                     }
                     else
                         dialogProcessor.AddPoint();
@@ -122,9 +131,6 @@ namespace Draw
         void ViewPortMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             dialogProcessor.IsDragging = false;
-
-            if (!drawPolygon.Checked)
-                dialogProcessor.IsDrawing = false;
 
             isLeftMouseButtonDown = false;
         }
@@ -189,9 +195,18 @@ namespace Draw
 
         private void DrawBezier_Click()
         {
-            dialogProcessor.AddBSpline();
+            dialogProcessor.AddBezier();
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на Безие крива";
+
+            viewPort.Invalidate();
+        }
+
+        private void DrawSpline_Click()
+        {
+            dialogProcessor.AddBSpline();
+
+            statusBar.Items[0].Text = "Последно действие: Рисуване на Б-Сплайн крива";
 
             viewPort.Invalidate();
         }
@@ -272,6 +287,20 @@ namespace Draw
             viewPort.Invalidate();
         }
 
+        private void ScaleShape(float scaleX, float scaleY)
+        {
+            dialogProcessor.ScaleShape(scaleX, scaleY);
+            statusBar.Items[0].Text = "Последно действие: Завъртане на фигура";
+            viewPort.Invalidate();
+        }
+
+        private void ScaleGroup(float scaleX, float scaleY)
+        {
+            dialogProcessor.ScaleGroup(scaleX, scaleY);
+            statusBar.Items[0].Text = "Последно действие: Завъртане на група";
+            viewPort.Invalidate();
+        }
+
         private void GroupShapes()
         {
             dialogProcessor.GroupElements();
@@ -322,6 +351,23 @@ namespace Draw
         private void ColorBtn_Click(object sender, EventArgs e)
         {
             // TODO: Color stuff
+        }
+
+        private void безиеКриваToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            splineType = SplineType.Bezier;
+            dialogProcessor.IsDrawing = true;
+        }
+
+        private void бСплайнКриваToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            splineType = SplineType.Base;
+            dialogProcessor.IsDrawing = true;
+        }
+
+        private void drawPolygon_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.IsDrawing = true;
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Draw.src.Model
 {
-    public class PointShape : Shape
+    public class PointShape : RectangleShape
     {
         #region Constructors
         public PointShape(RectangleF rect) : base(rect)

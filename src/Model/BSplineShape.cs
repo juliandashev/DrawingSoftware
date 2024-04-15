@@ -11,16 +11,16 @@ using System.Threading.Tasks;
 
 namespace Draw.src.Model
 {
-    public class SplineShape : Shape
+    public class BSplineShape : Spline
     {
         #region Constructors
 
-        public SplineShape(RectangleF rect, List<PointF> controlPoints) : base(rect)
+        public BSplineShape(RectangleF rect, List<PointShape> controlPoints) : base(rect)
         {
-            this.ControlPoints = controlPoints;
+            ControlPoints = controlPoints;
         }
 
-        public SplineShape(SplineShape shape) : base(shape)
+        public BSplineShape(BSplineShape shape) : base(shape)
         {
         }
 
@@ -28,17 +28,10 @@ namespace Draw.src.Model
 
         #region Properties
 
-        private List<PointF> controlPoints = new List<PointF>();
-        private List<PointF> ControlPoints
-        {
-            get => controlPoints;
-            set => controlPoints = value;
-        }
-
         /// <summary>
         /// This is the degree of the spline, hardcoded to 3 because often this used everywhere
         /// </summary>
-        public const int p = 2;
+        public const int p = 3;
 
         #endregion
 
@@ -51,14 +44,12 @@ namespace Draw.src.Model
         {
             base.DrawSelf(grfx);
 
-            if (controlPoints.Count >= p + 1)
+            if (ControlPoints.Count >= p + 1)
             {
-                PointF[] curvePoints = CalculateBSplineCurve(controlPoints);
+                List<PointF> convertPoints = new List<PointF>();
+                foreach (PointShape point in ControlPoints) convertPoints.Add(point.Location);
 
-                foreach (var item in curvePoints)
-                {
-                    grfx.DrawEllipse(Pens.Black, item.X - 2, item.Y - 2, 2, 2);
-                }
+                PointF[] curvePoints = CalculateBSplineCurve(convertPoints);
 
                 grfx.DrawLines(new Pen(StrokeColor, 2), curvePoints);
             }
@@ -72,7 +63,7 @@ namespace Draw.src.Model
 
             //int len = m.Length - 2 * p;
 
-            for (float u = 0; u <= 1; u += 0.01f)
+            for (float u = 0; u <= 1; u += 0.001f)
             {
                 PointF point = new PointF();
 
