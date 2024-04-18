@@ -119,3 +119,15 @@ d:\users\fmi\Desktop\cg\obj\Debug\Draw.csproj.GenerateResource.cache
 d:\users\fmi\Desktop\cg\obj\Debug\Draw.csproj.CoreCompileInputs.cache
 d:\users\fmi\Desktop\cg\obj\Debug\Draw.exe
 d:\users\fmi\Desktop\cg\obj\Debug\Draw.pdb
+d:\users\fmi\Desktop\cg2\bin\Debug\Draw.exe.config
+d:\users\fmi\Desktop\cg2\bin\Debug\Draw.exe
+d:\users\fmi\Desktop\cg2\bin\Debug\Draw.pdb
+d:\users\fmi\Desktop\cg2\obj\Debug\Draw.csproj.AssemblyReference.cache
+d:\users\fmi\Desktop\cg2\obj\Debug\Draw.csproj.SuggestedBindingRedirects.cache
+d:\users\fmi\Desktop\cg2\obj\Debug\Draw.Properties.Resources.resources
+d:\users\fmi\Desktop\cg2\obj\Debug\Draw.DoubleBufferedPanel.resources
+d:\users\fmi\Desktop\cg2\obj\Debug\Draw.MainForm.resources
+d:\users\fmi\Desktop\cg2\obj\Debug\Draw.csproj.GenerateResource.cache
+d:\users\fmi\Desktop\cg2\obj\Debug\Draw.csproj.CoreCompileInputs.cache
+d:\users\fmi\Desktop\cg2\obj\Debug\Draw.exe
+d:\users\fmi\Desktop\cg2\obj\Debug\Draw.pdb

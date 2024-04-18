@@ -1,45 +1,53 @@
-﻿using System;
+﻿using Draw.src.Processors;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 
 namespace Draw.src.Model
 {
     public class TriangleShape : Polygon
     {
-        //#region Constructor
+        #region Constructor
 
-        //public TriangleShape(List<PointF> vertices)
-        //{
-        //    Vertices = vertices;
-        //}
+        public TriangleShape(RectangleF rect, List<PointShape> vertices) : base(rect)
+        {
+            this.Vertices = vertices;
+        }
 
-        //#endregion
+        public TriangleShape(TriangleShape triangle) : base(triangle)
+        {
 
-        //// TODO: Baricentric approach seems promising, do it later
-        //public override bool Contains(PointF point)
-        //{
-        //    return base.Contains(point);
-        //}
+        }
 
-        //public bool isValid()
-        //{
-        //    PointF ABVector = new PointF(Vertices[1].X - Vertices[0].X, Vertices[1].Y - Vertices[0].Y);
-        //    PointF ACVector = new PointF(Vertices[2].X - Vertices[0].X, Vertices[2].Y - Vertices[0].Y);
+        #endregion
 
-        //    float det = (ABVector.X * ACVector.Y) - (ABVector.Y * ACVector.X);
+        #region Properties
 
-        //    return det != 0;
-        //}
+        public string Type { get; set; }
 
-        //public override void DrawSelf(Graphics grfx)
-        //{
-        //    base.DrawSelf(grfx);
+        #endregion
 
-        //    grfx.FillPolygon(new SolidBrush(FillColor), Vertices.ToArray());
-        //    grfx.DrawPolygon(new Pen(StrokeColor), Vertices.ToArray());
-        //}
+        public override bool Contains(PointF point)
+        {
+            return base.ContainsTriangle(point);
+        }
+
+        public override void DrawSelf(Graphics grfx)
+        {
+            State = grfx.Save();
+
+            base.DrawSelf(grfx);
+
+            grfx.Transform = TransformationMatrix;
+
+            grfx.FillPolygon(new SolidBrush(FillColor), convertedPoints.ToArray());
+            grfx.DrawPolygon(new Pen(StrokeColor), convertedPoints.ToArray());
+
+            grfx.Restore(State);
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace Draw.src.Model
 
         public Spline(RectangleF rect) : base(rect)
         {
-
+            this.Rectangle = rect;
         }
 
         public Spline(Spline shape) : base(shape)
@@ -27,6 +27,24 @@ namespace Draw.src.Model
 
         protected List<PointShape> ControlPoints { get; set; } = new List<PointShape>();
 
+        public override RectangleF Rectangle { get => base.Rectangle; set => base.Rectangle = value; }
+
+        public override PointF Location
+        {
+            get => base.Location;
+            set
+            {
+                foreach (PointShape p in ControlPoints)
+                {
+                    p.Location = new PointF(
+                        p.Location.X + value.X - base.Location.X,
+                        p.Location.Y + value.Y - base.Location.Y
+                    );
+                }
+
+                base.Location = value;
+            }
+        }
         #endregion
 
         /// <summary>

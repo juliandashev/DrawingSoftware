@@ -1,4 +1,5 @@
 ﻿using Draw.src.Model;
+using Draw.src.Processors;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,7 +16,8 @@ namespace Draw
 
         private bool isLeftMouseButtonDown = false;
 
-        private SplineType splineType = SplineType.None;
+        private Enumerators.SplineType splineType = Enumerators.SplineType.None;
+        private Enumerators.TriangleTypes triangleType = Enumerators.TriangleTypes.None;
 
         public MainForm()
         {
@@ -92,15 +94,15 @@ namespace Draw
                             drawPolygon_Click();
                             drawPolygon.Checked = false;
                         }
-                        if(splineType == SplineType.Bezier)
+                        if(splineType == Enumerators.SplineType.Bezier)
                         {
                             DrawBezier_Click();
-                            splineType = SplineType.None;
+                            splineType = Enumerators.SplineType.None;
                         }
-                        if(splineType == SplineType.Base)
+                        if(splineType == Enumerators.SplineType.Base)
                         {
                             DrawSpline_Click();
-                            splineType = SplineType.None;
+                            splineType = Enumerators.SplineType.None;
                         }
 
                         dialogProcessor.IsDrawing = false;
@@ -355,13 +357,13 @@ namespace Draw
 
         private void безиеКриваToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            splineType = SplineType.Bezier;
+            splineType = Enumerators.SplineType.Bezier;
             dialogProcessor.IsDrawing = true;
         }
 
         private void бСплайнКриваToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            splineType = SplineType.Base;
+            splineType = Enumerators.SplineType.Base;
             dialogProcessor.IsDrawing = true;
         }
 
