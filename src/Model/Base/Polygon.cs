@@ -33,7 +33,6 @@ namespace Draw
 
         #region Properties
         protected List<PointShape> Vertices { get; set; } = new List<PointShape>();
-        protected List<PointF> convertedPoints = new List<PointF>();
 
         public override RectangleF Rectangle
         {
@@ -130,52 +129,6 @@ namespace Draw
             // odd meaning - inside the polygon
             // even meaning - outside the polygon
             return count % 2 == 1;
-        }
-
-        private void ConvertPoints()
-        {
-            foreach (var item in Vertices)
-            {
-                convertedPoints.Add(new PointF(item.Location.X, item.Location.Y));
-            }
-        }
-
-        private double Area(PointF p1, PointF p2, PointF p3)
-        {
-            return Math.Abs((p1.X * (p2.Y - p3.Y) +
-                             p2.X * (p3.Y - p1.Y) +
-                             p3.X * (p1.Y - p2.Y)) / 2.0);
-        }
-
-        private bool IsInside(PointF point, PointF p1, PointF p2, PointF p3)
-        {
-            /* Calculate area of triangle ABC */
-            double A = Area(p1, p2, p3);
-
-            /* Calculate area of triangle PBC */
-            double A1 = Area(point, p2, p3);
-
-            /* Calculate area of triangle PAC */
-            double A2 = Area(p1, point, p3);
-
-            /* Calculate area of triangle PAB */
-            double A3 = Area(p1, p2, point);
-
-            /* Check if sum of A1, A2 and A3 is same as A */
-            return (A == A1 + A2 + A3);
-
-        }
-
-        protected bool ContainsTriangle(PointF point)
-        {
-            if (convertedPoints.Count >= 1)
-                ConvertPoints();
-
-            PointF p1 = new PointF(convertedPoints[0].X, convertedPoints[0].Y);
-            PointF p2 = new PointF(convertedPoints[1].X, convertedPoints[1].Y);
-            PointF p3 = new PointF(convertedPoints[2].X, convertedPoints[2].Y);
-
-            return IsInside(point, p1, p2, p3);
         }
     }
 }

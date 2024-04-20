@@ -1,5 +1,6 @@
 ﻿using Draw.src.Model;
 using Draw.src.Processors;
+using Draw.src.Processors.Helper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -285,42 +286,7 @@ namespace Draw
             PointsList.Clear();
         }
 
-        public void AddTriangle(Enumerators.TriangleTypes types)
-        {
-            switch (types)
-            {
-                case Enumerators.TriangleTypes.None:
-
-                    if (PointsList.Count >= 1)
-                    {
-                        polygonPointsList = new List<PointShape>(PointsList);
-                    }
-
-                    float minX = polygonPointsList.Min(p => p.Location.X);
-                    float maxX = polygonPointsList.Max(p => p.Location.X);
-
-                    float minY = polygonPointsList.Min(p => p.Location.Y);
-                    float maxY = polygonPointsList.Max(p => p.Location.Y);
-
-                    TriangleShape triangle = new TriangleShape(new RectangleF(
-                            minX,
-                            minY,
-                            maxX - minX,
-                            maxY - minY),
-                            polygonPointsList)
-                    {
-                        FillColor = Color.White,
-                        StrokeColor = Color.Black
-                    };
-
-                    ShapeList.Insert(ShapeList.IndexOf(PointsList[0]), triangle);
-                    break;
-            }
-
-            PointsList.Clear();
-        }
-
-        private void GenerateRightTriangle()
+        public void AddTriangle()
         {
             if (PointsList.Count >= 1)
             {
@@ -345,6 +311,7 @@ namespace Draw
             };
 
             ShapeList.Insert(ShapeList.IndexOf(PointsList[0]), triangle);
+            PointsList.Clear();
         }
 
         public void GroupElements()

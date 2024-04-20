@@ -1,5 +1,6 @@
 ﻿using Draw.src.Model;
 using Draw.src.Processors;
+using Draw.src.Processors.Helper;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -16,8 +17,7 @@ namespace Draw
 
         private bool isLeftMouseButtonDown = false;
 
-        private Enumerators.SplineType splineType = Enumerators.SplineType.None;
-        private Enumerators.TriangleTypes triangleType = Enumerators.TriangleTypes.None;
+        private EnumTypes.SplineType splineType = EnumTypes.SplineType.None;
 
         public MainForm()
         {
@@ -86,23 +86,29 @@ namespace Draw
 
                     dialogProcessor.ClickedPoint = e.Location;
 
-                    if (DialogProcessor.PointsList.Count >= 3
-                            && dialogProcessor.ContainsPoint(dialogProcessor.ClickedPoint) != null)
+                    if (DialogProcessor.PointsList.Count >= 3)
                     {
-                        if (drawPolygon.Checked)
+                        if (dialogProcessor.ContainsPoint(dialogProcessor.ClickedPoint) != null)
                         {
-                            drawPolygon_Click();
-                            drawPolygon.Checked = false;
+                            if (drawPolygon.Checked)
+                            {
+                                drawPolygon_Click();
+                                drawPolygon.Checked = false;
+                            }
+                            else if (splineType == EnumTypes.SplineType.Bezier)
+                            {
+                                DrawBezier_Click();
+                                splineType = EnumTypes.SplineType.None;
+                            }
+                            else if (splineType == EnumTypes.SplineType.Base)
+                            {
+                                DrawSpline_Click();
+                                splineType = EnumTypes.SplineType.None;
+                            }
                         }
-                        if(splineType == Enumerators.SplineType.Bezier)
+                        else if (DialogProcessor.PointsList.Count == 3)
                         {
-                            DrawBezier_Click();
-                            splineType = Enumerators.SplineType.None;
-                        }
-                        if(splineType == Enumerators.SplineType.Base)
-                        {
-                            DrawSpline_Click();
-                            splineType = Enumerators.SplineType.None;
+                            DrawTriangle_Click();
                         }
 
                         dialogProcessor.IsDrawing = false;
@@ -209,6 +215,15 @@ namespace Draw
             dialogProcessor.AddBSpline();
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на Б-Сплайн крива";
+
+            viewPort.Invalidate();
+        }
+
+        private void DrawTriangle_Click()
+        {
+            dialogProcessor.AddTriangle();
+
+            statusBar.Items[0].Text = "Последно действие: Рисуване на триъгълник";
 
             viewPort.Invalidate();
         }
@@ -357,17 +372,22 @@ namespace Draw
 
         private void безиеКриваToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            splineType = Enumerators.SplineType.Bezier;
+            splineType = EnumTypes.SplineType.Bezier;
             dialogProcessor.IsDrawing = true;
         }
 
         private void бСплайнКриваToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            splineType = Enumerators.SplineType.Base;
+            splineType = EnumTypes.SplineType.Base;
             dialogProcessor.IsDrawing = true;
         }
 
         private void drawPolygon_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.IsDrawing = true;
+        }
+
+        private void триъгълникToolStripMenuItem_Click(object sender, EventArgs e)
         {
             dialogProcessor.IsDrawing = true;
         }

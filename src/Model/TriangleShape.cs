@@ -1,4 +1,5 @@
 ﻿using Draw.src.Processors;
+using Draw.src.Processors.Helper;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -27,13 +28,11 @@ namespace Draw.src.Model
 
         #region Properties
 
-        public string Type { get; set; }
-
         #endregion
 
         public override bool Contains(PointF point)
         {
-            return base.ContainsTriangle(point);
+            return base.Contains(point);
         }
 
         public override void DrawSelf(Graphics grfx)
@@ -43,6 +42,13 @@ namespace Draw.src.Model
             base.DrawSelf(grfx);
 
             grfx.Transform = TransformationMatrix;
+
+            List<PointF> convertedPoints = new List<PointF>();
+            
+            foreach (var item in Vertices)
+            {
+                convertedPoints.Add(new PointF(item.Location.X, item.Location.Y));
+            }
 
             grfx.FillPolygon(new SolidBrush(FillColor), convertedPoints.ToArray());
             grfx.DrawPolygon(new Pen(StrokeColor), convertedPoints.ToArray());

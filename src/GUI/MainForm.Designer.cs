@@ -88,6 +88,7 @@
             this.DeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.colorDialog2 = new System.Windows.Forms.ColorDialog();
             this.viewPort = new Draw.DoubleBufferedPanel();
+            this.триъгълникToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.speedMenu.SuspendLayout();
@@ -152,7 +153,8 @@
             this.правиъгълникToolStripMenuItem,
             this.кръгToolStripMenuItem,
             this.полигонToolStripMenuItem,
-            this.сплайнToolStripMenuItem});
+            this.сплайнToolStripMenuItem,
+            this.триъгълникToolStripMenuItem});
             this.фигуриToolStripMenuItem.Name = "фигуриToolStripMenuItem";
             this.фигуриToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
             this.фигуриToolStripMenuItem.Text = "Фигури";
@@ -211,14 +213,14 @@
             // безиеКриваToolStripMenuItem
             // 
             this.безиеКриваToolStripMenuItem.Name = "безиеКриваToolStripMenuItem";
-            this.безиеКриваToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.безиеКриваToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.безиеКриваToolStripMenuItem.Text = "Безие Крива";
             this.безиеКриваToolStripMenuItem.Click += new System.EventHandler(this.безиеКриваToolStripMenuItem_Click);
             // 
             // бСплайнКриваToolStripMenuItem
             // 
             this.бСплайнКриваToolStripMenuItem.Name = "бСплайнКриваToolStripMenuItem";
-            this.бСплайнКриваToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.бСплайнКриваToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.бСплайнКриваToolStripMenuItem.Text = "Б-Сплайн Крива";
             this.бСплайнКриваToolStripMenuItem.Click += new System.EventHandler(this.бСплайнКриваToolStripMenuItem_Click);
             // 
@@ -587,6 +589,13 @@
             this.viewPort.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseMove);
             this.viewPort.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseUp);
             // 
+            // триъгълникToolStripMenuItem
+            // 
+            this.триъгълникToolStripMenuItem.Name = "триъгълникToolStripMenuItem";
+            this.триъгълникToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.триъгълникToolStripMenuItem.Text = "Триъгълник";
+            this.триъгълникToolStripMenuItem.Click += new System.EventHandler(this.триъгълникToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -675,5 +684,6 @@
         private System.Windows.Forms.ToolStripMenuItem сплайнToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem безиеКриваToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem бСплайнКриваToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem триъгълникToolStripMenuItem;
     }
 }
