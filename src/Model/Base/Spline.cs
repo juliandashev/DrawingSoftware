@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,6 +46,19 @@ namespace Draw.src.Model
                 base.Location = value;
             }
         }
+
+        public override float StrokeWidth
+        {
+            get => base.StrokeWidth;
+            set
+            {
+                base.StrokeWidth = value;
+
+                if (value < 2)
+                    base.StrokeWidth = 2;
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -57,6 +71,14 @@ namespace Draw.src.Model
 
         public override bool Contains(PointF point)
         {
+            PointF[] transformPointsArray = new PointF[] { point };
+            Matrix temp = TransformationMatrix.Clone();
+
+            temp.Invert();
+
+            temp.TransformPoints(transformPointsArray);
+            PointF p = transformPointsArray[0];
+
             // Variable for counting how many walls were intersected
             int count = 0;
 
@@ -89,7 +111,7 @@ namespace Draw.src.Model
                 // Two conditions have to be met
 
                 // First condition ensures that the point is between the two points on the y coordinates of the lines of the polygon
-                bool firstCondition = (point.Y > y2) != (point.Y > y1);
+                bool firstCondition = (p.Y > y2) != (p.Y > y1);
 
                 // Everything is calculated with respect of this coordinate system (with inverted y axis)
 
@@ -106,7 +128,7 @@ namespace Draw.src.Model
                 // and thats how we derived xp = x0 = x2 + ((point.Y - y2) / (y1 - y2)) * (x1 - x2)
                 // lastly we take the < sign because we are aiming to be on the left side of the line
 
-                bool secondCondition = point.X < x2 + ((point.Y - y2) / (y1 - y2)) * (x1 - x2);
+                bool secondCondition = p.X < x2 + ((p.Y - y2) / (y1 - y2)) * (x1 - x2);
 
                 if (firstCondition && secondCondition)
                     // Then the number of crossed edges increases

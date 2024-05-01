@@ -74,6 +74,20 @@ namespace Draw
             set { strokeColor = value; }
         }
 
+        private float strokeWidth = 1;
+        public virtual float StrokeWidth
+        {
+            get { return strokeWidth; }
+            set { strokeWidth = value; }
+        }
+
+        private int opacity = 255;
+        public virtual int Opacity
+        {
+            get { return opacity; }
+            set { opacity = value; }
+        }
+
         private Matrix rotationMatrix = new Matrix();
 
         public virtual Matrix TransformationMatrix

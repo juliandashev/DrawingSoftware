@@ -51,7 +51,9 @@ namespace Draw.src.Model
 
                 PointF[] curvePoints = CalculateBSplineCurve(convertPoints);
 
-                grfx.DrawLines(new Pen(StrokeColor, 2), curvePoints);
+                FillColor = Color.FromArgb(Opacity, FillColor);
+
+                grfx.DrawLines(new Pen(FillColor, StrokeWidth), curvePoints);
             }
         }
 

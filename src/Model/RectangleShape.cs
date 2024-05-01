@@ -58,8 +58,10 @@ namespace Draw
 
             grfx.Transform = TransformationMatrix;
 
+            FillColor = Color.FromArgb(Opacity, FillColor);
+
             grfx.FillRectangle(new SolidBrush(FillColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
-            grfx.DrawRectangle(new Pen(StrokeColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
+            grfx.DrawRectangle(new Pen(StrokeColor, StrokeWidth), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
 
             grfx.Restore(State);
         }

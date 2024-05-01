@@ -46,7 +46,9 @@ namespace Draw.src.Model
                 foreach (PointShape point in ControlPoints) convertPoints.Add(point.Location);
 
                 PointF[] curvePoints = CalculateBezierCurve(convertPoints, 100);
-                grfx.DrawLines(new Pen(StrokeColor, 2), curvePoints);
+
+                FillColor = Color.FromArgb(Opacity, FillColor);
+                grfx.DrawLines(new Pen(FillColor, StrokeWidth), curvePoints);
             }
         }
 

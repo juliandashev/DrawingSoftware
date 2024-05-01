@@ -86,29 +86,23 @@ namespace Draw
 
                     dialogProcessor.ClickedPoint = e.Location;
 
-                    if (DialogProcessor.PointsList.Count >= 3)
+                    if (PointsList.Count >= 3 &&
+                        dialogProcessor.ContainsPoint(dialogProcessor.ClickedPoint) != null)
                     {
-                        if (dialogProcessor.ContainsPoint(dialogProcessor.ClickedPoint) != null)
+                        if (drawPolygon.Checked)
                         {
-                            if (drawPolygon.Checked)
-                            {
-                                drawPolygon_Click();
-                                drawPolygon.Checked = false;
-                            }
-                            else if (splineType == EnumTypes.SplineType.Bezier)
-                            {
-                                DrawBezier_Click();
-                                splineType = EnumTypes.SplineType.None;
-                            }
-                            else if (splineType == EnumTypes.SplineType.Base)
-                            {
-                                DrawSpline_Click();
-                                splineType = EnumTypes.SplineType.None;
-                            }
+                            drawPolygon_Click();
+                            drawPolygon.Checked = false;
                         }
-                        else if (DialogProcessor.PointsList.Count == 3)
+                        else if (splineType == EnumTypes.SplineType.Bezier)
                         {
-                            DrawTriangle_Click();
+                            DrawBezier_Click();
+                            splineType = EnumTypes.SplineType.None;
+                        }
+                        else if (splineType == EnumTypes.SplineType.Base)
+                        {
+                            DrawSpline_Click();
+                            splineType = EnumTypes.SplineType.None;
                         }
 
                         dialogProcessor.IsDrawing = false;
@@ -221,7 +215,7 @@ namespace Draw
 
         private void DrawTriangle_Click()
         {
-            dialogProcessor.AddTriangle();
+            dialogProcessor.AddRandomTriangle();
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на триъгълник";
 
@@ -285,7 +279,10 @@ namespace Draw
         {
             GroupShapes();
         }
-
+        private void разгрупиранеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UnGroupShapes();
+        }
         #endregion
 
         #region Helper Methods
@@ -325,6 +322,13 @@ namespace Draw
             viewPort.Invalidate();
         }
 
+        private void UnGroupShapes()
+        {
+            dialogProcessor.UnGroupElements();
+            statusBar.Items[0].Text = "Последно действие: Групиране на примитиви";
+            viewPort.Invalidate();
+        }
+
         private void Delete()
         {
             if (dialogProcessor.Selection.Count >= 1)
@@ -358,17 +362,36 @@ namespace Draw
 
             if (dialogProcessor.Selection.Count >= 1)
             {
-                contextMenuStrip1.Items.Add("Color", null, ColorBtn_Click);
+                contextMenuStrip1.Items.Add("Color", null, FillColorBtn_Click);
                 contextMenuStrip1.Items.Add("Delete", null, DeleteToolStripMenuItem_Click);
             }
             else // for editing selected shape or group
                 contextMenuStrip1.Items.Add("Add Rectangle", null, DrawRectangleButtonClick);
         }
 
-        private void ColorBtn_Click(object sender, EventArgs e)
+        private void FillColorBtn_Click(object sender, EventArgs e)
         {
-            // TODO: Color stuff
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                
+                dialogProcessor.SetFillColor(colorDialog1.Color);
+
+                statusBar.Items[0].Text = "Последно действие: Запълване с цвят ";
+                viewPort.Invalidate();
+            }
         }
+        private void OulineColorBtn_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                OulineColorBtn.BackColor = colorDialog1.Color;
+
+                dialogProcessor.SetStrokeColor(colorDialog1.Color);
+                viewPort.Invalidate();
+                statusBar.Items[0].Text = "Последно действие: Цвят на линия ";
+            }
+        }
+
 
         private void безиеКриваToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -389,7 +412,28 @@ namespace Draw
 
         private void триъгълникToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dialogProcessor.IsDrawing = true;
+            DrawTriangle_Click();
+        }
+
+        private void DeleteBtn_Click(object sender, EventArgs e)
+        {
+            Delete();
+        }
+
+        private void уголемиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.ScaleShape(1.2f, 1.2f);
+            viewPort.Invalidate();
+
+            statusBar.Items[0].Text = "Последно действие: Уголемяване на примитив";
+        }
+
+        private void намалиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.ScaleShape(0.8f, 0.8f);
+            viewPort.Invalidate();
+
+            statusBar.Items[0].Text = "Последно действие: Намаляне на примитив";
         }
     }
 }

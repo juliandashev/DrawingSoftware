@@ -28,6 +28,8 @@ namespace Draw.src.Model
 
         public List<Shape> SubShapesList = new List<Shape>();
 
+        public bool IsSelected { get; set; } = false;
+
         public override RectangleF Rectangle
         {
             get => base.Rectangle;
@@ -95,6 +97,16 @@ namespace Draw.src.Model
             {
                 foreach (var item in SubShapesList)
                     item.StrokeColor = value;
+            }
+        }
+
+        public override int Opacity
+        {
+            get => base.Opacity;
+            set
+            {
+                foreach (var item in SubShapesList)
+                    item.Opacity = value;
             }
         }
 

@@ -44,8 +44,10 @@ namespace Draw.src.Model
                 convertPoints.Add(new PointF(item.Location.X, item.Location.Y));
             }
 
+            FillColor = Color.FromArgb(Opacity, FillColor);
+
             grfx.FillPolygon(new SolidBrush(FillColor), convertPoints.ToArray());
-            grfx.DrawPolygon(new Pen(StrokeColor), convertPoints.ToArray());
+            grfx.DrawPolygon(new Pen(StrokeColor, StrokeWidth), convertPoints.ToArray());
 
             grfx.Restore(State);
         }

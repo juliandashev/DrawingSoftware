@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Draw.src.Model
 {
-    public class PointShape : RectangleShape
+    public class PointShape : Shape
     {
         #region Constructors
         public PointShape(RectangleF rect) : base(rect)
@@ -27,16 +27,17 @@ namespace Draw.src.Model
 
         public override void DrawSelf(Graphics grfx)
         {
+            State = grfx.Save();
             base.DrawSelf(grfx);
+
+            grfx.Transform = TransformationMatrix;
+
+            FillColor = Color.FromArgb(Opacity, FillColor);
 
             grfx.FillRectangle(new SolidBrush(FillColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
             grfx.DrawRectangle(new Pen(StrokeColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
 
-            //PointF center = new PointF(
-            //    (Rectangle.Width / 2) + Rectangle.X,
-            //    (Rectangle.Height / 2) + Rectangle.Y);
-
-            //Vertices.Add(center);
+            grfx.Restore(State);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Draw
             set { selection = value; }
         }
 
-        private SubShapes SubShapes = new SubShapes();
+        private SubShapes Groups = new SubShapes();
 
         /// <summary>
         /// Дали в момента диалога е в състояние на "влачене" на избрания елемент.
@@ -76,6 +76,31 @@ namespace Draw
         }
 
         public static List<PointShape> PointsList { get; set; } = new List<PointShape>();
+
+        public void SetStrokeColor(Color c)
+        {
+            if (Selection.Count >= 1)
+            {
+                foreach (Shape shape in Selection)
+                    shape.StrokeColor = c;
+            }
+        }
+
+        public void SetFillColor(Color c)
+        {
+            if (Selection.Count >= 1)
+            {
+                foreach (Shape shape in Selection)
+                    shape.FillColor = c;
+            }
+        }
+
+        public void SetOpacity(int o)
+        {
+            if (Selection != null)
+                foreach (Shape shape in Selection)
+                    shape.Opacity = o;
+        }
 
         #endregion
 
@@ -118,15 +143,15 @@ namespace Draw
                 #endregion
 
                 // Second way of finding the center
-                PointF center = new PointF((SubShapes.Rectangle.Width / 2) + SubShapes.Rectangle.X, (SubShapes.Rectangle.Height / 2) + SubShapes.Rectangle.Y);
+                PointF center = new PointF((Groups.Rectangle.Width / 2) + Groups.Rectangle.X, (Groups.Rectangle.Height / 2) + Groups.Rectangle.Y);
 
-                foreach (var shape in SubShapes.SubShapesList)
+                foreach (var shape in Groups.SubShapesList)
                 {
                     // rotate all the points around the center of the group rectangle
                     shape.TransformationMatrix.RotateAt(rotationAngle, center);
                 }
 
-                SubShapes.TransformationMatrix.RotateAt(rotationAngle, center);
+                Groups.TransformationMatrix.RotateAt(rotationAngle, center);
             }
         }
 
@@ -145,13 +170,13 @@ namespace Draw
         {
             if (Selection.Count >= 1)
             {
-                foreach (var shape in SubShapes.SubShapesList)
+                foreach (var shape in Groups.SubShapesList)
                 {
                     // rotate all the points around the center of the group rectangle
                     shape.TransformationMatrix.Scale(scaleX, scaleY);
                 }
 
-                SubShapes.TransformationMatrix.Scale(scaleX, scaleY);
+                Groups.TransformationMatrix.Scale(scaleX, scaleY);
             }
         }
 
@@ -179,6 +204,36 @@ namespace Draw
             rect.StrokeColor = Color.Black;
 
             ShapeList.Add(rect);
+        }
+
+        public void AddRandomTriangle()
+        {
+            Random rnd = new Random();
+
+            int x = rnd.Next(100, 1000);
+            int y = rnd.Next(100, 600);
+            int width = 200;
+            int height = 100;
+
+            List<PointShape> points = new List<PointShape>()
+            {
+                new PointShape(new RectangleF(x + width, y, 3, 3)), // top right corner
+                new PointShape(new RectangleF(x, y + height, 3, 3)), // bottom left corner
+                new PointShape(new RectangleF(x + width, y + height, 3, 3)) // bottom right
+            };
+
+            PolygonShape triangle = new PolygonShape(new RectangleF(
+                    x,
+                    y,
+                    width,
+                    height),
+                    points)
+            {
+                FillColor = Color.White,
+                StrokeColor = Color.Black
+            };
+
+            ShapeList.Add(triangle);
         }
 
         public void AddPoint()
@@ -219,13 +274,6 @@ namespace Draw
                 StrokeColor = Color.Black
             };
 
-            //PolygonShape polygon = new PolygonShape(new RectangleF(
-            //    20, 20, 40, 20), new List<PointF>() { new PointF(20, 40), new PointF(40, 20), new PointF(60, 20), new PointF(60, 40) })
-            //{
-            //    FillColor = Color.Red,
-            //    StrokeColor = Color.Black,
-            //};
-
             ShapeList.Insert(ShapeList.IndexOf(PointsList[0]), polygon);
             PointsList.Clear();
         }
@@ -237,7 +285,6 @@ namespace Draw
             {
                 controlPoints = new List<PointShape>(PointsList);
             }
-
 
             float minX = controlPoints.Min(p => p.Location.X);
             float maxX = controlPoints.Max(p => p.Location.X);
@@ -286,34 +333,6 @@ namespace Draw
             PointsList.Clear();
         }
 
-        public void AddTriangle()
-        {
-            if (PointsList.Count >= 1)
-            {
-                polygonPointsList = new List<PointShape>(PointsList);
-            }
-
-            float minX = polygonPointsList.Min(p => p.Location.X);
-            float maxX = polygonPointsList.Max(p => p.Location.X);
-
-            float minY = polygonPointsList.Min(p => p.Location.Y);
-            float maxY = polygonPointsList.Max(p => p.Location.Y);
-
-            TriangleShape triangle = new TriangleShape(new RectangleF(
-                    minX,
-                    minY,
-                    maxX - minX,
-                    maxY - minY),
-                    polygonPointsList)
-            {
-                FillColor = Color.White,
-                StrokeColor = Color.Black
-            };
-
-            ShapeList.Insert(ShapeList.IndexOf(PointsList[0]), triangle);
-            PointsList.Clear();
-        }
-
         public void GroupElements()
         {
             List<Shape> temp = Selection;
@@ -326,46 +345,56 @@ namespace Draw
                 float maxX = temp.Max(x => x.Rectangle.Right);
                 float maxY = temp.Max(y => y.Rectangle.Bottom);
 
-                SubShapes = new SubShapes(new RectangleF(minX, minY, maxX - minX, maxY - minY))
+                Groups = new SubShapes(new RectangleF(minX, minY, maxX - minX, maxY - minY))
                 {
                     SubShapesList = Selection
                 };
 
                 Selection = new List<Shape>();
 
-                ShapeList.Add(SubShapes);
-                foreach (var item in SubShapes.SubShapesList)
+                ShapeList.Add(Groups);
+                foreach (var item in Groups.SubShapesList)
                 {
                     ShapeList.Remove(item);
                 }
             }
         }
 
-        // Curently in maintanance :D
+        // TODO: Ungroup shapes
+        public void UnGroupElements()
+        {
+            List<Shape> temp = Selection;
 
-        //public void AddRandomTriangle()
-        //{
-        //    List<PointF> points = new List<PointF>();
+            if (ShapeList.Count >= 1)
+            {
+                foreach (var selectedItem in ShapeList)
+                {
+                    if(selectedItem is SubShapes)
+                    {
+                        
+                    }
+                }
 
-        //    Random rnd = new Random();
+                float minX = temp.Min(x => x.Rectangle.Left);
+                float minY = temp.Min(y => y.Rectangle.Top);
 
-        //    int x = rnd.Next(100, 1000);
-        //    int y = rnd.Next(100, 600);
+                float maxX = temp.Max(x => x.Rectangle.Right);
+                float maxY = temp.Max(y => y.Rectangle.Bottom);
 
-        //    points.Add(new PointF(x, y));
+                Groups = new SubShapes(new RectangleF(minX, minY, maxX - minX, maxY - minY))
+                {
+                    SubShapesList = Selection
+                };
 
-        //    points.Add(new PointF(x + 50, y - 50));
+                Selection = new List<Shape>();
 
-        //    points.Add(new PointF(
-        //        x + rnd.Next(0, 50),
-        //        y + rnd.Next(50, 100)));
-
-        //    TriangleShape triag = new TriangleShape(points);
-        //    triag.FillColor = Color.White;
-        //    triag.StrokeColor = Color.Black;
-
-        //    PolygonList.Add(triag);
-        //}
+                ShapeList.Add(Groups);
+                foreach (var item in Groups.SubShapesList)
+                {
+                    ShapeList.Remove(item);
+                }
+            }
+        }
 
         public void AddRandomEllipse()
         {

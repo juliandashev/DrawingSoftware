@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 
@@ -23,6 +24,12 @@ namespace Draw.src.Model
         // Cool thing is that this could be used for the circle primitive as well 
         public override bool Contains(PointF point)
         {
+            PointF[] transformPointsArray = new PointF[] { point };
+            Matrix temp = TransformationMatrix.Clone();
+
+            temp.Invert();
+            temp.TransformPoints(transformPointsArray);
+
             // calculating the half width and half height of the Rectangle
             float halfWidth = Rectangle.Width / 2;
             float halfHeight = Rectangle.Height / 2;
@@ -37,9 +44,9 @@ namespace Draw.src.Model
             // basically returning the formula
             // ((x-h) / rx)^2 + ((y-h) / ry)^2 <= 1
             // where < 1 is inside the ellipse and = 1 means on the line
-            return 
-                Math.Pow((point.X - ellipseCenter.X) / halfWidth, 2) +
-                Math.Pow((point.Y - ellipseCenter.Y) / halfHeight, 2) 
+            return
+                Math.Pow((transformPointsArray[0].X - ellipseCenter.X) / halfWidth, 2) +
+                Math.Pow((transformPointsArray[0].Y - ellipseCenter.Y) / halfHeight, 2) 
                     <= 1;
         }
 
@@ -51,8 +58,10 @@ namespace Draw.src.Model
 
             grfx.Transform = TransformationMatrix;
 
+            FillColor = Color.FromArgb(Opacity, FillColor);
+
             grfx.FillEllipse(new SolidBrush(FillColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
-            grfx.DrawEllipse(new Pen(StrokeColor), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
+            grfx.DrawEllipse(new Pen(StrokeColor, StrokeWidth), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
 
             grfx.Restore(State);
         }
