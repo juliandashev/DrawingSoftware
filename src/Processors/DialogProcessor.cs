@@ -97,9 +97,22 @@ namespace Draw
 
         public void SetOpacity(int o)
         {
-            if (Selection != null)
-                foreach (Shape shape in Selection)
-                    shape.Opacity = o;
+            if (0 <= o && o <= 255)
+            {
+                if (Selection.Count >= 1)
+                    foreach (Shape shape in Selection)
+                        shape.Opacity = o;
+            }
+        }
+
+        public void SetStrokeWidth(float width)
+        {
+            if (0 <= width && width <= 50)
+            {
+                if (Selection.Count >= 1)
+                    foreach (Shape shape in Selection)
+                        shape.StrokeWidth = width;
+            }
         }
 
         #endregion
@@ -180,7 +193,7 @@ namespace Draw
             }
         }
 
-        public void AddRandomRectangle()
+        public void AddRandomRectangle(int strokeWidth)
         {
             Random rnd = new Random();
             int x = rnd.Next(100, 1000);
@@ -189,11 +202,12 @@ namespace Draw
             RectangleShape rect = new RectangleShape(new Rectangle(x, y, 100, 200));
             rect.FillColor = Color.White;
             rect.StrokeColor = Color.Black;
+            rect.StrokeWidth = strokeWidth;
 
             ShapeList.Add(rect);
         }
 
-        public void AddRandomSquare()
+        public void AddRandomSquare(int strokeWidth)
         {
             Random rnd = new Random();
             int x = rnd.Next(100, 1000);
@@ -202,11 +216,12 @@ namespace Draw
             RectangleShape rect = new RectangleShape(new Rectangle(x, y, 100, 100));
             rect.FillColor = Color.White;
             rect.StrokeColor = Color.Black;
+            rect.StrokeWidth = strokeWidth;
 
             ShapeList.Add(rect);
         }
 
-        public void AddRandomTriangle()
+        public void AddRandomTriangle(int strokeWidth)
         {
             Random rnd = new Random();
 
@@ -230,7 +245,8 @@ namespace Draw
                     points)
             {
                 FillColor = Color.White,
-                StrokeColor = Color.Black
+                StrokeColor = Color.Black,
+                StrokeWidth = strokeWidth
             };
 
             ShapeList.Add(triangle);
@@ -250,7 +266,7 @@ namespace Draw
         }
 
         private static List<PointShape> polygonPointsList = new List<PointShape>();
-        public void AddPolygon()
+        public void AddPolygon(int strokeWidth = 1)
         {
             if (PointsList.Count >= 1)
             {
@@ -271,7 +287,8 @@ namespace Draw
                     polygonPointsList)
             {
                 FillColor = Color.White,
-                StrokeColor = Color.Black
+                StrokeColor = Color.Black,
+                StrokeWidth = strokeWidth
             };
 
             ShapeList.Insert(ShapeList.IndexOf(PointsList[0]), polygon);
@@ -279,7 +296,7 @@ namespace Draw
         }
 
         private static List<PointShape> controlPoints = new List<PointShape>();
-        public void AddBezier()
+        public void AddBezier(int strokeWidth = 2)
         {
             if (PointsList.Count >= 1)
             {
@@ -299,14 +316,15 @@ namespace Draw
                 maxY - minY),
                 controlPoints)
             {
-                StrokeColor = Color.Coral
+                StrokeColor = Color.Coral,
+                StrokeWidth = strokeWidth
             };
 
             ShapeList.Insert(ShapeList.IndexOf(PointsList[0]), bezier);
             PointsList.Clear();
         }
 
-        public void AddBSpline()
+        public void AddBSpline(int strokeWidth = 2)
         {
             if (PointsList.Count >= 1)
             {
@@ -326,11 +344,50 @@ namespace Draw
                 maxY - minY),
                 controlPoints)
             {
-                StrokeColor = Color.Red
+                StrokeColor = Color.Red,
+                StrokeWidth = strokeWidth,
             };
 
             ShapeList.Insert(ShapeList.IndexOf(PointsList[0]), splineShape);
             PointsList.Clear();
+        }
+
+        public void AddRandomStar(int strokeWidth)
+        {
+            Random rnd = new Random();
+            int x = rnd.Next(100, 1000);
+            int y = rnd.Next(100, 600);
+
+            StarShape star = new StarShape(new Rectangle
+                (x, y,
+                200,
+                200))
+            {
+                FillColor = Color.White,
+                StrokeColor = Color.Black,
+                StrokeWidth = strokeWidth
+            };
+
+            ShapeList.Add(star);
+        }
+
+        public void AddRandomRhomb(int strokeWidth)
+        {
+            Random rnd = new Random();
+            int x = rnd.Next(100, 1000);
+            int y = rnd.Next(100, 600);
+
+            RhombShape rhomb = new RhombShape(new RectangleF
+                (x, y,
+                200,
+                200))
+            {
+                FillColor = Color.White,
+                StrokeColor = Color.Black,
+                StrokeWidth = strokeWidth
+            };
+
+            ShapeList.Add(rhomb);
         }
 
         public void GroupElements()
@@ -369,9 +426,9 @@ namespace Draw
             {
                 foreach (var selectedItem in ShapeList)
                 {
-                    if(selectedItem is SubShapes)
+                    if (selectedItem is SubShapes)
                     {
-                        
+
                     }
                 }
 
@@ -396,7 +453,7 @@ namespace Draw
             }
         }
 
-        public void AddRandomEllipse()
+        public void AddRandomEllipse(int strokeWidth = 1)
         {
             Random rnd = new Random();
             int x = rnd.Next(100, 1000);
@@ -405,11 +462,12 @@ namespace Draw
             EllipseShape ellipse = new EllipseShape(new Rectangle(x, y, 200, 100));
             ellipse.FillColor = Color.White;
             ellipse.StrokeColor = Color.Black;
+            ellipse.StrokeWidth = strokeWidth;
 
             ShapeList.Add(ellipse);
         }
 
-        public void AddRandomCircle()
+        public void AddRandomCircle(int strokeWidth = 1)
         {
             Random rnd = new Random();
             int x = rnd.Next(100, 1000);
@@ -418,6 +476,7 @@ namespace Draw
             EllipseShape ellipse = new EllipseShape(new Rectangle(x, y, 100, 100));
             ellipse.FillColor = Color.White;
             ellipse.StrokeColor = Color.Black;
+            ellipse.StrokeWidth = strokeWidth;
 
             ShapeList.Add(ellipse);
         }

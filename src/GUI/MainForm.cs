@@ -142,7 +142,7 @@ namespace Draw
         #region Drawing Shapes
         void DrawRectangleButtonClick(object sender, EventArgs e)
         {
-            dialogProcessor.AddRandomRectangle();
+            dialogProcessor.AddRandomRectangle(StrokeWidth());
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на правоъгълник";
 
@@ -151,7 +151,7 @@ namespace Draw
 
         private void drawEllipseButton_Click(object sender, EventArgs e)
         {
-            dialogProcessor.AddRandomEllipse();
+            dialogProcessor.AddRandomEllipse(StrokeWidth());
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на елипса";
 
@@ -170,7 +170,7 @@ namespace Draw
 
         private void drawSquare_Click(object sender, EventArgs e)
         {
-            dialogProcessor.AddRandomSquare();
+            dialogProcessor.AddRandomSquare(StrokeWidth());
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на квадрат";
 
@@ -179,7 +179,7 @@ namespace Draw
 
         private void drawCircle_Click(object sender, EventArgs e)
         {
-            dialogProcessor.AddRandomCircle();
+            dialogProcessor.AddRandomCircle(StrokeWidth());
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на окръжност";
 
@@ -188,7 +188,7 @@ namespace Draw
 
         private void drawPolygon_Click()
         {
-            dialogProcessor.AddPolygon();
+            dialogProcessor.AddPolygon(StrokeWidth());
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на полигон";
 
@@ -197,7 +197,7 @@ namespace Draw
 
         private void DrawBezier_Click()
         {
-            dialogProcessor.AddBezier();
+            dialogProcessor.AddBezier(StrokeWidth());
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на Безие крива";
 
@@ -206,7 +206,7 @@ namespace Draw
 
         private void DrawSpline_Click()
         {
-            dialogProcessor.AddBSpline();
+            dialogProcessor.AddBSpline(StrokeWidth());
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на Б-Сплайн крива";
 
@@ -215,11 +215,28 @@ namespace Draw
 
         private void DrawTriangle_Click()
         {
-            dialogProcessor.AddRandomTriangle();
+            dialogProcessor.AddRandomTriangle(StrokeWidth());
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на триъгълник";
 
             viewPort.Invalidate();
+        }
+
+        private void drawStarBtn_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.AddRandomStar(StrokeWidth());
+            viewPort.Invalidate();
+
+            statusBar.Items[0].Text = "Последно действие: Добавяне на звезда";
+        }
+
+        private void ромбToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.AddRandomRhomb(StrokeWidth());
+
+            viewPort.Invalidate();
+
+            statusBar.Items[0].Text = "Последно действие: Добавяне на ромб";
         }
 
         #endregion
@@ -346,13 +363,73 @@ namespace Draw
             }
         }
 
+        private int StrokeWidth()
+        {
+            if (int.TryParse(OutlineTextBox.Text, out int strokeWidth))
+                return strokeWidth;
+
+            return 1;
+        }
+
+        private int SetOppacity()
+        {
+            if (int.TryParse(OppacityTextBox.Text, out int oppacity))
+                return oppacity;
+
+            return 255;
+        }
+
+        int value = 1;
+        private void ScaleUpStrokeWidth()
+        {
+            if (dialogProcessor.Selection.Count > 0)
+            {
+                foreach (var item in dialogProcessor.Selection)
+                {
+                    item.StrokeWidth += 5;
+                    dialogProcessor.SetStrokeWidth(item.StrokeWidth);
+                }
+
+                viewPort.Invalidate();
+
+                statusBar.Items[0].Text = "Последно действие: Задаване на ширина на контур";
+            }
+        }
+
+        private void ScaleDownStrokeWidth()
+        {
+            if (dialogProcessor.Selection.Count > 0)
+            {
+                foreach (var item in dialogProcessor.Selection)
+                {
+                    item.StrokeWidth -= 5;
+                    dialogProcessor.SetStrokeWidth(item.StrokeWidth);
+                }
+
+                viewPort.Invalidate();
+
+                statusBar.Items[0].Text = "Последно действие: Задаване на ширина на контур";
+            }
+        }
+
         #endregion
 
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Delete)
+            switch (e.KeyCode)
             {
-                Delete();
+                case Keys.Delete:
+                    Delete();
+                    break;
+
+                case Keys.Control:
+                case Keys.Shift:
+                    case Keys.Up:
+                        ScaleUpStrokeWidth();
+                        break;
+                    case Keys.Down:
+                        ScaleDownStrokeWidth();
+                        break;
             }
         }
 
@@ -373,7 +450,6 @@ namespace Draw
         {
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
-                
                 dialogProcessor.SetFillColor(colorDialog1.Color);
 
                 statusBar.Items[0].Text = "Последно действие: Запълване с цвят ";
@@ -391,7 +467,6 @@ namespace Draw
                 statusBar.Items[0].Text = "Последно действие: Цвят на линия ";
             }
         }
-
 
         private void безиеКриваToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -434,6 +509,34 @@ namespace Draw
             viewPort.Invalidate();
 
             statusBar.Items[0].Text = "Последно действие: Намаляне на примитив";
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.SetStrokeWidth(StrokeWidth());
+
+            viewPort.Invalidate();
+
+            statusBar.Items[0].Text = "Последно действие: Задаване на ширина на контур";
+        }
+
+        private void OppacityBtn_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.SetOpacity(SetOppacity());
+
+            viewPort.Invalidate();
+
+            statusBar.Items[0].Text = "Последно действие: Задаване на прозрачност на фигурата";
+        }
+
+        private void удебеляванеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ScaleDownStrokeWidth();
+        }
+
+        private void намалянеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ScaleUpStrokeWidth();
         }
     }
 }

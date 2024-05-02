@@ -8,17 +8,16 @@ using System.Threading.Tasks;
 
 namespace Draw.src.Model
 {
-    [Serializable]
-    public abstract class Spline : Shape
+    public class RhombShape : Shape
     {
-        #region Constructors
 
-        public Spline(RectangleF rect) : base(rect)
+        #region Constructor
+
+        public RhombShape(RectangleF rect) : base(rect)
         {
-            this.Rectangle = rect;
         }
 
-        public Spline(Spline shape) : base(shape)
+        public RhombShape(RhombShape rhomb) : base(rhomb)
         {
         }
 
@@ -26,49 +25,14 @@ namespace Draw.src.Model
 
         #region Properties
 
-        protected List<PointShape> ControlPoints { get; set; } = new List<PointShape>();
-
-        public override RectangleF Rectangle { get => base.Rectangle; set => base.Rectangle = value; }
-
-        public override PointF Location
-        {
-            get => base.Location;
-            set
-            {
-                foreach (PointShape p in ControlPoints)
-                {
-                    p.Location = new PointF(
-                        p.Location.X + value.X - base.Location.X,
-                        p.Location.Y + value.Y - base.Location.Y
-                    );
-                }
-
-                base.Location = value;
-            }
-        }
-
-        public override float StrokeWidth
-        {
-            get => base.StrokeWidth;
-            set
-            {
-                base.StrokeWidth = value;
-            }
-        }
+        PointF[] RhombusPoints { get; set; }
 
         #endregion
-
-        /// <summary>
-        /// Checks if a point is inside the polygon using Ray Casting 
-        /// Doesn't matter if it's convex or not
-        /// Works O(n) where n is the Vertices Count
-        /// </summary>
-        /// <param name="point">Mouse (x,y) coordinates</param>
-        /// <returns></returns>
 
         public override bool Contains(PointF point)
         {
             PointF[] transformPointsArray = new PointF[] { point };
+
             Matrix temp = TransformationMatrix.Clone();
 
             temp.Invert();
@@ -82,27 +46,27 @@ namespace Draw.src.Model
             float x1, y1, x2, y2;
 
             // Lopping through every vertex
-            for (int i = 0; i < ControlPoints.Count; i++)
+            for (int i = 0; i < RhombusPoints.Length; i++)
             {
-                if (i < ControlPoints.Count - 1)
+                if (i < RhombusPoints.Length - 1)
                 {
                     // Definig the x and y of the first point
-                    x1 = ControlPoints[i + 1].Location.X;
-                    y1 = ControlPoints[i + 1].Location.Y;
+                    x1 = RhombusPoints[i + 1].X;
+                    y1 = RhombusPoints[i + 1].Y;
 
                     // Then definig the x and y of the next point
-                    x2 = ControlPoints[i].Location.X;
-                    y2 = ControlPoints[i].Location.Y;
+                    x2 = RhombusPoints[i].X;
+                    y2 = RhombusPoints[i].Y;
                 }
                 else
                 {
                     // Finding the values of the last point
-                    x1 = ControlPoints[i].Location.X;
-                    y1 = ControlPoints[i].Location.Y;
+                    x1 = RhombusPoints[i].X;
+                    y1 = RhombusPoints[i].Y;
 
                     // Finding the values of the first point
-                    x2 = ControlPoints[0].Location.X;
-                    y2 = ControlPoints[0].Location.Y;
+                    x2 = RhombusPoints[0].X;
+                    y2 = RhombusPoints[0].Y;
                 }
 
                 // Two conditions have to be met
@@ -140,16 +104,26 @@ namespace Draw.src.Model
 
         public override void DrawSelf(Graphics grfx)
         {
+            State = grfx.Save();
+
             base.DrawSelf(grfx);
 
-            List<PointF> points = new List<PointF>();
+            grfx.Transform = TransformationMatrix;
 
-            foreach (var item in ControlPoints)
-            {
-                points.Add(item.Location);
-            }
+            FillColor = Color.FromArgb(Opacity, FillColor);
 
-            grfx.DrawPolygon(Pens.Gray, points.ToArray());
+            this.RhombusPoints = new PointF[4]
+                {
+                        new PointF(Rectangle.X + Rectangle.Width / 2, Rectangle.Y),
+                        new PointF(Rectangle.Right, Rectangle.Y + Rectangle.Height / 2),
+                        new PointF(Rectangle.X + Rectangle.Width / 2, Rectangle.Bottom),
+                        new PointF(Rectangle.X, Rectangle.Y + Rectangle.Height / 2)
+                };
+
+            grfx.FillPolygon(new SolidBrush(Color.FromArgb(Opacity, FillColor)), this.RhombusPoints);
+            grfx.DrawPolygon(new Pen(Color.FromArgb(Opacity, StrokeColor), StrokeWidth), this.RhombusPoints);
+
+            grfx.Restore(State);
         }
     }
 }

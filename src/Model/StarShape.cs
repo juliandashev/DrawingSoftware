@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -8,67 +9,40 @@ using System.Threading.Tasks;
 
 namespace Draw.src.Model
 {
-    [Serializable]
-    public abstract class Spline : Shape
+    public class StarShape : Polygon
     {
-        #region Constructors
+        #region Constructor
 
-        public Spline(RectangleF rect) : base(rect)
+        public StarShape(RectangleF rect) : base(rect)
         {
-            this.Rectangle = rect;
         }
 
-        public Spline(Spline shape) : base(shape)
+        public StarShape(StarShape star) : base(star)
         {
+
         }
 
         #endregion
 
         #region Properties
 
-        protected List<PointShape> ControlPoints { get; set; } = new List<PointShape>();
-
-        public override RectangleF Rectangle { get => base.Rectangle; set => base.Rectangle = value; }
-
-        public override PointF Location
-        {
-            get => base.Location;
-            set
-            {
-                foreach (PointShape p in ControlPoints)
-                {
-                    p.Location = new PointF(
-                        p.Location.X + value.X - base.Location.X,
-                        p.Location.Y + value.Y - base.Location.Y
-                    );
-                }
-
-                base.Location = value;
-            }
-        }
-
-        public override float StrokeWidth
-        {
-            get => base.StrokeWidth;
-            set
-            {
-                base.StrokeWidth = value;
-            }
-        }
+        private int NumberOfPoints { get; set; } = 5;
+        PointF[] StarPoints { get; set; }
 
         #endregion
 
         /// <summary>
-        /// Checks if a point is inside the polygon using Ray Casting 
-        /// Doesn't matter if it's convex or not
-        /// Works O(n) where n is the Vertices Count
+        /// Checks if a point is inside the polygon using Ray Casting.
         /// </summary>
         /// <param name="point">Mouse (x,y) coordinates</param>
         /// <returns></returns>
 
+        // Doesn't matter if it's convex or not.
+        // Works O(n) where n is the Vertices Count
         public override bool Contains(PointF point)
         {
             PointF[] transformPointsArray = new PointF[] { point };
+
             Matrix temp = TransformationMatrix.Clone();
 
             temp.Invert();
@@ -82,27 +56,27 @@ namespace Draw.src.Model
             float x1, y1, x2, y2;
 
             // Lopping through every vertex
-            for (int i = 0; i < ControlPoints.Count; i++)
+            for (int i = 0; i < StarPoints.Length; i++)
             {
-                if (i < ControlPoints.Count - 1)
+                if (i < StarPoints.Length - 1)
                 {
                     // Definig the x and y of the first point
-                    x1 = ControlPoints[i + 1].Location.X;
-                    y1 = ControlPoints[i + 1].Location.Y;
+                    x1 = StarPoints[i + 1].X;
+                    y1 = StarPoints[i + 1].Y;
 
                     // Then definig the x and y of the next point
-                    x2 = ControlPoints[i].Location.X;
-                    y2 = ControlPoints[i].Location.Y;
+                    x2 = StarPoints[i].X;
+                    y2 = StarPoints[i].Y;
                 }
                 else
                 {
                     // Finding the values of the last point
-                    x1 = ControlPoints[i].Location.X;
-                    y1 = ControlPoints[i].Location.Y;
+                    x1 = StarPoints[i].X;
+                    y1 = StarPoints[i].Y;
 
                     // Finding the values of the first point
-                    x2 = ControlPoints[0].Location.X;
-                    y2 = ControlPoints[0].Location.Y;
+                    x2 = StarPoints[0].X;
+                    y2 = StarPoints[0].Y;
                 }
 
                 // Two conditions have to be met
@@ -140,16 +114,59 @@ namespace Draw.src.Model
 
         public override void DrawSelf(Graphics grfx)
         {
+            State = grfx.Save();
+
             base.DrawSelf(grfx);
 
-            List<PointF> points = new List<PointF>();
+            grfx.Transform = TransformationMatrix;
 
-            foreach (var item in ControlPoints)
+            FillColor = Color.FromArgb(Opacity, FillColor);
+
+            this.StarPoints = MakeStarPoints(this.NumberOfPoints);
+
+            grfx.FillPolygon(new SolidBrush(FillColor), this.StarPoints);
+            grfx.DrawPolygon(new Pen(StrokeColor, StrokeWidth), this.StarPoints);
+
+            grfx.Restore(State);
+        }
+
+        private PointF[] MakeStarPoints(int numPoints)
+        {
+            PointF[] points = new PointF[numPoints * 2];
+
+            float rx = Rectangle.Width / 2;
+            float ry = Rectangle.Height / 2;
+
+            float cx = Rectangle.X + rx;
+            float cy = Rectangle.Y + ry;
+
+            float outherRadius = Math.Min(Rectangle.Width, Rectangle.Height) / 2;
+            float innerRadius = outherRadius * 0.4f;
+
+            double angle = -Math.PI / 2;
+            double deltaAngle = Math.PI / numPoints;
+
+            for (int i = 0; i < 2 * numPoints; i++)
             {
-                points.Add(item.Location);
+                if (i % 2 == 0)
+                {
+                    points[i] = new PointF(
+                        cx + (float)(Math.Cos(angle) * outherRadius),
+                        cy + (float)(Math.Sin(angle) * outherRadius)
+                    );
+                }
+                else
+                {
+                    points[i] = new PointF(
+                         cx + (float)(Math.Cos(angle) * innerRadius),
+                         cy + (float)(Math.Sin(angle) * innerRadius)
+                     );
+                }
+
+                angle += deltaAngle;
             }
 
-            grfx.DrawPolygon(Pens.Gray, points.ToArray());
+            return points;
         }
     }
 }

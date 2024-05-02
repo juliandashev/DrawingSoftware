@@ -32,7 +32,7 @@ namespace Draw
         #endregion
 
         #region Properties
-        protected List<PointShape> Vertices { get; set; } = new List<PointShape>();
+        public List<PointShape> Vertices { get; set; } = new List<PointShape>();
 
         public override RectangleF Rectangle
         {

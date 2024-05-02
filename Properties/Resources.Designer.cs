@@ -93,6 +93,16 @@ namespace Draw.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap deleteIcon1 {
+            get {
+                object obj = ResourceManager.GetObject("deleteIcon1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ellipseIcon {
             get {
                 object obj = ResourceManager.GetObject("ellipseIcon", resourceCulture);
@@ -126,6 +136,16 @@ namespace Draw.Properties {
         internal static System.Drawing.Bitmap polygonIcon {
             get {
                 object obj = ResourceManager.GetObject("polygonIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap polygonIcon1 {
+            get {
+                object obj = ResourceManager.GetObject("polygonIcon1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
