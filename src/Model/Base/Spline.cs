@@ -58,6 +58,8 @@ namespace Draw.src.Model
 
         #endregion
 
+        // Виж в класа на Полигонът
+
         /// <summary>
         /// Checks if a point is inside the polygon using Ray Casting 
         /// Doesn't matter if it's convex or not

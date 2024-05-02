@@ -103,6 +103,8 @@ namespace Draw
                     foreach (Shape shape in Selection)
                         shape.Opacity = o;
             }
+            else
+                return;
         }
 
         public void SetStrokeWidth(float width)
@@ -113,6 +115,8 @@ namespace Draw
                     foreach (Shape shape in Selection)
                         shape.StrokeWidth = width;
             }
+            else
+                return;
         }
 
         #endregion

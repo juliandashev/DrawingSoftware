@@ -15,8 +15,10 @@ namespace Draw
     {
         private DialogProcessor dialogProcessor = new DialogProcessor();
 
+        // Проверява дали ляв бутон на мишката е натиснат
         private bool isLeftMouseButtonDown = false;
 
+        // Използва се, за да дефинира тип на сплайн кривата (Безие или Базова сплайн)
         private EnumTypes.SplineType splineType = EnumTypes.SplineType.None;
 
         public MainForm()
@@ -34,7 +36,10 @@ namespace Draw
             dialogProcessor.ReDraw(sender, e);
         }
 
+        // --------------------------------------------------------------------------------------------------------------
         #region Mouse Movement
+        // --------------------------------------------------------------------------------------------------------------
+
         void ViewPortMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (pickUpSpeedButton.Checked)
@@ -138,8 +143,12 @@ namespace Draw
         }
 
         #endregion
+        // --------------------------------------------------------------------------------------------------------------
 
+        // --------------------------------------------------------------------------------------------------------------
         #region Drawing Shapes
+        // --------------------------------------------------------------------------------------------------------------
+
         void DrawRectangleButtonClick(object sender, EventArgs e)
         {
             dialogProcessor.AddRandomRectangle(StrokeWidth());
@@ -239,9 +248,17 @@ namespace Draw
             statusBar.Items[0].Text = "Последно действие: Добавяне на ромб";
         }
 
-        #endregion
+        private void drawPolygon_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.IsDrawing = true;
+        }
 
+        #endregion
+        // --------------------------------------------------------------------------------------------------------------
+
+        // --------------------------------------------------------------------------------------------------------------
         #region DropDown menu items
+        // --------------------------------------------------------------------------------------------------------------
 
         private void кръгToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -300,9 +317,42 @@ namespace Draw
         {
             UnGroupShapes();
         }
-        #endregion
+        private void триъгълникToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DrawTriangle_Click();
+        }
+        private void уголемиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.ScaleShape(1.2f, 1.2f);
+            viewPort.Invalidate();
 
+            statusBar.Items[0].Text = "Последно действие: Уголемяване на примитив";
+        }
+
+        private void намалиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.ScaleShape(0.8f, 0.8f);
+            viewPort.Invalidate();
+
+            statusBar.Items[0].Text = "Последно действие: Намаляне на примитив";
+        }
+        private void безиеКриваToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            splineType = EnumTypes.SplineType.Bezier;
+            dialogProcessor.IsDrawing = true;
+        }
+
+        private void бСплайнКриваToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            splineType = EnumTypes.SplineType.Base;
+            dialogProcessor.IsDrawing = true;
+        }
+        #endregion
+        // --------------------------------------------------------------------------------------------------------------
+
+        // --------------------------------------------------------------------------------------------------------------
         #region Helper Methods
+        // --------------------------------------------------------------------------------------------------------------
 
         private void RotateShape(float rotation)
         {
@@ -379,18 +429,17 @@ namespace Draw
             return 255;
         }
 
-        int value = 1;
         private void ScaleUpStrokeWidth()
         {
             if (dialogProcessor.Selection.Count > 0)
             {
                 foreach (var item in dialogProcessor.Selection)
                 {
-                    item.StrokeWidth += 5;
-                    dialogProcessor.SetStrokeWidth(item.StrokeWidth);
-                }
+                    dialogProcessor.SetStrokeWidth(item.StrokeWidth + 3);
+                    OutlineTextBox.Text = $"{item.StrokeWidth}";
 
-                viewPort.Invalidate();
+                    viewPort.Invalidate();
+                }
 
                 statusBar.Items[0].Text = "Последно действие: Задаване на ширина на контур";
             }
@@ -402,49 +451,22 @@ namespace Draw
             {
                 foreach (var item in dialogProcessor.Selection)
                 {
-                    item.StrokeWidth -= 5;
-                    dialogProcessor.SetStrokeWidth(item.StrokeWidth);
-                }
+                    dialogProcessor.SetStrokeWidth(item.StrokeWidth - 3);
+                    OutlineTextBox.Text = $"{item.StrokeWidth}";
 
-                viewPort.Invalidate();
+                    viewPort.Invalidate();
+                }
 
                 statusBar.Items[0].Text = "Последно действие: Задаване на ширина на контур";
             }
         }
 
         #endregion
+        // --------------------------------------------------------------------------------------------------------------
 
-        private void MainForm_KeyUp(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Delete:
-                    Delete();
-                    break;
-
-                case Keys.Control:
-                case Keys.Shift:
-                    case Keys.Up:
-                        ScaleUpStrokeWidth();
-                        break;
-                    case Keys.Down:
-                        ScaleDownStrokeWidth();
-                        break;
-            }
-        }
-
-        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            contextMenuStrip1.Items.Clear();
-
-            if (dialogProcessor.Selection.Count >= 1)
-            {
-                contextMenuStrip1.Items.Add("Color", null, FillColorBtn_Click);
-                contextMenuStrip1.Items.Add("Delete", null, DeleteToolStripMenuItem_Click);
-            }
-            else // for editing selected shape or group
-                contextMenuStrip1.Items.Add("Add Rectangle", null, DrawRectangleButtonClick);
-        }
+        // --------------------------------------------------------------------------------------------------------------
+        #region Coloring and outlines
+        // --------------------------------------------------------------------------------------------------------------
 
         private void FillColorBtn_Click(object sender, EventArgs e)
         {
@@ -468,58 +490,6 @@ namespace Draw
             }
         }
 
-        private void безиеКриваToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            splineType = EnumTypes.SplineType.Bezier;
-            dialogProcessor.IsDrawing = true;
-        }
-
-        private void бСплайнКриваToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            splineType = EnumTypes.SplineType.Base;
-            dialogProcessor.IsDrawing = true;
-        }
-
-        private void drawPolygon_Click(object sender, EventArgs e)
-        {
-            dialogProcessor.IsDrawing = true;
-        }
-
-        private void триъгълникToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DrawTriangle_Click();
-        }
-
-        private void DeleteBtn_Click(object sender, EventArgs e)
-        {
-            Delete();
-        }
-
-        private void уголемиToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            dialogProcessor.ScaleShape(1.2f, 1.2f);
-            viewPort.Invalidate();
-
-            statusBar.Items[0].Text = "Последно действие: Уголемяване на примитив";
-        }
-
-        private void намалиToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            dialogProcessor.ScaleShape(0.8f, 0.8f);
-            viewPort.Invalidate();
-
-            statusBar.Items[0].Text = "Последно действие: Намаляне на примитив";
-        }
-
-        private void toolStripButton2_Click(object sender, EventArgs e)
-        {
-            dialogProcessor.SetStrokeWidth(StrokeWidth());
-
-            viewPort.Invalidate();
-
-            statusBar.Items[0].Text = "Последно действие: Задаване на ширина на контур";
-        }
-
         private void OppacityBtn_Click(object sender, EventArgs e)
         {
             dialogProcessor.SetOpacity(SetOppacity());
@@ -531,12 +501,55 @@ namespace Draw
 
         private void удебеляванеToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ScaleDownStrokeWidth();
+            ScaleUpStrokeWidth();
         }
 
         private void намалянеToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ScaleUpStrokeWidth();
+            ScaleDownStrokeWidth();
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.SetStrokeWidth(StrokeWidth());
+
+            viewPort.Invalidate();
+
+            statusBar.Items[0].Text = "Последно действие: Задаване на ширина на контур";
+        }
+
+        #endregion
+        // --------------------------------------------------------------------------------------------------------------
+
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Delete:
+                    Delete();
+                    break;
+            }
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            contextMenuStrip1.Items.Clear();
+
+            if (dialogProcessor.Selection.Count >= 1)
+            {
+                contextMenuStrip1.Items.Add("Запълни", null, FillColorBtn_Click);
+                contextMenuStrip1.Items.Add("Оцвети контур", null, OulineColorBtn_Click);
+                contextMenuStrip1.Items.Add("Изтрии", null, DeleteToolStripMenuItem_Click);
+            }
+            else // for editing selected shape or group
+                contextMenuStrip1.Items.Add("Добави правоъгълник", null, DrawRectangleButtonClick);
+                contextMenuStrip1.Items.Add("Добави елипса", null, drawEllipseButton_Click);
+                contextMenuStrip1.Items.Add("Добави звезда", null, drawStarBtn_Click);
+        }
+
+        private void DeleteBtn_Click(object sender, EventArgs e)
+        {
+            Delete();
         }
     }
 }
