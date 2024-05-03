@@ -35,7 +35,8 @@ namespace Draw
             set { selection = value; }
         }
 
-        private SubShapes Groups = new SubShapes();
+        // private SubShapes Groups = new SubShapes();
+        private List<SubShapes> GroupList = new List<SubShapes>();
 
         /// <summary>
         /// Дали в момента диалога е в състояние на "влачене" на избрания елемент.
@@ -121,82 +122,9 @@ namespace Draw
 
         #endregion
 
-        public void RotateShape(float rotationAngle)
-        {
-            if (Selection.Count >= 1)
-            {
-                foreach (Shape shape in Selection)
-                {
-                    PointF center = new PointF((shape.Rectangle.Width / 2) + shape.Rectangle.X, (shape.Rectangle.Height / 2) + shape.Rectangle.Y);
-
-                    shape.TransformationMatrix.RotateAt(rotationAngle, center);
-                }
-            }
-        }
-
-        public void RotateGroup(float rotationAngle)
-        {
-            if (Selection.Count >= 1)
-            {
-                #region Other formula for finding the center
-                {
-                    // the formula for the center is defined as
-
-                    // (p1 + q1) / 2 thats the x coordinate
-                    // and
-                    // (p2 + q2) / 2 thats the y coordinate
-                    // of the center
-
-                    // It is outside the foreach because we want to calculate it once not for each shape that is in the group
-
-                    //PointF topLeft = new PointF(SubShapes.Rectangle.Left, SubShapes.Rectangle.Top); // imagine it as point A (p1, p2)
-                    //PointF bottomRight = new PointF(SubShapes.Rectangle.Right, SubShapes.Rectangle.Bottom); // and this as point B (q1, q2)
-
-                    //PointF center = new PointF(
-                    //         (topLeft.X + bottomRight.X) / 2,
-                    //         (topLeft.Y + bottomRight.Y) / 2
-                    //    );
-                }
-                #endregion
-
-                // Second way of finding the center
-                PointF center = new PointF((Groups.Rectangle.Width / 2) + Groups.Rectangle.X, (Groups.Rectangle.Height / 2) + Groups.Rectangle.Y);
-
-                foreach (var shape in Groups.SubShapesList)
-                {
-                    // rotate all the points around the center of the group rectangle
-                    shape.TransformationMatrix.RotateAt(rotationAngle, center);
-                }
-
-                Groups.TransformationMatrix.RotateAt(rotationAngle, center);
-            }
-        }
-
-        public void ScaleShape(float scaleX, float scaleY)
-        {
-            if (Selection.Count >= 1)
-            {
-                foreach (Shape shape in Selection)
-                {
-                    shape.TransformationMatrix.Scale(scaleX, scaleY);
-                }
-            }
-        }
-
-        public void ScaleGroup(float scaleX, float scaleY)
-        {
-            if (Selection.Count >= 1)
-            {
-                foreach (var shape in Groups.SubShapesList)
-                {
-                    // rotate all the points around the center of the group rectangle
-                    shape.TransformationMatrix.Scale(scaleX, scaleY);
-                }
-
-                Groups.TransformationMatrix.Scale(scaleX, scaleY);
-            }
-        }
-
+        // --------------------------------------------------------------------------------------------------------------
+        #region Add Shapes Methods
+        // --------------------------------------------------------------------------------------------------------------
         public void AddRandomRectangle(int strokeWidth)
         {
             Random rnd = new Random();
@@ -394,69 +322,6 @@ namespace Draw
             ShapeList.Add(rhomb);
         }
 
-        public void GroupElements()
-        {
-            List<Shape> temp = Selection;
-
-            if (ShapeList.Count >= 1)
-            {
-                float minX = temp.Min(x => x.Rectangle.Left);
-                float minY = temp.Min(y => y.Rectangle.Top);
-
-                float maxX = temp.Max(x => x.Rectangle.Right);
-                float maxY = temp.Max(y => y.Rectangle.Bottom);
-
-                Groups = new SubShapes(new RectangleF(minX, minY, maxX - minX, maxY - minY))
-                {
-                    SubShapesList = Selection
-                };
-
-                Selection = new List<Shape>();
-
-                ShapeList.Add(Groups);
-                foreach (var item in Groups.SubShapesList)
-                {
-                    ShapeList.Remove(item);
-                }
-            }
-        }
-
-        // TODO: Ungroup shapes
-        public void UnGroupElements()
-        {
-            List<Shape> temp = Selection;
-
-            if (ShapeList.Count >= 1)
-            {
-                foreach (var selectedItem in ShapeList)
-                {
-                    if (selectedItem is SubShapes)
-                    {
-
-                    }
-                }
-
-                float minX = temp.Min(x => x.Rectangle.Left);
-                float minY = temp.Min(y => y.Rectangle.Top);
-
-                float maxX = temp.Max(x => x.Rectangle.Right);
-                float maxY = temp.Max(y => y.Rectangle.Bottom);
-
-                Groups = new SubShapes(new RectangleF(minX, minY, maxX - minX, maxY - minY))
-                {
-                    SubShapesList = Selection
-                };
-
-                Selection = new List<Shape>();
-
-                ShapeList.Add(Groups);
-                foreach (var item in Groups.SubShapesList)
-                {
-                    ShapeList.Remove(item);
-                }
-            }
-        }
-
         public void AddRandomEllipse(int strokeWidth = 1)
         {
             Random rnd = new Random();
@@ -483,6 +348,188 @@ namespace Draw
             ellipse.StrokeWidth = strokeWidth;
 
             ShapeList.Add(ellipse);
+        }
+
+        #endregion
+        // --------------------------------------------------------------------------------------------------------------
+
+        // --------------------------------------------------------------------------------------------------------------
+        #region Group Action Methods
+        // --------------------------------------------------------------------------------------------------------------
+        private void ScaleGroup(float scaleCoef)
+        {
+            List<SubShapes> selectedGroup = GroupList.Intersect(Selection).OfType<SubShapes>().ToList();
+
+            if (selectedGroup.Count >= 1)
+            {
+                float coef = scaleCoef;
+
+                foreach (var group in selectedGroup)
+                {
+                    PointF center = new PointF((group.Rectangle.Width / 2) + group.Rectangle.X, (group.Rectangle.Height / 2) + group.Rectangle.Y);
+
+                    foreach (var shape in group.SubShapesList)
+                    {
+                        Matrix scaleMatrix = new Matrix(coef, 0, 0, coef, center.X * (1 - coef), center.Y * (1 - coef)); // увеличаване или намаляне около центъра
+                        // Мащабиране по S1S2 е същото като мащабиране по S2S1, което означава, че са комутативни
+                        shape.TransformationMatrix.Multiply(scaleMatrix);
+                    }
+
+                    group.TransformationMatrix.Scale(scaleCoef, scaleCoef);
+                }
+            }
+        }
+
+        private void RotateGroup(float rotationAngle)
+        {
+            List<SubShapes> selectedGroup = GroupList.Intersect(Selection).OfType<SubShapes>().ToList();
+
+            if (selectedGroup.Count >= 1)
+            {
+                #region Other formula for finding the center
+                // the formula for the center is defined as
+
+
+                // (p1 + q1) / 2 thats the x coordinate
+                // and
+                // (p2 + q2) / 2 thats the y coordinate
+                // of the center
+
+                // It is outside the foreach because we want to calculate it once not for each shape that is in the group
+
+                // --------------------------------------------------------------------------------------------------------------
+                /*
+                    Формулата за центъра е:
+
+                    (p1 + q1) / 2 това е х координатата |
+                                                        | на цантъра
+                    (p2 + q2) / 2 това е у координатата |
+
+                */
+
+                // --------------------------------------------------------------------------------------------------------------
+
+                //PointF topLeft = new PointF(SubShapes.Rectangle.Left, SubShapes.Rectangle.Top); // imagine it as point A (p1, p2)
+                //PointF bottomRight = new PointF(SubShapes.Rectangle.Right, SubShapes.Rectangle.Bottom); // and this as point B (q1, q2)
+
+                //PointF center = new PointF(
+                //         (topLeft.X + bottomRight.X) / 2,
+                //         (topLeft.Y + bottomRight.Y) / 2
+                //    );
+
+                #endregion
+
+                // Second way of finding the center
+
+                foreach (var group in selectedGroup)
+                {
+                    PointF center = new PointF((group.Rectangle.Width / 2) + group.Rectangle.X, (group.Rectangle.Height / 2) + group.Rectangle.Y);
+
+                    foreach (var shape in group.SubShapesList)
+                    {
+                        shape.TransformationMatrix.RotateAt(rotationAngle, center);
+                    }
+
+                    group.TransformationMatrix.RotateAt(rotationAngle, center);
+                }
+            }
+        }
+
+        public void GroupElements()
+        {
+            List<Shape> temp = Selection;
+
+            if (ShapeList.Count >= 1)
+            {
+                float minX = temp.Min(x => x.Rectangle.Left);
+                float minY = temp.Min(y => y.Rectangle.Top);
+
+                float maxX = temp.Max(x => x.Rectangle.Right);
+                float maxY = temp.Max(y => y.Rectangle.Bottom);
+
+                SubShapes Groups = new SubShapes(new RectangleF(minX, minY, maxX - minX, maxY - minY))
+                {
+                    SubShapesList = Selection
+                };
+
+                Selection = new List<Shape>();
+
+                ShapeList.Add(Groups);
+                GroupList.Add(Groups);
+
+                foreach (var item in Groups.SubShapesList)
+                {
+                    ShapeList.Remove(item);
+                }
+            }
+        }
+
+        // TODO: Ungroup shapes
+        public void UnGroupElements()
+        {
+            var intersection = GroupList.Intersect(Selection).OfType<SubShapes>().ToList();
+
+            if (intersection.Count >= 1)
+            {
+                foreach (var group in intersection)
+                {
+                    ShapeList.AddRange(group.SubShapesList);
+                    group.SubShapesList.Clear();
+                }
+                Selection.Clear();
+            }
+        }
+
+        #endregion
+        // --------------------------------------------------------------------------------------------------------------
+
+        // --------------------------------------------------------------------------------------------------------------
+        #region Shape Action Methods
+        // --------------------------------------------------------------------------------------------------------------
+        private void RotateShape(float rotationAngle)
+        {
+            var shapeType = Selection.Except(GroupList).ToList();
+
+            if (shapeType.Count >= 1)
+            {
+                foreach (Shape shape in shapeType)
+                {
+                    PointF center = new PointF((shape.Rectangle.Width / 2) + shape.Rectangle.X, (shape.Rectangle.Height / 2) + shape.Rectangle.Y);
+
+                    shape.TransformationMatrix.RotateAt(rotationAngle, center);
+                }
+            }
+        }
+
+        private void ScaleShape(float scaleCoef)
+        {
+            var shapeType = Selection.Except(GroupList).ToList();
+
+            if (shapeType.Count >= 1)
+            {
+                foreach (Shape shape in shapeType)
+                {
+                    PointF center = new PointF((shape.Rectangle.Width / 2) + shape.Rectangle.X, (shape.Rectangle.Height / 2) + shape.Rectangle.Y);
+
+                    Matrix scaleMatrix = new Matrix(scaleCoef, 0, 0, scaleCoef, center.X * (1 - scaleCoef), center.Y * (1 - scaleCoef)); // увеличаване или намаляне около центъра
+                    shape.TransformationMatrix.Multiply(scaleMatrix);
+                }
+            }
+        }
+
+        #endregion
+        // --------------------------------------------------------------------------------------------------------------
+
+        public void Rotate(float angle)
+        {
+            RotateShape(angle);
+            RotateGroup(angle);
+        }
+        
+        public void Scale(float scaleCoef)
+        {
+            ScaleShape(scaleCoef);
+            ScaleGroup(scaleCoef);
         }
 
         public Shape ContainsPoint(PointF point)

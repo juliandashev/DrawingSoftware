@@ -280,35 +280,6 @@ namespace Draw
             Delete();
         }
 
-        private void Rotate90Primitive_Click(object sender, EventArgs e)
-        {
-            RotateShape(90);
-        }
-
-        private void Rotate180Primitive_Click(object sender, EventArgs e)
-        {
-            RotateShape(180);
-        }
-
-        private void Rotate270Primitive_Click(object sender, EventArgs e)
-        {
-            RotateShape(270);
-        }
-
-        private void Rotate90Group_Click(object sender, EventArgs e)
-        {
-            RotateGroup(90);
-        }
-
-        private void Rotate180Group_Click(object sender, EventArgs e)
-        {
-            RotateGroup(180);
-        }
-
-        private void Rotate270Group_Click(object sender, EventArgs e)
-        {
-            RotateGroup(270);
-        }
         private void групиранеToolStripMenuItem_Click(object sender, EventArgs e)
         {
             GroupShapes();
@@ -323,7 +294,7 @@ namespace Draw
         }
         private void уголемиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dialogProcessor.ScaleShape(1.2f, 1.2f);
+            dialogProcessor.Scale(1.2f);
             viewPort.Invalidate();
 
             statusBar.Items[0].Text = "Последно действие: Уголемяване на примитив";
@@ -331,7 +302,7 @@ namespace Draw
 
         private void намалиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dialogProcessor.ScaleShape(0.8f, 0.8f);
+            dialogProcessor.Scale(0.8f);
             viewPort.Invalidate();
 
             statusBar.Items[0].Text = "Последно действие: Намаляне на примитив";
@@ -347,40 +318,27 @@ namespace Draw
             splineType = EnumTypes.SplineType.Base;
             dialogProcessor.IsDrawing = true;
         }
+        private void rotate45_Click(object sender, EventArgs e)
+        {
+            Rotate(45);
+        }
+
+        private void rotate90_Click(object sender, EventArgs e)
+        {
+            Rotate(90);
+        }
+
+        private void rotate180_Click(object sender, EventArgs e)
+        {
+            Rotate(180);
+        }
+
         #endregion
         // --------------------------------------------------------------------------------------------------------------
 
         // --------------------------------------------------------------------------------------------------------------
         #region Helper Methods
         // --------------------------------------------------------------------------------------------------------------
-
-        private void RotateShape(float rotation)
-        {
-            dialogProcessor.RotateShape(rotation);
-            statusBar.Items[0].Text = "Последно действие: Завъртане на фигура";
-            viewPort.Invalidate();
-        }
-
-        private void RotateGroup(float rotation)
-        {
-            dialogProcessor.RotateGroup(rotation);
-            statusBar.Items[0].Text = "Последно действие: Завъртане на група";
-            viewPort.Invalidate();
-        }
-
-        private void ScaleShape(float scaleX, float scaleY)
-        {
-            dialogProcessor.ScaleShape(scaleX, scaleY);
-            statusBar.Items[0].Text = "Последно действие: Завъртане на фигура";
-            viewPort.Invalidate();
-        }
-
-        private void ScaleGroup(float scaleX, float scaleY)
-        {
-            dialogProcessor.ScaleGroup(scaleX, scaleY);
-            statusBar.Items[0].Text = "Последно действие: Завъртане на група";
-            viewPort.Invalidate();
-        }
 
         private void GroupShapes()
         {
@@ -411,6 +369,25 @@ namespace Draw
 
                 viewPort.Invalidate();
             }
+        }
+
+        private void Rotate(float rotation)
+        {
+            dialogProcessor.Rotate(rotation);
+            statusBar.Items[0].Text = "Последно действие: Завъртане на примитв/група";
+            viewPort.Invalidate();
+        }
+
+        private new void Scale(float scaleCoef)
+        {
+            dialogProcessor.Scale(scaleCoef);
+
+            if (scaleCoef > 1)
+                statusBar.Items[0].Text = "Последно действие: Уголемяване на примитв/група";
+            else
+                statusBar.Items[0].Text = "Последно действие: Намаляне на примитв/група";
+
+            viewPort.Invalidate();
         }
 
         private int StrokeWidth()
@@ -543,8 +520,8 @@ namespace Draw
             }
             else // for editing selected shape or group
                 contextMenuStrip1.Items.Add("Добави правоъгълник", null, DrawRectangleButtonClick);
-                contextMenuStrip1.Items.Add("Добави елипса", null, drawEllipseButton_Click);
-                contextMenuStrip1.Items.Add("Добави звезда", null, drawStarBtn_Click);
+            contextMenuStrip1.Items.Add("Добави елипса", null, drawEllipseButton_Click);
+            contextMenuStrip1.Items.Add("Добави звезда", null, drawStarBtn_Click);
         }
 
         private void DeleteBtn_Click(object sender, EventArgs e)
