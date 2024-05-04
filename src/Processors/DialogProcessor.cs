@@ -350,6 +350,26 @@ namespace Draw
             ShapeList.Add(ellipse);
         }
 
+        public void AddRandomNTagon(int sidesNumber, int strokeWidth = 1)
+        {
+            Random rnd = new Random();
+            int x = rnd.Next(100, 1000);
+            int y = rnd.Next(100, 600);
+
+            NTagonShape nTagon = new NTagonShape(new Rectangle
+                (x, y,
+                200,
+                200), sidesNumber)
+            {
+                FillColor = Color.White,
+                StrokeColor = Color.Black,
+                StrokeWidth = strokeWidth
+            };
+
+            ShapeList.Add(nTagon);
+        }
+
+
         #endregion
         // --------------------------------------------------------------------------------------------------------------
 
@@ -362,20 +382,18 @@ namespace Draw
 
             if (selectedGroup.Count >= 1)
             {
-                float coef = scaleCoef;
-
                 foreach (var group in selectedGroup)
                 {
                     PointF center = new PointF((group.Rectangle.Width / 2) + group.Rectangle.X, (group.Rectangle.Height / 2) + group.Rectangle.Y);
+                    Matrix scaleMatrix = new Matrix(scaleCoef, 0, 0, scaleCoef, center.X * (1 - scaleCoef), center.Y * (1 - scaleCoef)); // увеличаване или намаляне около центъра
 
                     foreach (var shape in group.SubShapesList)
                     {
-                        Matrix scaleMatrix = new Matrix(coef, 0, 0, coef, center.X * (1 - coef), center.Y * (1 - coef)); // увеличаване или намаляне около центъра
                         // Мащабиране по S1S2 е същото като мащабиране по S2S1, което означава, че са комутативни
                         shape.TransformationMatrix.Multiply(scaleMatrix);
                     }
 
-                    group.TransformationMatrix.Scale(scaleCoef, scaleCoef);
+                    group.TransformationMatrix.Multiply(scaleMatrix);
                 }
             }
         }
@@ -525,7 +543,7 @@ namespace Draw
             RotateShape(angle);
             RotateGroup(angle);
         }
-        
+
         public void Scale(float scaleCoef)
         {
             ScaleShape(scaleCoef);

@@ -253,6 +253,30 @@ namespace Draw
             dialogProcessor.IsDrawing = true;
         }
 
+        private void nTagonSidesTextBox_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.AddRandomNTagon(5);
+            viewPort.Invalidate();
+
+            statusBar.Items[0].Text = $"Последно действие: Рисуване на Пентагон";
+        }
+
+        private void хексагонToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.AddRandomNTagon(6);
+            viewPort.Invalidate();
+
+            statusBar.Items[0].Text = $"Последно действие: Рисуване на Хексагон";
+        }
+
+        private void хептагонToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.AddRandomNTagon(7);
+            viewPort.Invalidate();
+
+            statusBar.Items[0].Text = $"Последно действие: Рисуване на Хептагон";
+        }
+
         #endregion
         // --------------------------------------------------------------------------------------------------------------
 
@@ -360,9 +384,30 @@ namespace Draw
             {
                 statusBar.Items[0].Text = "Последно действие: Изтриване на примитив";
 
-                foreach (var item in dialogProcessor.Selection)
+                foreach (var item in dialogProcessor.Selection) // a bit slow, might need some optimizing
                 {
-                    dialogProcessor.ShapeList.Remove(item);
+                    switch (item.GetType().Name)
+                    {
+                        case "BezierCurveShape":
+                        case "BSplineShape":
+                        case "PolygonShape":
+                            int index, startIndex;
+                            index = startIndex = dialogProcessor.ShapeList.IndexOf(item);
+                            int count = 0;
+
+                            while (index < (dialogProcessor.ShapeList.Count - 1) && dialogProcessor.ShapeList[index + 1].GetType().Name == "PointShape")
+                            {
+                                index++;
+                                count++;
+                            }
+
+                            dialogProcessor.ShapeList.RemoveRange(startIndex, count + 1);
+                            break;
+
+                        default:
+                            dialogProcessor.ShapeList.Remove(item);
+                            break;
+                    }
                 }
 
                 dialogProcessor.Selection.Clear();
@@ -398,7 +443,7 @@ namespace Draw
             return 1;
         }
 
-        private int SetOppacity()
+        private int GetOppacity()
         {
             if (int.TryParse(OppacityTextBox.Text, out int oppacity))
                 return oppacity;
@@ -469,7 +514,7 @@ namespace Draw
 
         private void OppacityBtn_Click(object sender, EventArgs e)
         {
-            dialogProcessor.SetOpacity(SetOppacity());
+            dialogProcessor.SetOpacity(GetOppacity());
 
             viewPort.Invalidate();
 
@@ -495,6 +540,14 @@ namespace Draw
             statusBar.Items[0].Text = "Последно действие: Задаване на ширина на контур";
         }
 
+        private void безцветенToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.SetOpacity(0);
+            viewPort.Invalidate();
+
+            statusBar.Items[0].Text = "Последно действие: Безцветен ";
+        }
+
         #endregion
         // --------------------------------------------------------------------------------------------------------------
 
@@ -515,6 +568,7 @@ namespace Draw
             if (dialogProcessor.Selection.Count >= 1)
             {
                 contextMenuStrip1.Items.Add("Запълни", null, FillColorBtn_Click);
+                contextMenuStrip1.Items.Add("Завърти на 45", null, rotate45_Click);
                 contextMenuStrip1.Items.Add("Оцвети контур", null, OulineColorBtn_Click);
                 contextMenuStrip1.Items.Add("Изтрии", null, DeleteToolStripMenuItem_Click);
             }
