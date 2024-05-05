@@ -35,6 +35,18 @@ namespace Draw.src.Model
             get => base.Location;
             set
             {
+                // Записва точката която проверяваме дали е в полигона в масив
+                PointF[] transformPointsArray = new PointF[] { value };
+
+                // Правим временна матрица на която присвояваме стойността на нашата матрица на Трансофрмация
+                Matrix temp = TransformationMatrix.Clone();
+
+                // Инвертираме, за да се върнем обратно в координатната система използвана от програмата
+                temp.Invert();
+
+                // Връщаме се в координатната система спомената горе
+                temp.TransformPoints(transformPointsArray);
+
                 foreach (PointShape p in ControlPoints)
                 {
                     p.Location = new PointF(
@@ -54,6 +66,12 @@ namespace Draw.src.Model
             {
                 base.StrokeWidth = value;
             }
+        }
+
+        public override string Name 
+        { 
+            get => base.Name; 
+            set => base.Name = value; 
         }
 
         #endregion

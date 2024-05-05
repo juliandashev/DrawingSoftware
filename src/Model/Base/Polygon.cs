@@ -40,31 +40,38 @@ namespace Draw
             set => base.Rectangle = value;
         }
 
-        public override PointF Location 
+        public override PointF Location
         {
             get => base.Location;
-            set 
-            { 
+            set
+            {
+                PointF[] transformPointsArray = new PointF[] { value };
+                Matrix temp = TransformationMatrix.Clone();
+                temp.Invert();
+                temp.TransformPoints(transformPointsArray);
+
                 foreach (PointShape shape in Vertices)
                 {
                     shape.Location = new PointF(
-                        shape.Location.X + value.X - base.Location.X,
-                        shape.Location.Y + value.Y - base.Location.Y
+                        shape.Location.X + transformPointsArray[0].X - base.Location.X,
+                        shape.Location.Y + transformPointsArray[0].Y - base.Location.Y
                         );
                 }
 
-                base.Location = value;
-            } 
-        }
-
-        public override Matrix TransformationMatrix 
-        {
-            get => base.TransformationMatrix;
-            set 
-            { 
-                base.TransformationMatrix = value; 
+                base.Location = transformPointsArray[0];
             }
         }
+
+        public override Matrix TransformationMatrix
+        {
+            get => base.TransformationMatrix;
+            set
+            {
+                base.TransformationMatrix = value;
+            }
+        }
+
+        public override string Name { get => base.Name; set => base.Name = value; }
 
         #endregion
 

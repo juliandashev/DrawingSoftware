@@ -11,6 +11,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace Draw
 {
@@ -135,6 +136,7 @@ namespace Draw
             rect.FillColor = Color.White;
             rect.StrokeColor = Color.Black;
             rect.StrokeWidth = strokeWidth;
+            rect.Name = rect.GetType().Name;
 
             ShapeList.Add(rect);
         }
@@ -149,6 +151,7 @@ namespace Draw
             rect.FillColor = Color.White;
             rect.StrokeColor = Color.Black;
             rect.StrokeWidth = strokeWidth;
+            rect.Name = rect.GetType().Name;
 
             ShapeList.Add(rect);
         }
@@ -178,7 +181,8 @@ namespace Draw
             {
                 FillColor = Color.White,
                 StrokeColor = Color.Black,
-                StrokeWidth = strokeWidth
+                StrokeWidth = strokeWidth,
+                Name = GetType().Name
             };
 
             ShapeList.Add(triangle);
@@ -190,7 +194,8 @@ namespace Draw
                     ClickedPoint.X - 3, ClickedPoint.Y - 3, 8, 10))
             {
                 FillColor = Color.Purple,
-                StrokeColor = Color.Black
+                StrokeColor = Color.Black,
+                Name = GetType().Name
             };
 
             PointsList.Add(point);
@@ -220,7 +225,8 @@ namespace Draw
             {
                 FillColor = Color.White,
                 StrokeColor = Color.Black,
-                StrokeWidth = strokeWidth
+                StrokeWidth = strokeWidth,
+                Name = GetType().Name
             };
 
             ShapeList.Insert(ShapeList.IndexOf(PointsList[0]), polygon);
@@ -249,7 +255,8 @@ namespace Draw
                 controlPoints)
             {
                 StrokeColor = Color.Coral,
-                StrokeWidth = strokeWidth
+                StrokeWidth = strokeWidth,
+                Name = GetType().Name
             };
 
             ShapeList.Insert(ShapeList.IndexOf(PointsList[0]), bezier);
@@ -278,6 +285,7 @@ namespace Draw
             {
                 StrokeColor = Color.Red,
                 StrokeWidth = strokeWidth,
+                Name = GetType().Name
             };
 
             ShapeList.Insert(ShapeList.IndexOf(PointsList[0]), splineShape);
@@ -297,7 +305,8 @@ namespace Draw
             {
                 FillColor = Color.White,
                 StrokeColor = Color.Black,
-                StrokeWidth = strokeWidth
+                StrokeWidth = strokeWidth,
+                Name = GetType().Name
             };
 
             ShapeList.Add(star);
@@ -316,7 +325,8 @@ namespace Draw
             {
                 FillColor = Color.White,
                 StrokeColor = Color.Black,
-                StrokeWidth = strokeWidth
+                StrokeWidth = strokeWidth,
+                Name = GetType().Name
             };
 
             ShapeList.Add(rhomb);
@@ -332,6 +342,7 @@ namespace Draw
             ellipse.FillColor = Color.White;
             ellipse.StrokeColor = Color.Black;
             ellipse.StrokeWidth = strokeWidth;
+            ellipse.Name = ellipse.GetType().Name;
 
             ShapeList.Add(ellipse);
         }
@@ -346,6 +357,7 @@ namespace Draw
             ellipse.FillColor = Color.White;
             ellipse.StrokeColor = Color.Black;
             ellipse.StrokeWidth = strokeWidth;
+            ellipse.Name = ellipse.GetType().Name;
 
             ShapeList.Add(ellipse);
         }
@@ -363,7 +375,8 @@ namespace Draw
             {
                 FillColor = Color.White,
                 StrokeColor = Color.Black,
-                StrokeWidth = strokeWidth
+                StrokeWidth = strokeWidth,
+                Name = GetType().Name
             };
 
             ShapeList.Add(nTagon);
@@ -548,6 +561,17 @@ namespace Draw
         {
             ScaleShape(scaleCoef);
             ScaleGroup(scaleCoef);
+        }
+
+        public void RenameObject(string name)
+        {
+            if (Selection.Count >= 1 && name.Length >= 3)
+            {
+                foreach (var item in Selection)
+                {
+                    item.Name = name;
+                }
+            }
         }
 
         public Shape ContainsPoint(PointF point)

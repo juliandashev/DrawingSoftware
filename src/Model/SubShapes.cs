@@ -117,17 +117,31 @@ namespace Draw.src.Model
             {
                 base.TransformationMatrix = value;
 
-                //foreach (Shape item in SubShapesList)
-                //{
-                //    item.TransformationMatrix.Multiply(value);
-                //}
+                foreach (Shape item in SubShapesList)
+                {
+                    item.TransformationMatrix.Multiply(value);
+                }
             }
+        }
+
+        public override string Name
+        {
+            get => base.Name;
+            set => base.Name = value;
         }
 
         #endregion
 
         public override bool Contains(PointF point)
         {
+            PointF[] transformPointsArray = new PointF[] { point };
+
+            Matrix temp = TransformationMatrix.Clone();
+
+            temp.Invert();
+
+            temp.TransformPoints(transformPointsArray);
+
             if (base.Contains(point))
             {
                 foreach (Shape shape in SubShapesList)

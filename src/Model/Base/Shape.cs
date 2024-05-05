@@ -57,7 +57,10 @@ namespace Draw
         public virtual PointF Location
         {
             get { return Rectangle.Location; }
-            set { rectangle.Location = value; }
+            set
+            {
+                rectangle.Location = value;
+            }
         }
 
         private Color fillColor;
@@ -97,6 +100,14 @@ namespace Draw
         }
 
         public GraphicsState State { get; set; }
+
+        private string name;
+        public virtual string Name
+        {
+            get { return name; }
+
+            set { name = value; }
+        }
 
         #endregion
 

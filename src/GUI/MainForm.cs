@@ -21,9 +21,12 @@ namespace Draw
         // Използва се, за да дефинира тип на сплайн кривата (Безие или Базова сплайн)
         private EnumTypes.SplineType splineType = EnumTypes.SplineType.None;
 
+        private Label nameLablel = new Label();
+
         public MainForm()
         {
             InitializeComponent();
+            InitializeLayerList();
         }
 
         void ExitToolStripMenuItemClick(object sender, EventArgs e)
@@ -151,7 +154,8 @@ namespace Draw
 
         void DrawRectangleButtonClick(object sender, EventArgs e)
         {
-            dialogProcessor.AddRandomRectangle(StrokeWidth());
+            dialogProcessor.AddRandomRectangle(GetStrokeWidth());
+            AddLayer();
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на правоъгълник";
 
@@ -160,7 +164,7 @@ namespace Draw
 
         private void drawEllipseButton_Click(object sender, EventArgs e)
         {
-            dialogProcessor.AddRandomEllipse(StrokeWidth());
+            dialogProcessor.AddRandomEllipse(GetStrokeWidth());
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на елипса";
 
@@ -179,7 +183,7 @@ namespace Draw
 
         private void drawSquare_Click(object sender, EventArgs e)
         {
-            dialogProcessor.AddRandomSquare(StrokeWidth());
+            dialogProcessor.AddRandomSquare(GetStrokeWidth());
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на квадрат";
 
@@ -188,7 +192,7 @@ namespace Draw
 
         private void drawCircle_Click(object sender, EventArgs e)
         {
-            dialogProcessor.AddRandomCircle(StrokeWidth());
+            dialogProcessor.AddRandomCircle(GetStrokeWidth());
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на окръжност";
 
@@ -197,7 +201,7 @@ namespace Draw
 
         private void drawPolygon_Click()
         {
-            dialogProcessor.AddPolygon(StrokeWidth());
+            dialogProcessor.AddPolygon(GetStrokeWidth());
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на полигон";
 
@@ -206,7 +210,7 @@ namespace Draw
 
         private void DrawBezier_Click()
         {
-            dialogProcessor.AddBezier(StrokeWidth());
+            dialogProcessor.AddBezier(GetStrokeWidth());
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на Безие крива";
 
@@ -215,7 +219,7 @@ namespace Draw
 
         private void DrawSpline_Click()
         {
-            dialogProcessor.AddBSpline(StrokeWidth());
+            dialogProcessor.AddBSpline(GetStrokeWidth());
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на Б-Сплайн крива";
 
@@ -224,7 +228,7 @@ namespace Draw
 
         private void DrawTriangle_Click()
         {
-            dialogProcessor.AddRandomTriangle(StrokeWidth());
+            dialogProcessor.AddRandomTriangle(GetStrokeWidth());
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на триъгълник";
 
@@ -233,7 +237,7 @@ namespace Draw
 
         private void drawStarBtn_Click(object sender, EventArgs e)
         {
-            dialogProcessor.AddRandomStar(StrokeWidth());
+            dialogProcessor.AddRandomStar(GetStrokeWidth());
             viewPort.Invalidate();
 
             statusBar.Items[0].Text = "Последно действие: Добавяне на звезда";
@@ -241,7 +245,7 @@ namespace Draw
 
         private void ромбToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dialogProcessor.AddRandomRhomb(StrokeWidth());
+            dialogProcessor.AddRandomRhomb(GetStrokeWidth());
 
             viewPort.Invalidate();
 
@@ -318,18 +322,12 @@ namespace Draw
         }
         private void уголемиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dialogProcessor.Scale(1.2f);
-            viewPort.Invalidate();
-
-            statusBar.Items[0].Text = "Последно действие: Уголемяване на примитив";
+            Scale(1.2f);
         }
 
         private void намалиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dialogProcessor.Scale(0.8f);
-            viewPort.Invalidate();
-
-            statusBar.Items[0].Text = "Последно действие: Намаляне на примитив";
+            Scale(0.8f);
         }
         private void безиеКриваToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -408,9 +406,12 @@ namespace Draw
                             dialogProcessor.ShapeList.Remove(item);
                             break;
                     }
+
+                    RemoveLayer(item.Name);
                 }
 
                 dialogProcessor.Selection.Clear();
+
 
                 viewPort.Invalidate();
             }
@@ -427,7 +428,7 @@ namespace Draw
         {
             dialogProcessor.Scale(scaleCoef);
 
-            if (scaleCoef > 1)
+            if (scaleCoef >= 1)
                 statusBar.Items[0].Text = "Последно действие: Уголемяване на примитв/група";
             else
                 statusBar.Items[0].Text = "Последно действие: Намаляне на примитв/група";
@@ -435,7 +436,7 @@ namespace Draw
             viewPort.Invalidate();
         }
 
-        private int StrokeWidth()
+        private int GetStrokeWidth()
         {
             if (int.TryParse(OutlineTextBox.Text, out int strokeWidth))
                 return strokeWidth;
@@ -481,6 +482,62 @@ namespace Draw
 
                 statusBar.Items[0].Text = "Последно действие: Задаване на ширина на контур";
             }
+        }
+
+        private void InitializeLayerList()
+        {
+            listView1.View = View.Tile;
+            listView1.FullRowSelect = true;
+            listView1.GridLines = true;
+            listView1.Columns.Add("Layer Name", 150);
+
+            foreach (var shape in dialogProcessor.ShapeList)
+            {
+                listView1.Items.Add(shape.Name);
+            }
+
+            // Subscribe to the SelectedIndexChanged event
+            listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
+
+            Controls.Add(listView1);
+
+            listView1.Invalidate();
+            viewPort.Invalidate();
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            listView1 = (ListView)sender;
+
+            if (listView1.SelectedItems.Count > 0)
+            {
+                string selectedLayerName = listView1.SelectedItems[0].Text;
+                MessageBox.Show("Selected Layer: " + selectedLayerName, "Do you want to delete it? ", MessageBoxButtons.OKCancel);
+            }
+        }
+
+        private void AddLayer()
+        {
+            string newLayerName = dialogProcessor.ShapeList.Last().Name + (listView1.Items.Count + 1);
+
+            ListViewItem item = new ListViewItem(newLayerName);
+            listView1.Items.Add(item);
+        }
+
+        private void RemoveLayer(string shapeName)
+        {
+            for (int i = 0; i < listView1.Items.Count; i++)
+            {
+                if (listView1.Items[i].Text == (shapeName + (i + 1)))
+                {
+                    listView1.Items.RemoveAt(i);
+                }
+            }
+
+            if (dialogProcessor.ShapeList.Count == 0)
+                listView1.Items.Clear();
+
+            listView1.Invalidate();
         }
 
         #endregion
@@ -533,7 +590,7 @@ namespace Draw
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
-            dialogProcessor.SetStrokeWidth(StrokeWidth());
+            dialogProcessor.SetStrokeWidth(GetStrokeWidth());
 
             viewPort.Invalidate();
 
