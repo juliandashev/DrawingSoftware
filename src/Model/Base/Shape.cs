@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Reflection.Emit;
+using System.Windows.Forms;
 
 namespace Draw
 {
@@ -108,7 +110,6 @@ namespace Draw
 
             set { name = value; }
         }
-
         #endregion
 
         public virtual bool Contains(PointF point)

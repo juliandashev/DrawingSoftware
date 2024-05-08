@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
@@ -121,6 +122,19 @@ namespace Draw
                 return;
         }
 
+        public void SetName(string name)
+        {
+            if (Selection.Count >= 1)
+            {
+                int index = 1;
+                foreach (var item in Selection)
+                {
+                    item.Name = name + index;
+                    index++;
+                }
+            }
+        }
+
         #endregion
 
         // --------------------------------------------------------------------------------------------------------------
@@ -132,11 +146,13 @@ namespace Draw
             int x = rnd.Next(100, 1000);
             int y = rnd.Next(100, 600);
 
-            RectangleShape rect = new RectangleShape(new Rectangle(x, y, 100, 200));
-            rect.FillColor = Color.White;
-            rect.StrokeColor = Color.Black;
-            rect.StrokeWidth = strokeWidth;
-            rect.Name = rect.GetType().Name;
+            RectangleShape rect = new RectangleShape(new Rectangle(x, y, 100, 200))
+            {
+                FillColor = Color.White,
+                StrokeColor = Color.Black,
+                StrokeWidth = strokeWidth,
+                Name = "Rectangle",
+            };
 
             ShapeList.Add(rect);
         }
@@ -147,11 +163,13 @@ namespace Draw
             int x = rnd.Next(100, 1000);
             int y = rnd.Next(100, 600);
 
-            RectangleShape rect = new RectangleShape(new Rectangle(x, y, 100, 100));
-            rect.FillColor = Color.White;
-            rect.StrokeColor = Color.Black;
-            rect.StrokeWidth = strokeWidth;
-            rect.Name = rect.GetType().Name;
+            RectangleShape rect = new RectangleShape(new Rectangle(x, y, 100, 100))
+            {
+                FillColor = Color.White,
+                StrokeColor = Color.Black,
+                StrokeWidth = strokeWidth,
+                Name = "Square",
+            };
 
             ShapeList.Add(rect);
         }
@@ -182,7 +200,7 @@ namespace Draw
                 FillColor = Color.White,
                 StrokeColor = Color.Black,
                 StrokeWidth = strokeWidth,
-                Name = GetType().Name
+                Name = "Triangle"
             };
 
             ShapeList.Add(triangle);
@@ -195,7 +213,7 @@ namespace Draw
             {
                 FillColor = Color.Purple,
                 StrokeColor = Color.Black,
-                Name = GetType().Name
+                Name = "Point"
             };
 
             PointsList.Add(point);
@@ -226,7 +244,7 @@ namespace Draw
                 FillColor = Color.White,
                 StrokeColor = Color.Black,
                 StrokeWidth = strokeWidth,
-                Name = GetType().Name
+                Name = "Polygon"
             };
 
             ShapeList.Insert(ShapeList.IndexOf(PointsList[0]), polygon);
@@ -256,7 +274,7 @@ namespace Draw
             {
                 StrokeColor = Color.Coral,
                 StrokeWidth = strokeWidth,
-                Name = GetType().Name
+                Name = "Bezier Curve"
             };
 
             ShapeList.Insert(ShapeList.IndexOf(PointsList[0]), bezier);
@@ -285,7 +303,7 @@ namespace Draw
             {
                 StrokeColor = Color.Red,
                 StrokeWidth = strokeWidth,
-                Name = GetType().Name
+                Name = "B-Spline Curve"
             };
 
             ShapeList.Insert(ShapeList.IndexOf(PointsList[0]), splineShape);
@@ -306,7 +324,7 @@ namespace Draw
                 FillColor = Color.White,
                 StrokeColor = Color.Black,
                 StrokeWidth = strokeWidth,
-                Name = GetType().Name
+                Name = "Star"
             };
 
             ShapeList.Add(star);
@@ -326,7 +344,7 @@ namespace Draw
                 FillColor = Color.White,
                 StrokeColor = Color.Black,
                 StrokeWidth = strokeWidth,
-                Name = GetType().Name
+                Name = "Rhomb"
             };
 
             ShapeList.Add(rhomb);
@@ -342,7 +360,7 @@ namespace Draw
             ellipse.FillColor = Color.White;
             ellipse.StrokeColor = Color.Black;
             ellipse.StrokeWidth = strokeWidth;
-            ellipse.Name = ellipse.GetType().Name;
+            ellipse.Name = "Ellipse";
 
             ShapeList.Add(ellipse);
         }
@@ -357,7 +375,7 @@ namespace Draw
             ellipse.FillColor = Color.White;
             ellipse.StrokeColor = Color.Black;
             ellipse.StrokeWidth = strokeWidth;
-            ellipse.Name = ellipse.GetType().Name;
+            ellipse.Name = "Circle";
 
             ShapeList.Add(ellipse);
         }
@@ -376,7 +394,7 @@ namespace Draw
                 FillColor = Color.White,
                 StrokeColor = Color.Black,
                 StrokeWidth = strokeWidth,
-                Name = GetType().Name
+                Name = sidesNumber + "-tagon"
             };
 
             ShapeList.Add(nTagon);
@@ -480,7 +498,8 @@ namespace Draw
 
                 SubShapes Groups = new SubShapes(new RectangleF(minX, minY, maxX - minX, maxY - minY))
                 {
-                    SubShapesList = Selection
+                    SubShapesList = Selection,
+                    Name = "Group of "+ temp.Count
                 };
 
                 Selection = new List<Shape>();
@@ -505,7 +524,7 @@ namespace Draw
                 foreach (var group in intersection)
                 {
                     ShapeList.AddRange(group.SubShapesList);
-                    group.SubShapesList.Clear();
+                    group.SubShapesList.Clear();;
                 }
                 Selection.Clear();
             }

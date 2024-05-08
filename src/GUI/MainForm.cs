@@ -5,7 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security.Authentication.ExtendedProtection.Configuration;
+using System.Text;
 using System.Windows.Forms;
 using static Draw.DialogProcessor;
 
@@ -21,12 +24,9 @@ namespace Draw
         // Използва се, за да дефинира тип на сплайн кривата (Безие или Базова сплайн)
         private EnumTypes.SplineType splineType = EnumTypes.SplineType.None;
 
-        private Label nameLablel = new Label();
-
         public MainForm()
         {
             InitializeComponent();
-            InitializeLayerList();
         }
 
         void ExitToolStripMenuItemClick(object sender, EventArgs e)
@@ -54,6 +54,9 @@ namespace Draw
                     if (dialogProcessor.Selection.Contains(temp))
                     {
                         statusBar.Items[0].Text = "Последно действие: Деселекция на примитив";
+
+                        var startIndex = dialogProcessor.Selection.IndexOf(temp);
+                        
                         dialogProcessor.Selection.Remove(temp);
                     }
                     else
@@ -61,6 +64,8 @@ namespace Draw
                         statusBar.Items[0].Text = "Последно действие: Селекция на примитив";
                         dialogProcessor.Selection.Add(temp);
                     }
+
+                    selectedShapesLabel.Text = String.Join(" ; ", dialogProcessor.Selection.Select(x => x.Name));
 
                     viewPort.Invalidate();
                 }
@@ -155,7 +160,6 @@ namespace Draw
         void DrawRectangleButtonClick(object sender, EventArgs e)
         {
             dialogProcessor.AddRandomRectangle(GetStrokeWidth());
-            AddLayer();
 
             statusBar.Items[0].Text = "Последно действие: Рисуване на правоъгълник";
 
@@ -406,12 +410,9 @@ namespace Draw
                             dialogProcessor.ShapeList.Remove(item);
                             break;
                     }
-
-                    RemoveLayer(item.Name);
                 }
 
                 dialogProcessor.Selection.Clear();
-
 
                 viewPort.Invalidate();
             }
@@ -482,62 +483,6 @@ namespace Draw
 
                 statusBar.Items[0].Text = "Последно действие: Задаване на ширина на контур";
             }
-        }
-
-        private void InitializeLayerList()
-        {
-            listView1.View = View.Tile;
-            listView1.FullRowSelect = true;
-            listView1.GridLines = true;
-            listView1.Columns.Add("Layer Name", 150);
-
-            foreach (var shape in dialogProcessor.ShapeList)
-            {
-                listView1.Items.Add(shape.Name);
-            }
-
-            // Subscribe to the SelectedIndexChanged event
-            listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
-
-            Controls.Add(listView1);
-
-            listView1.Invalidate();
-            viewPort.Invalidate();
-        }
-
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            listView1 = (ListView)sender;
-
-            if (listView1.SelectedItems.Count > 0)
-            {
-                string selectedLayerName = listView1.SelectedItems[0].Text;
-                MessageBox.Show("Selected Layer: " + selectedLayerName, "Do you want to delete it? ", MessageBoxButtons.OKCancel);
-            }
-        }
-
-        private void AddLayer()
-        {
-            string newLayerName = dialogProcessor.ShapeList.Last().Name + (listView1.Items.Count + 1);
-
-            ListViewItem item = new ListViewItem(newLayerName);
-            listView1.Items.Add(item);
-        }
-
-        private void RemoveLayer(string shapeName)
-        {
-            for (int i = 0; i < listView1.Items.Count; i++)
-            {
-                if (listView1.Items[i].Text == (shapeName + (i + 1)))
-                {
-                    listView1.Items.RemoveAt(i);
-                }
-            }
-
-            if (dialogProcessor.ShapeList.Count == 0)
-                listView1.Items.Clear();
-
-            listView1.Invalidate();
         }
 
         #endregion
@@ -638,6 +583,14 @@ namespace Draw
         private void DeleteBtn_Click(object sender, EventArgs e)
         {
             Delete();
+        }
+
+        private void selectedShapeNameButton_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.SetName(selectedShapeNameTextBox.Text);
+            statusBar.Items[0].Text = "Последно действие: Преименуване на примитив/група";
+
+            viewPort.Invalidate();
         }
     }
 }
