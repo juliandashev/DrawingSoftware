@@ -79,6 +79,7 @@
     <Compile Include="src\GUI\Program.cs" />
     <Compile Include="src\Model\BezierCurveShape.cs" />
     <Compile Include="src\Model\EllipseShape.cs" />
+    <Compile Include="src\Model\HeartShape.cs" />
     <Compile Include="src\Model\NTagonShape.cs" />
     <Compile Include="src\Model\PointShape.cs" />
     <Compile Include="src\Model\Base\Polygon.cs" />
