@@ -56,7 +56,7 @@ namespace Draw
                         statusBar.Items[0].Text = "Последно действие: Деселекция на примитив";
 
                         var startIndex = dialogProcessor.Selection.IndexOf(temp);
-                        
+
                         dialogProcessor.Selection.Remove(temp);
                     }
                     else
@@ -283,6 +283,14 @@ namespace Draw
             viewPort.Invalidate();
 
             statusBar.Items[0].Text = $"Последно действие: Рисуване на Хептагон";
+        }
+
+        private void сърцеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.AddRandomHeart(GetStrokeWidth());
+            viewPort.Invalidate();
+
+            statusBar.Items[0].Text = $"Последно действие: Рисуване на Сърце";
         }
 
         #endregion
@@ -575,9 +583,11 @@ namespace Draw
                 contextMenuStrip1.Items.Add("Изтрии", null, DeleteToolStripMenuItem_Click);
             }
             else // for editing selected shape or group
+            {
                 contextMenuStrip1.Items.Add("Добави правоъгълник", null, DrawRectangleButtonClick);
-            contextMenuStrip1.Items.Add("Добави елипса", null, drawEllipseButton_Click);
-            contextMenuStrip1.Items.Add("Добави звезда", null, drawStarBtn_Click);
+                contextMenuStrip1.Items.Add("Добави елипса", null, drawEllipseButton_Click);
+                contextMenuStrip1.Items.Add("Добави звезда", null, drawStarBtn_Click);
+            }
         }
 
         private void DeleteBtn_Click(object sender, EventArgs e)

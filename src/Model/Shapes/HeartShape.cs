@@ -33,25 +33,27 @@ namespace Draw.src.Model
 
             FillColor = Color.FromArgb(Opacity, FillColor);
 
+            // Needs to be fixed
             float x = Rectangle.X;
             float y = Rectangle.Y;
-            float w = Rectangle.Width;
-            float h = Rectangle.Height;
+            float width = Rectangle.Width;
+            float height = Rectangle.Height;
 
-            GraphicsPath path = new GraphicsPath();
-            path.AddBezier(x + w * 0.5f, y + h * 0.1f,
-                           x + w * 0.9f, y,
-                           x + w, y + h * 0.4f,
-                           x + w * 0.5f, y + h);
+            List<PointF> firstHalfPoints = new List<PointF>()
+            {
+                new PointF(x + width * 0.5f, y + height * 0.2f),
+                new PointF(x + width * 0.9f, y),
+                new PointF(x + width, y + height * 0.4f),
+                new PointF(x + width * 0.8f, y + height * 0.6f),
+                new PointF(x + width * 0.5f, y + height)
+            };
 
-            path.AddBezier(x + w * 0.5f, y + h,
-                           x, y + h * 0.4f,
-                           x + w * 0.1f, y,
-                           x + w * 0.5f, y + h * 0.1f);
+            BSplineShape bspline = new BSplineShape(Rectangle);
+            bspline.Points = firstHalfPoints;
 
-            grfx.FillPath(new SolidBrush(FillColor), path);
-            grfx.DrawPath(new Pen(StrokeColor, StrokeWidth), path);
-            
+            bspline.ShowControlPolygon = false;
+            bspline.DrawSelf(grfx);
+
             grfx.Restore(State);
         }
     }

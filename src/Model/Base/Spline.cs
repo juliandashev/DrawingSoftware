@@ -30,6 +30,8 @@ namespace Draw.src.Model
 
         public override RectangleF Rectangle { get => base.Rectangle; set => base.Rectangle = value; }
 
+        public bool ShowControlPolygon = true;
+
         public override PointF Location
         {
             get => base.Location;
@@ -68,10 +70,10 @@ namespace Draw.src.Model
             }
         }
 
-        public override string Name 
-        { 
-            get => base.Name; 
-            set => base.Name = value; 
+        public override string Name
+        {
+            get => base.Name;
+            set => base.Name = value;
         }
 
         #endregion
@@ -103,14 +105,21 @@ namespace Draw.src.Model
         {
             base.DrawSelf(grfx);
 
-            List<PointF> points = new List<PointF>();
-
-            foreach (var item in ControlPoints)
+            if (ShowControlPolygon)
             {
-                points.Add(item.Location);
-            }
+                List<PointF> points = new List<PointF>();
 
-            grfx.DrawPolygon(Pens.Gray, points.ToArray());
+                if (ControlPoints.Count >= 1)
+                {
+                    foreach (var item in ControlPoints)
+                    {
+                        points.Add(item.Location);
+                    }
+                    grfx.DrawPolygon(Pens.Gray, points.ToArray());
+                }
+                else
+                    grfx.DrawPolygon(Pens.Gray, Points.ToArray());
+            }
         }
     }
 }

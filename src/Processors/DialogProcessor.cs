@@ -400,6 +400,22 @@ namespace Draw
             ShapeList.Add(nTagon);
         }
 
+        public void AddRandomHeart(int strokeWidth)
+        {
+            Random rnd = new Random();
+            int x = rnd.Next(100, 1000);
+            int y = rnd.Next(100, 600);
+
+            HeartShape heart = new HeartShape(new Rectangle(x, y, 100, 100))
+            {
+                FillColor = Color.White,
+                StrokeColor = Color.Black,
+                StrokeWidth = strokeWidth,
+                Name = "Rectangle",
+            };
+
+            ShapeList.Add(heart);
+        }
 
         #endregion
         // --------------------------------------------------------------------------------------------------------------

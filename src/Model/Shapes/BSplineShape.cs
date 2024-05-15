@@ -20,6 +20,16 @@ namespace Draw.src.Model
             ControlPoints = controlPoints;
         }
 
+        public BSplineShape(RectangleF rect, List<PointF> controlPoints) : base(rect)
+        {
+            Points = controlPoints;
+        }
+
+        public BSplineShape(RectangleF rect) : base(rect)
+        {
+
+        }
+
         public BSplineShape(BSplineShape shape) : base(shape)
         {
         }
@@ -44,16 +54,21 @@ namespace Draw.src.Model
         {
             base.DrawSelf(grfx);
 
-            if (ControlPoints.Count >= p + 1)
+            if (ControlPoints.Count >= p + 1 || Points.Count >= p + 1)
             {
-                List<PointF> convertPoints = new List<PointF>();
-                foreach (PointShape point in ControlPoints) convertPoints.Add(point.Location);
+                PointF[] curvePoints;
 
-                PointF[] curvePoints = CalculateBSplineCurve(convertPoints);
+                if (ControlPoints.Count >= 0)
+                {
+                    foreach (PointShape point in ControlPoints)
+                        Points.Add(point.Location);
+                }
 
+                curvePoints = CalculateBSplineCurve(Points);
                 FillColor = Color.FromArgb(Opacity, FillColor);
 
                 grfx.DrawLines(new Pen(FillColor, StrokeWidth), curvePoints);
+                Points.Clear();
             }
         }
 

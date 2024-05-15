@@ -77,19 +77,19 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="src\GUI\Program.cs" />
-    <Compile Include="src\Model\BezierCurveShape.cs" />
-    <Compile Include="src\Model\EllipseShape.cs" />
-    <Compile Include="src\Model\HeartShape.cs" />
-    <Compile Include="src\Model\NTagonShape.cs" />
-    <Compile Include="src\Model\PointShape.cs" />
+    <Compile Include="src\Model\Shapes\BezierCurveShape.cs" />
+    <Compile Include="src\Model\Shapes\EllipseShape.cs" />
+    <Compile Include="src\Model\Shapes\HeartShape.cs" />
+    <Compile Include="src\Model\Shapes\NTagonShape.cs" />
+    <Compile Include="src\Model\Shapes\PointShape.cs" />
     <Compile Include="src\Model\Base\Polygon.cs" />
-    <Compile Include="src\Model\PolygonShape.cs" />
-    <Compile Include="src\Model\RectangleShape.cs" />
+    <Compile Include="src\Model\Shapes\PolygonShape.cs" />
+    <Compile Include="src\Model\Shapes\RectangleShape.cs" />
     <Compile Include="src\Model\Base\Shape.cs" />
     <Compile Include="src\Model\Base\Spline.cs" />
-    <Compile Include="src\Model\BSplineShape.cs" />
-    <Compile Include="src\Model\RhombShape.cs" />
-    <Compile Include="src\Model\StarShape.cs" />
+    <Compile Include="src\Model\Shapes\BSplineShape.cs" />
+    <Compile Include="src\Model\Shapes\RhombShape.cs" />
+    <Compile Include="src\Model\Shapes\StarShape.cs" />
     <Compile Include="src\Model\SubShapes.cs" />
     <Compile Include="src\Processors\DialogProcessor.cs" />
     <Compile Include="src\Processors\DisplayProcessor.cs" />
