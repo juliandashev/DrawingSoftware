@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Draw.src.Model
 {
+    [Serializable]
     public class StarShape : Polygon
     {
         #region Constructor
@@ -38,6 +39,11 @@ namespace Draw.src.Model
 
         // Doesn't matter if it's convex or not.
         // Works O(n) where n is the Vertices Count
+
+        public override Shape Clone()
+        {
+            return new StarShape(this);
+        }
         public override bool Contains(PointF point)
         {
             return base.Contains(point);

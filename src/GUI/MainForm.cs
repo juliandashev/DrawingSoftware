@@ -493,6 +493,46 @@ namespace Draw
             }
         }
 
+        private void SaveFile()
+        {
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string fileName = saveFileDialog1.FileName;
+
+                if (!fileName.Contains(".dat"))
+                    fileName += ".dat";
+
+                dialogProcessor.SerializeModel(fileName);
+            }
+        }
+
+        private void OpenFile()
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string fileName = openFileDialog1.FileName;
+                dialogProcessor.DeserializeModel(fileName);
+            }
+        }
+
+        private void Copy()
+        {
+            dialogProcessor.Copy();
+
+            statusBar.Items[0].Text = "Последно действие: Копиране";
+
+            viewPort.Invalidate();
+        }
+
+        private void Paste()
+        {
+            dialogProcessor.Paste();
+
+            statusBar.Items[0].Text = "Последно действие: Поставяне";
+
+            viewPort.Invalidate();
+        }
+
         #endregion
         // --------------------------------------------------------------------------------------------------------------
 
@@ -552,10 +592,33 @@ namespace Draw
 
         private void безцветенToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dialogProcessor.SetOpacity(0);
+            dialogProcessor.SetFillColor(Color.Transparent);
             viewPort.Invalidate();
 
             statusBar.Items[0].Text = "Последно действие: Безцветен ";
+        }
+
+        #endregion
+        // --------------------------------------------------------------------------------------------------------------
+
+        // --------------------------------------------------------------------------------------------------------------
+        #region Save and Open Methods
+        // --------------------------------------------------------------------------------------------------------------
+
+        private void saveModelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFile();
+            statusBar.Items[0].Text = "Последно действие: Запазване";
+
+            viewPort.Invalidate();
+        }
+
+        private void openModelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFile();
+            statusBar.Items[0].Text = "Последно действие: Отваряне";
+
+            viewPort.Invalidate();
         }
 
         #endregion
@@ -599,6 +662,24 @@ namespace Draw
         {
             dialogProcessor.SetName(selectedShapeNameTextBox.Text);
             statusBar.Items[0].Text = "Последно действие: Преименуване на примитив/група";
+
+            viewPort.Invalidate();
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Copy();
+        }
+
+        private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Paste();
+        }
+
+        private void селектирайВсичкоToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.SelectEverything();
+            statusBar.Items[0].Text = "Последно действие: Селектиране на всичко";
 
             viewPort.Invalidate();
         }

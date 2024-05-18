@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Draw.src.Model
 {
+    [Serializable]
     public class PointShape : Shape
     {
         #region Constructors
@@ -23,6 +24,11 @@ namespace Draw.src.Model
         public override bool Contains(PointF point)
         {
             return base.Contains(point);
+        }
+
+        public override Shape Clone()
+        {
+            return new PointShape(this);
         }
 
         public override void DrawSelf(Graphics grfx)

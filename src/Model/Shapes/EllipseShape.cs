@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Draw.src.Model
 {
+    [Serializable]
     public class EllipseShape : Shape
     {
         #region Constructor
@@ -67,6 +68,11 @@ namespace Draw.src.Model
                 Math.Pow((transformPointsArray[0].X - ellipseCenter.X) / halfWidth, 2) +
                 Math.Pow((transformPointsArray[0].Y - ellipseCenter.Y) / halfHeight, 2) 
                     <= 1;
+        }
+
+        public override Shape Clone()
+        {
+            return new EllipseShape(this);
         }
 
         public override void DrawSelf(Graphics grfx)

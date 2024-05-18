@@ -94,6 +94,7 @@
     <Compile Include="src\Processors\DialogProcessor.cs" />
     <Compile Include="src\Processors\DisplayProcessor.cs" />
     <Compile Include="src\Processors\Helper\EnumTypes.cs" />
+    <Compile Include="src\Processors\Helper\MatrixSerializable.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>

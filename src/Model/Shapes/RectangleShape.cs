@@ -10,6 +10,7 @@ namespace Draw
     /// <summary>
     /// Класът правоъгълник е основен примитив, който е наследник на базовия Shape.
     /// </summary>
+    [Serializable]
     public class RectangleShape : Shape
     {
         #region Constructor
@@ -45,6 +46,11 @@ namespace Draw
             else
                 // Ако не е в обхващащия правоъгълник, то не може да е в обекта и => false
                 return false;
+        }
+
+        public override Shape Clone()
+        {
+            return new RectangleShape(this);
         }
 
         /// <summary>

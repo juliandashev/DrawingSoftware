@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Draw.src.Model
 {
+    [Serializable]
     public class BezierCurveShape : Spline
     {
         #region Constructors
@@ -27,6 +28,11 @@ namespace Draw.src.Model
         #region Properties
 
         #endregion
+
+        public override Shape Clone()
+        {
+            return new BezierCurveShape(this);
+        }
 
         public override bool Contains(PointF point)
         {

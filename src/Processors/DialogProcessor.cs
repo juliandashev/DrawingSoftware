@@ -5,9 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
+using System.Drawing.Design;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
@@ -36,6 +38,8 @@ namespace Draw
             get { return selection; }
             set { selection = value; }
         }
+
+        public Queue<Shape> Clipboard { get; set; } = new Queue<Shape>();
 
         // private SubShapes Groups = new SubShapes();
         private List<SubShapes> GroupList = new List<SubShapes>();
@@ -515,7 +519,7 @@ namespace Draw
                 SubShapes Groups = new SubShapes(new RectangleF(minX, minY, maxX - minX, maxY - minY))
                 {
                     SubShapesList = Selection,
-                    Name = "Group of "+ temp.Count
+                    Name = "Group of " + temp.Count
                 };
 
                 Selection = new List<Shape>();
@@ -540,7 +544,7 @@ namespace Draw
                 foreach (var group in intersection)
                 {
                     ShapeList.AddRange(group.SubShapesList);
-                    group.SubShapesList.Clear();;
+                    group.SubShapesList.Clear(); ;
                 }
                 Selection.Clear();
             }
@@ -586,6 +590,61 @@ namespace Draw
         #endregion
         // --------------------------------------------------------------------------------------------------------------
 
+        // --------------------------------------------------------------------------------------------------------------
+        #region Serialization and Deserialization
+        // --------------------------------------------------------------------------------------------------------------
+
+        public void SerializeModel(string filePath)
+        {
+            FileStream fileStream;
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            fileStream = File.Create(filePath);
+            formatter.Serialize(fileStream, ShapeList);
+
+            fileStream.Close();
+        }
+
+        public void DeserializeModel(string filePath)
+        {
+            FileStream stream;
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            object temp = null;
+            if (File.Exists(filePath))
+            {
+                stream = File.OpenRead(filePath);
+                temp = formatter.Deserialize(stream);
+
+                var res = (List<Shape>)temp;
+                res.ForEach(s => ShapeList.Add(s));
+                stream.Close();
+            }
+        }
+
+        //public void SaveToJsonFile(string filePath)
+        //{
+        //    var settings = new JsonSerializerSettings
+        //    {
+        //        Formatting = Formatting.Indented,
+        //    };
+        //    settings.Converters.Add(new MatrixSerializable());
+
+        //    string json = JsonConvert.SerializeObject(ShapeList, settings);
+        //    File.WriteAllText(filePath, json);
+        //}
+
+        //public List<Shape> LoadFromJsonFile(string filePath)
+        //{
+        //    var settings = new JsonSerializerSettings();
+        //    settings.Converters.Add(new MatrixSerializable());
+
+        //    string jsonString = File.ReadAllText(filePath);
+        //    return JsonConvert.DeserializeObject<List<Shape>>(jsonString, settings);
+        //}
+        #endregion
+        // --------------------------------------------------------------------------------------------------------------
+
         public void Rotate(float angle)
         {
             RotateShape(angle);
@@ -598,14 +657,37 @@ namespace Draw
             ScaleGroup(scaleCoef);
         }
 
-        public void RenameObject(string name)
+        public void Copy()
         {
-            if (Selection.Count >= 1 && name.Length >= 3)
-            {
+            while(Clipboard.Count > 0)
+                Clipboard.Dequeue();
+
+            if (Selection.Count >= 1)
                 foreach (var item in Selection)
-                {
-                    item.Name = name;
-                }
+                    Clipboard.Enqueue(item);
+        }
+
+        public void Paste()
+        {
+            Random random = new Random();
+
+            foreach (var item in Clipboard)
+            {
+                int x = random.Next(100, 1000);
+                int y = random.Next(100, 600);
+
+                var shape = item.Clone();
+                shape.Location = new Point(x, y);
+
+                ShapeList.Add(shape);
+            }
+        }
+
+        public void SelectEverything()
+        {
+            foreach (var item in ShapeList)
+            {
+                Selection.Add(item);
             }
         }
 

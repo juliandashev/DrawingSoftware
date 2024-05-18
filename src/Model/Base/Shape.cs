@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Draw.src.Processors.Helper;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -93,15 +94,32 @@ namespace Draw
             set { opacity = value; }
         }
 
-        private Matrix rotationMatrix = new Matrix();
+        private MatrixSerializable _transform;
+
+        [NonSerialized]
+        private Matrix transformationMatrix = new Matrix();
 
         public virtual Matrix TransformationMatrix
         {
-            get { return rotationMatrix; }
-            set { rotationMatrix = value; }
+            get => transformationMatrix ?? (transformationMatrix = _transform?.GetMatrix());
+            set
+            {
+                transformationMatrix = value;
+                _transform = new MatrixSerializable(value);
+            }
         }
 
-        public GraphicsState State { get; set; }
+        [NonSerialized]
+        public GraphicsState state;
+
+        public GraphicsState State 
+        {
+            get => state;
+            set
+            {
+                state = value;
+            }
+        }
 
         private string name;
         public virtual string Name
@@ -129,5 +147,7 @@ namespace Draw
         {
             // shape.Rectangle.Inflate(shape.BorderWidth, shape.BorderWidth);
         }
+
+        public abstract Shape Clone();
     }
 }

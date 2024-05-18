@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Draw.src.Model
 {
+    [Serializable]
     public class BSplineShape : Spline
     {
         #region Constructors
@@ -44,6 +45,10 @@ namespace Draw.src.Model
         public const int p = 3;
 
         #endregion
+        public override Shape Clone()
+        {
+            return new BSplineShape(this);
+        }
 
         public override bool Contains(PointF point)
         {

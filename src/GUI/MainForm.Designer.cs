@@ -53,6 +53,7 @@
             this.nTagonSidesTextBox = new System.Windows.Forms.ToolStripMenuItem();
             this.хексагонToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.хептагонToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.сърцеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.манипулацииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.цвятНаЗапълванеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.цвятНаКонтурToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -105,9 +106,11 @@
             this.уголемиToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.намалиToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.DeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewPort = new Draw.DoubleBufferedPanel();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.сърцеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewPort = new Draw.DoubleBufferedPanel();
+            this.селектирайВсичкоToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -120,18 +123,18 @@
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new System.Drawing.Size(171, 6);
+            toolStripSeparator1.Size = new System.Drawing.Size(141, 6);
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new System.Drawing.Size(171, 6);
+            toolStripSeparator2.Size = new System.Drawing.Size(141, 6);
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
             toolStripSeparator3.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            toolStripSeparator3.Size = new System.Drawing.Size(171, 6);
+            toolStripSeparator3.Size = new System.Drawing.Size(141, 6);
             // 
             // mainMenu
             // 
@@ -143,10 +146,10 @@
             this.манипулацииToolStripMenuItem,
             this.editToolStripMenuItem,
             this.helpToolStripMenuItem});
-            this.mainMenu.Location = new System.Drawing.Point(174, 0);
+            this.mainMenu.Location = new System.Drawing.Point(144, 0);
             this.mainMenu.Name = "mainMenu";
             this.mainMenu.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.mainMenu.Size = new System.Drawing.Size(1212, 24);
+            this.mainMenu.Size = new System.Drawing.Size(1242, 24);
             this.mainMenu.TabIndex = 1;
             this.mainMenu.Text = "menuStrip1";
             // 
@@ -155,7 +158,9 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exitToolStripMenuItem,
             this.saveModelToolStripMenuItem,
-            this.openModelToolStripMenuItem});
+            this.openModelToolStripMenuItem,
+            this.copyToolStripMenuItem,
+            this.pasteToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -164,23 +169,25 @@
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.E)));
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItemClick);
             // 
             // saveModelToolStripMenuItem
             // 
             this.saveModelToolStripMenuItem.Name = "saveModelToolStripMenuItem";
-            this.saveModelToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
-            this.saveModelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveModelToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveModelToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.saveModelToolStripMenuItem.Text = "Save Model";
+            this.saveModelToolStripMenuItem.Click += new System.EventHandler(this.saveModelToolStripMenuItem_Click);
             // 
             // openModelToolStripMenuItem
             // 
             this.openModelToolStripMenuItem.Name = "openModelToolStripMenuItem";
-            this.openModelToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.O)));
-            this.openModelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openModelToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openModelToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.openModelToolStripMenuItem.Text = "Open Model";
+            this.openModelToolStripMenuItem.Click += new System.EventHandler(this.openModelToolStripMenuItem_Click);
             // 
             // фигуриToolStripMenuItem
             // 
@@ -297,7 +304,7 @@
             // 
             this.nTagonSidesTextBox.Name = "nTagonSidesTextBox";
             this.nTagonSidesTextBox.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D5)));
-            this.nTagonSidesTextBox.Size = new System.Drawing.Size(180, 22);
+            this.nTagonSidesTextBox.Size = new System.Drawing.Size(166, 22);
             this.nTagonSidesTextBox.Text = "Пентагон";
             this.nTagonSidesTextBox.Click += new System.EventHandler(this.nTagonSidesTextBox_Click);
             // 
@@ -305,7 +312,7 @@
             // 
             this.хексагонToolStripMenuItem.Name = "хексагонToolStripMenuItem";
             this.хексагонToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D6)));
-            this.хексагонToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.хексагонToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.хексагонToolStripMenuItem.Text = "Хексагон";
             this.хексагонToolStripMenuItem.Click += new System.EventHandler(this.хексагонToolStripMenuItem_Click);
             // 
@@ -313,9 +320,17 @@
             // 
             this.хептагонToolStripMenuItem.Name = "хептагонToolStripMenuItem";
             this.хептагонToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D7)));
-            this.хептагонToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.хептагонToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.хептагонToolStripMenuItem.Text = "Хептагон";
             this.хептагонToolStripMenuItem.Click += new System.EventHandler(this.хептагонToolStripMenuItem_Click);
+            // 
+            // сърцеToolStripMenuItem
+            // 
+            this.сърцеToolStripMenuItem.Name = "сърцеToolStripMenuItem";
+            this.сърцеToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
+            this.сърцеToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.сърцеToolStripMenuItem.Text = "Сърце";
+            this.сърцеToolStripMenuItem.Click += new System.EventHandler(this.сърцеToolStripMenuItem_Click);
             // 
             // манипулацииToolStripMenuItem
             // 
@@ -329,7 +344,8 @@
             this.завъртиToolStripMenuItem,
             this.групиранеToolStripMenuItem,
             this.разгрупиранеToolStripMenuItem,
-            this.контурToolStripMenuItem});
+            this.контурToolStripMenuItem,
+            this.селектирайВсичкоToolStripMenuItem});
             this.манипулацииToolStripMenuItem.Name = "манипулацииToolStripMenuItem";
             this.манипулацииToolStripMenuItem.Size = new System.Drawing.Size(97, 20);
             this.манипулацииToolStripMenuItem.Text = "Манипулации";
@@ -338,14 +354,14 @@
             // 
             this.цвятНаЗапълванеToolStripMenuItem.Name = "цвятНаЗапълванеToolStripMenuItem";
             this.цвятНаЗапълванеToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.цвятНаЗапълванеToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.цвятНаЗапълванеToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.цвятНаЗапълванеToolStripMenuItem.Text = "Цвят на запълване";
             // 
             // цвятНаКонтурToolStripMenuItem
             // 
             this.цвятНаКонтурToolStripMenuItem.Name = "цвятНаКонтурToolStripMenuItem";
             this.цвятНаКонтурToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Space)));
-            this.цвятНаКонтурToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.цвятНаКонтурToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.цвятНаКонтурToolStripMenuItem.Text = "Цвят на контур";
             // 
             // безцветенToolStripMenuItem
@@ -353,7 +369,7 @@
             this.безцветенToolStripMenuItem.Name = "безцветенToolStripMenuItem";
             this.безцветенToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.T)));
-            this.безцветенToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.безцветенToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.безцветенToolStripMenuItem.Text = "Безцветен";
             this.безцветенToolStripMenuItem.Click += new System.EventHandler(this.безцветенToolStripMenuItem_Click);
             // 
@@ -361,7 +377,7 @@
             // 
             this.уголемиToolStripMenuItem.Name = "уголемиToolStripMenuItem";
             this.уголемиToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Up)));
-            this.уголемиToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.уголемиToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.уголемиToolStripMenuItem.Text = "Уголеми";
             this.уголемиToolStripMenuItem.Click += new System.EventHandler(this.уголемиToolStripMenuItem_Click);
             // 
@@ -369,7 +385,7 @@
             // 
             this.намалиToolStripMenuItem.Name = "намалиToolStripMenuItem";
             this.намалиToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Down)));
-            this.намалиToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.намалиToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.намалиToolStripMenuItem.Text = "Намали";
             this.намалиToolStripMenuItem.Click += new System.EventHandler(this.намалиToolStripMenuItem_Click);
             // 
@@ -377,7 +393,7 @@
             // 
             this.изтрийToolStripMenuItem1.Name = "изтрийToolStripMenuItem1";
             this.изтрийToolStripMenuItem1.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.изтрийToolStripMenuItem1.Size = new System.Drawing.Size(222, 22);
+            this.изтрийToolStripMenuItem1.Size = new System.Drawing.Size(223, 22);
             this.изтрийToolStripMenuItem1.Text = "Изтрий";
             this.изтрийToolStripMenuItem1.Click += new System.EventHandler(this.изтрийToolStripMenuItem1_Click);
             // 
@@ -388,7 +404,7 @@
             this.rotate90,
             this.rotate180});
             this.завъртиToolStripMenuItem.Name = "завъртиToolStripMenuItem";
-            this.завъртиToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.завъртиToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.завъртиToolStripMenuItem.Text = "Завъртане";
             // 
             // rotate45
@@ -422,7 +438,7 @@
             // 
             this.групиранеToolStripMenuItem.Name = "групиранеToolStripMenuItem";
             this.групиранеToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
-            this.групиранеToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.групиранеToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.групиранеToolStripMenuItem.Text = "Групиране";
             this.групиранеToolStripMenuItem.Click += new System.EventHandler(this.групиранеToolStripMenuItem_Click);
             // 
@@ -430,7 +446,7 @@
             // 
             this.разгрупиранеToolStripMenuItem.Name = "разгрупиранеToolStripMenuItem";
             this.разгрупиранеToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
-            this.разгрупиранеToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.разгрупиранеToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.разгрупиранеToolStripMenuItem.Text = "Разгрупиране";
             this.разгрупиранеToolStripMenuItem.Click += new System.EventHandler(this.разгрупиранеToolStripMenuItem_Click);
             // 
@@ -440,7 +456,7 @@
             this.удебеляванеToolStripMenuItem,
             this.намалянеToolStripMenuItem});
             this.контурToolStripMenuItem.Name = "контурToolStripMenuItem";
-            this.контурToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.контурToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.контурToolStripMenuItem.Text = "Контур";
             // 
             // удебеляванеToolStripMenuItem
@@ -478,7 +494,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.aboutToolStripMenuItem.Text = "About...";
             // 
             // statusBar
@@ -489,9 +505,9 @@
             this.currentStatusLabel,
             this.coordinatesBox,
             this.selectedShapesLabel});
-            this.statusBar.Location = new System.Drawing.Point(174, 510);
+            this.statusBar.Location = new System.Drawing.Point(144, 510);
             this.statusBar.Name = "statusBar";
-            this.statusBar.Size = new System.Drawing.Size(1212, 24);
+            this.statusBar.Size = new System.Drawing.Size(1242, 24);
             this.statusBar.TabIndex = 2;
             this.statusBar.Text = "statusStrip1";
             // 
@@ -550,14 +566,14 @@
             this.speedMenu.Location = new System.Drawing.Point(0, 0);
             this.speedMenu.Name = "speedMenu";
             this.speedMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.speedMenu.Size = new System.Drawing.Size(174, 534);
+            this.speedMenu.Size = new System.Drawing.Size(144, 534);
             this.speedMenu.TabIndex = 3;
             this.speedMenu.Text = "toolStrip1";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(171, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(141, 6);
             // 
             // pickUpSpeedButton
             // 
@@ -566,7 +582,7 @@
             this.pickUpSpeedButton.Image = ((System.Drawing.Image)(resources.GetObject("pickUpSpeedButton.Image")));
             this.pickUpSpeedButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.pickUpSpeedButton.Name = "pickUpSpeedButton";
-            this.pickUpSpeedButton.Size = new System.Drawing.Size(171, 24);
+            this.pickUpSpeedButton.Size = new System.Drawing.Size(141, 24);
             this.pickUpSpeedButton.Text = "Cursor";
             // 
             // toolStripButton3
@@ -575,7 +591,7 @@
             this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(171, 15);
+            this.toolStripButton3.Size = new System.Drawing.Size(141, 15);
             this.toolStripButton3.Text = "Фигури:";
             // 
             // drawRectangleSpeedButton
@@ -584,7 +600,7 @@
             this.drawRectangleSpeedButton.Image = ((System.Drawing.Image)(resources.GetObject("drawRectangleSpeedButton.Image")));
             this.drawRectangleSpeedButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.drawRectangleSpeedButton.Name = "drawRectangleSpeedButton";
-            this.drawRectangleSpeedButton.Size = new System.Drawing.Size(171, 24);
+            this.drawRectangleSpeedButton.Size = new System.Drawing.Size(141, 24);
             this.drawRectangleSpeedButton.Text = "Rectangle";
             this.drawRectangleSpeedButton.Click += new System.EventHandler(this.DrawRectangleButtonClick);
             // 
@@ -594,7 +610,7 @@
             this.drawEllipseButton.Image = ((System.Drawing.Image)(resources.GetObject("drawEllipseButton.Image")));
             this.drawEllipseButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.drawEllipseButton.Name = "drawEllipseButton";
-            this.drawEllipseButton.Size = new System.Drawing.Size(171, 24);
+            this.drawEllipseButton.Size = new System.Drawing.Size(141, 24);
             this.drawEllipseButton.Text = "drawEllipseButton";
             this.drawEllipseButton.Click += new System.EventHandler(this.drawEllipseButton_Click);
             // 
@@ -604,7 +620,7 @@
             this.drawSquare.Image = ((System.Drawing.Image)(resources.GetObject("drawSquare.Image")));
             this.drawSquare.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.drawSquare.Name = "drawSquare";
-            this.drawSquare.Size = new System.Drawing.Size(171, 24);
+            this.drawSquare.Size = new System.Drawing.Size(141, 24);
             this.drawSquare.Text = "drawSquare";
             this.drawSquare.Click += new System.EventHandler(this.drawSquare_Click);
             // 
@@ -614,7 +630,7 @@
             this.drawCircle.Image = ((System.Drawing.Image)(resources.GetObject("drawCircle.Image")));
             this.drawCircle.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.drawCircle.Name = "drawCircle";
-            this.drawCircle.Size = new System.Drawing.Size(171, 24);
+            this.drawCircle.Size = new System.Drawing.Size(141, 24);
             this.drawCircle.Text = "drawCircle";
             this.drawCircle.Click += new System.EventHandler(this.drawCircle_Click);
             // 
@@ -626,7 +642,7 @@
             this.drawPolygon.Image = global::Draw.Properties.Resources.polygonIcon;
             this.drawPolygon.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.drawPolygon.Name = "drawPolygon";
-            this.drawPolygon.Size = new System.Drawing.Size(171, 24);
+            this.drawPolygon.Size = new System.Drawing.Size(141, 24);
             this.drawPolygon.Text = "drawPolygon";
             this.drawPolygon.Click += new System.EventHandler(this.drawPolygon_Click);
             // 
@@ -636,7 +652,7 @@
             this.drawStarBtn.Image = ((System.Drawing.Image)(resources.GetObject("drawStarBtn.Image")));
             this.drawStarBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.drawStarBtn.Name = "drawStarBtn";
-            this.drawStarBtn.Size = new System.Drawing.Size(171, 24);
+            this.drawStarBtn.Size = new System.Drawing.Size(141, 24);
             this.drawStarBtn.Text = "DrawStarBtn";
             this.drawStarBtn.Click += new System.EventHandler(this.drawStarBtn_Click);
             // 
@@ -646,7 +662,7 @@
             this.DeleteBtn.Image = global::Draw.Properties.Resources.deleteIcon;
             this.DeleteBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.DeleteBtn.Name = "DeleteBtn";
-            this.DeleteBtn.Size = new System.Drawing.Size(171, 24);
+            this.DeleteBtn.Size = new System.Drawing.Size(141, 24);
             this.DeleteBtn.Text = "DeleteBtn";
             this.DeleteBtn.Click += new System.EventHandler(this.DeleteBtn_Click);
             // 
@@ -656,7 +672,7 @@
             this.FillColorBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.FillColorBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FillColorBtn.Name = "FillColorBtn";
-            this.FillColorBtn.Size = new System.Drawing.Size(171, 24);
+            this.FillColorBtn.Size = new System.Drawing.Size(141, 24);
             this.FillColorBtn.Text = "Запълване:";
             this.FillColorBtn.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
             this.FillColorBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
@@ -669,7 +685,7 @@
             this.OulineColorBtn.Image = ((System.Drawing.Image)(resources.GetObject("OulineColorBtn.Image")));
             this.OulineColorBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OulineColorBtn.Name = "OulineColorBtn";
-            this.OulineColorBtn.Size = new System.Drawing.Size(171, 24);
+            this.OulineColorBtn.Size = new System.Drawing.Size(141, 24);
             this.OulineColorBtn.Text = "Цвят на контур:";
             this.OulineColorBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.OulineColorBtn.Click += new System.EventHandler(this.OulineColorBtn_Click);
@@ -679,7 +695,7 @@
             this.OppacityBtn.Image = ((System.Drawing.Image)(resources.GetObject("OppacityBtn.Image")));
             this.OppacityBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OppacityBtn.Name = "OppacityBtn";
-            this.OppacityBtn.Size = new System.Drawing.Size(171, 24);
+            this.OppacityBtn.Size = new System.Drawing.Size(141, 24);
             this.OppacityBtn.Text = "Прозрачност";
             this.OppacityBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.OppacityBtn.Click += new System.EventHandler(this.OppacityBtn_Click);
@@ -689,14 +705,14 @@
             this.OppacityTextBox.AcceptsReturn = true;
             this.OppacityTextBox.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.OppacityTextBox.Name = "OppacityTextBox";
-            this.OppacityTextBox.Size = new System.Drawing.Size(169, 23);
+            this.OppacityTextBox.Size = new System.Drawing.Size(139, 23);
             // 
             // OutlineBtn
             // 
             this.OutlineBtn.Image = ((System.Drawing.Image)(resources.GetObject("OutlineBtn.Image")));
             this.OutlineBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OutlineBtn.Name = "OutlineBtn";
-            this.OutlineBtn.Size = new System.Drawing.Size(171, 24);
+            this.OutlineBtn.Size = new System.Drawing.Size(141, 24);
             this.OutlineBtn.Text = "Контур";
             this.OutlineBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.OutlineBtn.Click += new System.EventHandler(this.toolStripButton2_Click);
@@ -705,12 +721,12 @@
             // 
             this.OutlineTextBox.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.OutlineTextBox.Name = "OutlineTextBox";
-            this.OutlineTextBox.Size = new System.Drawing.Size(169, 23);
+            this.OutlineTextBox.Size = new System.Drawing.Size(139, 23);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(171, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(141, 6);
             // 
             // selectedShapeNameButton
             // 
@@ -718,7 +734,7 @@
             this.selectedShapeNameButton.Image = ((System.Drawing.Image)(resources.GetObject("selectedShapeNameButton.Image")));
             this.selectedShapeNameButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.selectedShapeNameButton.Name = "selectedShapeNameButton";
-            this.selectedShapeNameButton.Size = new System.Drawing.Size(171, 19);
+            this.selectedShapeNameButton.Size = new System.Drawing.Size(141, 19);
             this.selectedShapeNameButton.Text = "Преименувай селекция";
             this.selectedShapeNameButton.Click += new System.EventHandler(this.selectedShapeNameButton_Click);
             // 
@@ -726,7 +742,7 @@
             // 
             this.selectedShapeNameTextBox.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.selectedShapeNameTextBox.Name = "selectedShapeNameTextBox";
-            this.selectedShapeNameTextBox.Size = new System.Drawing.Size(169, 23);
+            this.selectedShapeNameTextBox.Size = new System.Drawing.Size(139, 23);
             // 
             // openFileDialog1
             // 
@@ -776,34 +792,50 @@
             this.DeleteToolStripMenuItem.Text = "Изтрий";
             this.DeleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
             // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            this.contextMenuStrip2.Size = new System.Drawing.Size(61, 4);
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.copyToolStripMenuItem.Text = "Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
+            // 
+            // pasteToolStripMenuItem
+            // 
+            this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
+            this.pasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.pasteToolStripMenuItem.Text = "Paste";
+            this.pasteToolStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
+            // 
             // viewPort
             // 
             this.viewPort.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.viewPort.ContextMenuStrip = this.contextMenuStrip1;
             this.viewPort.Dock = System.Windows.Forms.DockStyle.Fill;
             this.viewPort.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.viewPort.Location = new System.Drawing.Point(174, 24);
+            this.viewPort.Location = new System.Drawing.Point(144, 24);
             this.viewPort.Margin = new System.Windows.Forms.Padding(4);
             this.viewPort.Name = "viewPort";
-            this.viewPort.Size = new System.Drawing.Size(1212, 486);
+            this.viewPort.Size = new System.Drawing.Size(1242, 486);
             this.viewPort.TabIndex = 4;
             this.viewPort.Paint += new System.Windows.Forms.PaintEventHandler(this.ViewPortPaint);
             this.viewPort.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseDown);
             this.viewPort.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseMove);
             this.viewPort.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseUp);
             // 
-            // contextMenuStrip2
+            // селектирайВсичкоToolStripMenuItem
             // 
-            this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(61, 4);
-            // 
-            // сърцеToolStripMenuItem
-            // 
-            this.сърцеToolStripMenuItem.Name = "сърцеToolStripMenuItem";
-            this.сърцеToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
-            this.сърцеToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.сърцеToolStripMenuItem.Text = "Сърце";
-            this.сърцеToolStripMenuItem.Click += new System.EventHandler(this.сърцеToolStripMenuItem_Click);
+            this.селектирайВсичкоToolStripMenuItem.Name = "селектирайВсичкоToolStripMenuItem";
+            this.селектирайВсичкоToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
+            this.селектирайВсичкоToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.селектирайВсичкоToolStripMenuItem.Text = "Селектирай всичко";
+            this.селектирайВсичкоToolStripMenuItem.Click += new System.EventHandler(this.селектирайВсичкоToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -910,5 +942,8 @@
         private System.Windows.Forms.ToolStripTextBox selectedShapeNameTextBox;
         private System.Windows.Forms.ToolStripButton selectedShapeNameButton;
         private System.Windows.Forms.ToolStripMenuItem сърцеToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem селектирайВсичкоToolStripMenuItem;
     }
 }

@@ -9,6 +9,7 @@ using System.Windows.Forms;
 
 namespace Draw.src.Model
 {
+    [Serializable]
     public class SubShapes : Shape
     {
         #region Constructors
@@ -20,6 +21,11 @@ namespace Draw.src.Model
         public SubShapes(RectangleF rect) : base(rect)
         {
             this.Rectangle = rect;
+        }
+
+        public SubShapes(SubShapes subShapes) : base(subShapes)
+        {
+            
         }
 
         #endregion
@@ -131,6 +137,11 @@ namespace Draw.src.Model
         }
 
         #endregion
+
+        public override Shape Clone()
+        {
+            return new SubShapes(this);
+        }
 
         public override bool Contains(PointF point)
         {

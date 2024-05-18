@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Draw.src.Model
 {
+    [Serializable]
     public class RhombShape : Shape
     {
 
@@ -28,6 +29,11 @@ namespace Draw.src.Model
         PointF[] RhombusPoints { get; set; }
 
         #endregion
+
+        public override Shape Clone()
+        {
+            return new RhombShape(this);
+        }
 
         public override bool Contains(PointF point)
         {

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Draw.src.Model
 {
+    [Serializable]
     public class PolygonShape : Polygon
     {
         #region Constructor
@@ -23,6 +24,11 @@ namespace Draw.src.Model
         }
 
         #endregion
+
+        public override Shape Clone()
+        {
+            return new PolygonShape(this);
+        }
 
         public override bool Contains(PointF point)
         {
