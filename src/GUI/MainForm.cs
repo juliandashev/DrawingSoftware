@@ -499,10 +499,10 @@ namespace Draw
             {
                 string fileName = saveFileDialog1.FileName;
 
-                if (!fileName.Contains(".dat"))
-                    fileName += ".dat";
+                if (!fileName.Contains(".json"))
+                    fileName += ".json";
 
-                dialogProcessor.SerializeModel(fileName);
+                dialogProcessor.SaveToJsonFile(fileName);
             }
         }
 
@@ -511,7 +511,9 @@ namespace Draw
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 string fileName = openFileDialog1.FileName;
-                dialogProcessor.DeserializeModel(fileName);
+                var loadFromJsonShapes = dialogProcessor.LoadFromJsonFile(fileName);
+
+                dialogProcessor.ShapeList.AddRange(loadFromJsonShapes);
             }
         }
 

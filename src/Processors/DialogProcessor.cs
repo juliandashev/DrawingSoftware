@@ -1,6 +1,7 @@
 ﻿using Draw.src.Model;
 using Draw.src.Processors;
 using Draw.src.Processors.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -39,7 +40,7 @@ namespace Draw
             set { selection = value; }
         }
 
-        public Queue<Shape> Clipboard { get; set; } = new Queue<Shape>();
+        public Stack<Shape> Clipboard { get; set; } = new Stack<Shape>();
 
         // private SubShapes Groups = new SubShapes();
         private List<SubShapes> GroupList = new List<SubShapes>();
@@ -415,7 +416,7 @@ namespace Draw
                 FillColor = Color.White,
                 StrokeColor = Color.Black,
                 StrokeWidth = strokeWidth,
-                Name = "Rectangle",
+                Name = "Heart",
             };
 
             ShapeList.Add(heart);
@@ -544,7 +545,8 @@ namespace Draw
                 foreach (var group in intersection)
                 {
                     ShapeList.AddRange(group.SubShapesList);
-                    group.SubShapesList.Clear(); ;
+                    group.Name = "";
+                    group.SubShapesList.Clear();
                 }
                 Selection.Clear();
             }
@@ -622,26 +624,30 @@ namespace Draw
             }
         }
 
-        //public void SaveToJsonFile(string filePath)
-        //{
-        //    var settings = new JsonSerializerSettings
-        //    {
-        //        Formatting = Formatting.Indented,
-        //    };
-        //    settings.Converters.Add(new MatrixSerializable());
+        public void SaveToJsonFile(string filePath)
+        {
+            var settings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                TypeNameHandling = TypeNameHandling.Auto,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            settings.Converters.Add(new MatrixConverter());
+            settings.Converters.Add(new BaseConverter());
 
-        //    string json = JsonConvert.SerializeObject(ShapeList, settings);
-        //    File.WriteAllText(filePath, json);
-        //}
+            string jsonString = JsonConvert.SerializeObject(ShapeList, settings);
+            File.WriteAllText(filePath, jsonString);
+        }
 
-        //public List<Shape> LoadFromJsonFile(string filePath)
-        //{
-        //    var settings = new JsonSerializerSettings();
-        //    settings.Converters.Add(new MatrixSerializable());
+        public List<Shape> LoadFromJsonFile(string filePath)
+        {
+            var settings = new JsonSerializerSettings();
+            settings.Converters.Add(new MatrixConverter());
 
-        //    string jsonString = File.ReadAllText(filePath);
-        //    return JsonConvert.DeserializeObject<List<Shape>>(jsonString, settings);
-        //}
+            string jsonString = File.ReadAllText(filePath);
+            return JsonConvert.DeserializeObject<List<Shape>>(jsonString, settings);
+        }
+
         #endregion
         // --------------------------------------------------------------------------------------------------------------
 
@@ -660,11 +666,11 @@ namespace Draw
         public void Copy()
         {
             while(Clipboard.Count > 0)
-                Clipboard.Dequeue();
+                Clipboard.Pop();
 
             if (Selection.Count >= 1)
                 foreach (var item in Selection)
-                    Clipboard.Enqueue(item);
+                    Clipboard.Push(item);
         }
 
         public void Paste()

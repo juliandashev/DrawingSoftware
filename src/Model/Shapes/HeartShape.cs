@@ -17,7 +17,7 @@ namespace Draw.src.Model
 
         public HeartShape(HeartShape heartShape) : base(heartShape)
         {
-            
+
         }
 
         #region Constructor
@@ -44,43 +44,35 @@ namespace Draw.src.Model
 
             FillColor = Color.FromArgb(Opacity, FillColor);
 
-            // Needs to be fixed
             float x = Rectangle.X;
             float y = Rectangle.Y;
             float width = Rectangle.Width;
             float height = Rectangle.Height;
 
-            List<PointF> firstHalfPoints = new List<PointF>()
-            {
-                new PointF(x + width * 0.5f, y + height * 0.2f),
+            // Points on the right side
+            PointF p1 = new PointF(x + width * 0.5f, y + height * 0.2f);
 
-                new PointF(x + width * 0.9f, y),
-                new PointF(x + width, y + height * 0.4f),
-                new PointF(x + width * 0.8f, y + height * 0.6f),
+            PointF p2 = new PointF(x + width * 0.9f, y);
+            PointF p3 = new PointF(x + width, y + height * 0.4f);
 
-                new PointF(x + width * 0.5f, y + height)
-            };
+            PointF p4 = new PointF(x + width * 0.5f, y + height);
 
-            List<PointF> secondHalfPoints = new List<PointF>()
-            {
-                new PointF(x + width * 0.5f, y + height),
+            GraphicsPath path = new GraphicsPath();
 
-                new PointF(x + width * 0.2f, y + height * 0.6f),
-                new PointF(x, y + height * 0.4f),
-                new PointF(x + width * 0.1f, y),
+            path.AddBezier(p1, p2, p3, p4);
 
-                new PointF(x + width * 0.5f, y + height * 0.2f)
-            };
+            // Points on the left side
+            PointF _p1 = new PointF(x + width * 0.5f, y + height);
 
-            BSplineShape bspline = new BSplineShape(Rectangle);
-            bspline.Points = firstHalfPoints;
+            PointF _p2 = new PointF(x, y + height * 0.4f);
+            PointF _p3 = new PointF(x + width * 0.1f, y);
 
-            bspline.ShowControlPolygon = false;
+            PointF _p4 = new PointF(x + width * 0.5f, y + height * 0.2f);
 
-            bspline.DrawSelf(grfx);
+            path.AddBezier(_p1, _p2, _p3, _p4);
 
-            bspline.Points = secondHalfPoints;
-            bspline.DrawSelf(grfx);
+            grfx.FillPath(new SolidBrush(FillColor), path);
+            grfx.DrawPath(new Pen(StrokeColor, StrokeWidth), path);
 
             grfx.Restore(State);
         }

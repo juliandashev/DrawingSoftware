@@ -305,5 +305,10 @@ namespace Draw
 
             // Проверява се за нечетно число, защото нечетният брои пресичания на стена означава, че точката лежи вътре в пшолигона
         }
+
+        public override void DrawSelf(Graphics grfx)
+        {
+            base.DrawSelf(grfx);
+        }
     }
 }

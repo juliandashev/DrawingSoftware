@@ -73,6 +73,7 @@ namespace Draw.src.Model
                 FillColor = Color.FromArgb(Opacity, FillColor);
 
                 grfx.DrawLines(new Pen(FillColor, StrokeWidth), curvePoints);
+
                 Points.Clear();
             }
         }

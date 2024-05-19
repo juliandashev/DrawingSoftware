@@ -169,12 +169,13 @@ namespace Draw.src.Model
         {
             State = grfx.Save();
 
-            base.DrawSelf(grfx);
-
             foreach (Shape shape in SubShapesList)
             {
                 shape.DrawSelf(grfx);
             }
+
+            Font defaultFont = SystemFonts.DefaultFont;
+            grfx.DrawString(Name, defaultFont, new SolidBrush(Color.Black), new PointF(Rectangle.Right, Rectangle.Top));
 
             grfx.Restore(State);
         }

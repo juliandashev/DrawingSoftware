@@ -1,5 +1,6 @@
 ﻿using Draw.src.Processors.Helper;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -11,6 +12,7 @@ using System.Windows.Forms;
 namespace Draw
 {
     [Serializable]
+    // [JsonConverter(typeof(BaseConverter))]
     public abstract class Shape
     {
         #region Constructors
@@ -94,25 +96,31 @@ namespace Draw
             set { opacity = value; }
         }
 
-        private MatrixSerializable _transform;
+        //private MatrixSerializable _transform;
 
-        [NonSerialized]
         private Matrix transformationMatrix = new Matrix();
 
+        [JsonConverter(typeof(MatrixConverter))]
         public virtual Matrix TransformationMatrix
         {
-            get => transformationMatrix ?? (transformationMatrix = _transform?.GetMatrix());
-            set
-            {
-                transformationMatrix = value;
-                _transform = new MatrixSerializable(value);
-            }
+            get => transformationMatrix;
+            set => transformationMatrix = value;
         }
+
+        //public virtual Matrix TransformationMatrix
+        //{
+        //    get => transformationMatrix ?? (transformationMatrix = _transform?.GetMatrix());
+        //    set
+        //    {
+        //        transformationMatrix = value;
+        //        _transform = new MatrixSerializable(value);
+        //    }
+        //}
 
         [NonSerialized]
         public GraphicsState state;
 
-        public GraphicsState State 
+        public GraphicsState State
         {
             get => state;
             set
@@ -145,6 +153,8 @@ namespace Draw
 
         public virtual void DrawSelf(Graphics grfx)
         {
+            Font defaultFont = SystemFonts.DefaultFont;
+            grfx.DrawString(Name, defaultFont, new SolidBrush(Color.Black), new PointF(Rectangle.Right, Rectangle.Bottom));
             // shape.Rectangle.Inflate(shape.BorderWidth, shape.BorderWidth);
         }
 

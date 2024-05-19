@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -39,6 +40,22 @@ namespace Draw.src.Processors.Helper
         public Matrix GetMatrix()
         {
             return matrix;
+        }
+    }
+
+    // Custom converter for Matrix
+    public class MatrixConverter : JsonConverter<Matrix>
+    {
+        public override void WriteJson(JsonWriter writer, Matrix value, JsonSerializer serializer)
+        {
+            var elements = value.Elements;
+            serializer.Serialize(writer, elements);
+        }
+
+        public override Matrix ReadJson(JsonReader reader, Type objectType, Matrix existingValue, bool hasExistingValue, JsonSerializer serializer)
+        {
+            var elements = serializer.Deserialize<float[]>(reader);
+            return new Matrix(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5]);
         }
     }
 }
