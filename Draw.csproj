@@ -108,16 +108,6 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="src\GUI\Program.cs" />
-    <Compile Include="src\Model\ExamShapes\ExamShape0.cs" />
-    <Compile Include="src\Model\ExamShapes\ExamShape1.cs" />
-    <Compile Include="src\Model\ExamShapes\ExamShape2.cs" />
-    <Compile Include="src\Model\ExamShapes\ExamShape3.cs" />
-    <Compile Include="src\Model\ExamShapes\ExamShape4.cs" />
-    <Compile Include="src\Model\ExamShapes\ExamShape5.cs" />
-    <Compile Include="src\Model\ExamShapes\ExamShape6.cs" />
-    <Compile Include="src\Model\ExamShapes\ExamShape7.cs" />
-    <Compile Include="src\Model\ExamShapes\ExamShape8.cs" />
-    <Compile Include="src\Model\ExamShapes\ExamShape9.cs" />
     <Compile Include="src\Model\Shapes\BezierCurveShape.cs" />
     <Compile Include="src\Model\Shapes\EllipseShape.cs" />
     <Compile Include="src\Model\Shapes\HeartShape.cs" />
