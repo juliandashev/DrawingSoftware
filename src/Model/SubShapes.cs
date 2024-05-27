@@ -116,6 +116,16 @@ namespace Draw.src.Model
             }
         }
 
+        public override float StrokeWidth 
+        {
+            get => base.StrokeWidth;
+            set
+            {
+                foreach (var item in SubShapesList)
+                    item.StrokeWidth = value;
+            }
+        }
+
         public override Matrix TransformationMatrix
         {
             get => base.TransformationMatrix;

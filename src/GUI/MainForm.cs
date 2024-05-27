@@ -556,9 +556,8 @@ namespace Draw
         {
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
-                OulineColorBtn.BackColor = colorDialog1.Color;
-
                 dialogProcessor.SetStrokeColor(colorDialog1.Color);
+
                 viewPort.Invalidate();
                 statusBar.Items[0].Text = "Последно действие: Цвят на линия ";
             }

@@ -1,4 +1,5 @@
 ﻿using Draw.src.Model;
+using Draw.src.Model.ExamShapes;
 using Draw.src.Processors;
 using Draw.src.Processors.Helper;
 using Newtonsoft.Json;
@@ -161,7 +162,6 @@ namespace Draw
 
             ShapeList.Add(rect);
         }
-
         public void AddRandomSquare(int strokeWidth)
         {
             Random rnd = new Random();
@@ -684,6 +684,7 @@ namespace Draw
 
                 var shape = item.Clone();
                 shape.Location = new Point(x, y);
+                shape.Name = item.Name + "Copy";
 
                 ShapeList.Add(shape);
             }
