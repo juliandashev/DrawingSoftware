@@ -684,5 +684,13 @@ namespace Draw
 
             viewPort.Invalidate();
         }
+
+        private void examBtn_Click(object sender, EventArgs e)
+        {
+            dialogProcessor.AddExamShape(GetStrokeWidth());
+            statusBar.Items[0].Text = "Последно действие: Добавяне на Exam Shape";
+
+            viewPort.Invalidate();
+        }
     }
 }

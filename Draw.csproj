@@ -110,6 +110,7 @@
     <Compile Include="src\GUI\Program.cs" />
     <Compile Include="src\Model\Shapes\BezierCurveShape.cs" />
     <Compile Include="src\Model\Shapes\EllipseShape.cs" />
+    <Compile Include="src\Model\Shapes\ExamShape3.cs" />
     <Compile Include="src\Model\Shapes\HeartShape.cs" />
     <Compile Include="src\Model\Shapes\NTagonShape.cs" />
     <Compile Include="src\Model\Shapes\PointShape.cs" />

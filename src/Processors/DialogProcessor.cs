@@ -1,4 +1,5 @@
 ﻿using Draw.src.Model;
+using Draw.src.Model.Shapes;
 using Draw.src.Processors;
 using Draw.src.Processors.Helper;
 using Newtonsoft.Json;
@@ -161,6 +162,23 @@ namespace Draw
 
             ShapeList.Add(rect);
         }
+        public void AddExamShape(int strokeWidth)
+        {
+            Random rnd = new Random();
+            int x = rnd.Next(100, 1000);
+            int y = rnd.Next(100, 600);
+
+            ExamShape3 exam = new ExamShape3(new Rectangle(x, y, 100, 100))
+            {
+                FillColor = Color.White,
+                StrokeColor = Color.Black,
+                StrokeWidth = strokeWidth,
+                Name = "ExamShape",
+            };
+
+            ShapeList.Add(exam);
+        }
+
         public void AddRandomSquare(int strokeWidth)
         {
             Random rnd = new Random();

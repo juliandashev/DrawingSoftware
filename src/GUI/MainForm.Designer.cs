@@ -100,6 +100,7 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.selectedShapeNameButton = new System.Windows.Forms.ToolStripButton();
             this.selectedShapeNameTextBox = new System.Windows.Forms.ToolStripTextBox();
+            this.examBtn = new System.Windows.Forms.ToolStripButton();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -586,7 +587,8 @@
             this.OutlineTextBox,
             this.toolStripSeparator5,
             this.selectedShapeNameButton,
-            this.selectedShapeNameTextBox});
+            this.selectedShapeNameTextBox,
+            this.examBtn});
             this.speedMenu.Location = new System.Drawing.Point(0, 0);
             this.speedMenu.Name = "speedMenu";
             this.speedMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -768,6 +770,16 @@
             this.selectedShapeNameTextBox.Name = "selectedShapeNameTextBox";
             this.selectedShapeNameTextBox.Size = new System.Drawing.Size(137, 23);
             // 
+            // examBtn
+            // 
+            this.examBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.examBtn.Image = ((System.Drawing.Image)(resources.GetObject("examBtn.Image")));
+            this.examBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.examBtn.Name = "examBtn";
+            this.examBtn.Size = new System.Drawing.Size(139, 24);
+            this.examBtn.Text = "examBtn";
+            this.examBtn.Click += new System.EventHandler(this.examBtn_Click);
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
@@ -945,5 +957,6 @@
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem селектирайВсичкоToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton examBtn;
     }
 }
