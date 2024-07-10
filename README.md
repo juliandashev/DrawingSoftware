@@ -10,9 +10,9 @@ About Model folder:
 The Model folder contains two subfolders: Base and Shapes
 
 Base is for the abstract base classes
-and Shapes folder contains all the shapes created.
+and Shapes folder contains all the shapes created (obvious, right :D).
 
-Each shape has a contains method that is defind to suit the needs of the shape, which means that if the user creates a circle or ellipse when clicking inside the ellipse it can be moved,
+Each shape has a "Contains" method that is defined to suit the needs of the shape, which means that if the user creates a circle or ellipse when clicking inside the ellipse it can be moved,
 but when clicking outside it won't move. Same with Polygons, Splines, etc.
 
 
@@ -24,12 +24,12 @@ Left panel of the application contains most common shapes that could be added (i
 On tab "Манипулации" are some manipulation that could be done to a shape, like chaning fill color, stroke color, size, etc.
 
 Here are some key combinations: 
-- Control + C copies selected figures
-- Control + V pastes copied figures
-- Control + A selectes everything
-- Del key deletes everything selected
-- Control + G groups selected elements
-- Congtrol + U ungroups selected elements
+- Control + C: copies selected figures
+- Control + V: pastes copied figures
+- Control + A: selectes everything
+- Del: deletes selected item/s
+- Control + G: groups selected elements
+- Control + U: ungroups selected elements
 - Disselecting happenes when clicking away from alrady selected primitives
 
 Exit and Save model are still on progress
